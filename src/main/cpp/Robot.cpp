@@ -4,7 +4,18 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-// First Change
+/* ---------------------------------------------------------------------------
+------------------------------NAMING CONVENTION---------------------------------
+
+MOTORS: m_function  ex: m_leftdrive
+SENSORS: s_type  ex: s_gyro
+CONTROLLERS: c#_type_name  ex: c1_btn_a
+PNEUMATICS: p_type
+BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
+                  also: merge into master before each event, create event, create 
+                  event branch and merge every night
+--------------------------------------------------------------------------------
+*/
 #include "Robot.h"
 
 #include <iostream>
