@@ -11,10 +11,13 @@
 #include "frc\Joystick.h"
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+
+// Include subsystem header files here
 #include "Drive.h"
 
 class Robot : public frc::TimedRobot {
  public:
+  //Include subsystem object defenitions here
   Drive MyDrive;
   void RobotInit() override;
   void RobotPeriodic() override;
@@ -29,6 +32,6 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
-  frc::Joystick controller1{0}; 
-  frc::Joystick controller2{1};
+  frc::Joystick controller1{0}; // Driver controller
+  frc::Joystick controller2{1}; // Operator controller
 };

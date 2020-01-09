@@ -74,10 +74,14 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
 
+  // Read in Joystick Values
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
 
-  MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive);
+
+
+  // Drive Code
+  MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
 
 }
 
