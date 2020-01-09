@@ -17,7 +17,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 --------------------------------------------------------------------------------
 */
 #include "Robot.h"
-
+#include "Drive.h"
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -72,7 +72,14 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+
+  double c1_joy_leftdrive = controller1.GetRawAxis(1);
+  double c1_joy_rightdrive = controller1.GetRawAxis(5);
+
+  MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive);
+
+}
 
 void Robot::TestPeriodic() {}
 
