@@ -18,6 +18,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 */
 #include "Robot.h"
 #include "Drive.h"
+#include "Led.h"
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -82,7 +83,7 @@ void Robot::TeleopPeriodic() {
 
   // Drive Code
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
-
+  MyLed.led_control("Orange");
 }
 
 void Robot::TestPeriodic() {}
