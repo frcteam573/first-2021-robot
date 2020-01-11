@@ -19,10 +19,26 @@ Drive::Drive() : Subsystem("Drive") {
     m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
 }
 
+double Drive::deadband(double input, double deadband_size){
+    if (abs(input) < deadband_size){
+        input = 0;
+    }
+    return input;
+}
 void Drive::Joystick_Drive(double LeftStick, double RightStick){
     // This function provides basic joystick control of the drive base
+    
+    // cubing function
+    LeftStick = LeftStick * LeftStick * LeftStick;
+    RightStick = RightStick * RightStick * RightStick;
+
+    // deadband
+    LeftStick = deadband (LeftStick, 0.05);
+    RightStick = deadband (RightStick, 0.05);
 
     m_leftdrive->Set(LeftStick);
     m_rightdrive->Set(RightStick);
-    
+
+
+
 }

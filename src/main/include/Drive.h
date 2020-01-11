@@ -26,7 +26,8 @@ class Drive : public frc::Subsystem {
      Drive();  
      // Define Drive class functions here   
      void Joystick_Drive(double LeftStick, double RightStick);
-
+     double deadband(double input, double deadband_size);
+    
 
 };
 #endif
