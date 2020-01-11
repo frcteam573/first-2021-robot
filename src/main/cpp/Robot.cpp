@@ -18,6 +18,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 */
 #include "Robot.h"
 #include "Drive.h"
+#include "Appendage.h"
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -77,11 +78,34 @@ void Robot::TeleopPeriodic() {
   // Read in Joystick Values
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
+  bool c2_btn_a = controller2.GetRawButton(1);
+  bool c2_btn_b = controller2.GetRawButton(2);
+  bool c2_btn_y = controller2.GetRawButton(4);
+  bool c2_btn_x = controller2.GetRawButton(3);
 
 
 
   // Drive Code
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+
+  // Appendage Code
+
+  // control panel 
+  if (c2_btn_a){
+    MyAppendage.control_panel(0.6);
+  }
+  else if (c2_btn_b){
+    MyAppendage.control_panel(-0.6);
+  }
+  else if (c2_btn_y){
+    MyAppendage.controlpanel_rotation_auto();
+  }
+  else if (c2_btn_x){
+    MyAppendage.controlpanel_colorsense_periodic();
+  }
+  else {
+    MyAppendage.control_panel(0);
+  }
 
 }
 
