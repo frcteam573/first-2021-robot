@@ -18,6 +18,7 @@ Led::Led() : Subsystem("Led") {
 
 void Led::led_control(std::string input){
     // LED control through Blinkin need to add to if else tree if adding any new patterens or colors
+    // Pattern list http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
     if(input == "Orange"){
         m_leds->Set(0.65);
     }
