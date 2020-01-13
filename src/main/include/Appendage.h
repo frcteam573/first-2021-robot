@@ -40,7 +40,7 @@ class Appendage : public frc::Subsystem {
      void control_panel(double input);
      void controlpanel_rotation_auto();
      void controlpanel_colorsense_periodic();
-     void controlpanel_colorsense_init();
+     //void controlpanel_colorsense_init();
      std::string driverstation_color();
     
 
