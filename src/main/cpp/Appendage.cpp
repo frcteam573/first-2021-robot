@@ -10,6 +10,7 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 
 
@@ -21,6 +22,9 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 0;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
+    int shooterID = 2;
+    int shooterencID_a = 6;
+    int shooterencID_b = 7;
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new frc::VictorSP(controlpanelID);
@@ -28,7 +32,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
     static constexpr auto i2cPort = frc::I2C::Port::kOnboard;
     rev::ColorSensorV3 m_colorSensor{i2cPort};
     rev::ColorMatch m_colorMatcher;
-
+    m_shooter = new frc::VictorSP(shooterID);
+    s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
 
     }
 
@@ -180,4 +185,16 @@ std::string Appendage::driverstation_color(){
     }
     return output; 
 }
-
+void Appendage::shooter_pid(double setpoint){
+    double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
+    double error = setpoint - encoder_val; // Calculate current error
+    error = deadband(error, 10); // Apply a deadband to help overshoot.
+    double kpe = .000005; // P gain
+    double output_e = error * kpe; // Calculate motor value
+    //output_e = Threshold(output_e, 0.9); // Threshold motor value
+    m_shooter->Set(output_e+.25); // Set motor to value
+    auto encoder_valstr = std::to_string(encoder_val);
+    frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
+    auto encoder_valstr2 = std::to_string(setpoint);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
+}

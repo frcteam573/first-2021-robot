@@ -20,10 +20,12 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "Drive.h"
 #include "Appendage.h"
 #include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  bool leftbuttonstate = false;
+  bool rightbuttonstate = false;
+  int shootercounter = 0;
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -82,6 +84,9 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
   bool c2_btn_x = controller2.GetRawButton(3);
+  bool c2_btn_lb = controller2.GetRawButton(5);
+  bool c2_btn_rb = controller2.GetRawButton(6);
+
 
 
 
@@ -107,8 +112,24 @@ void Robot::TeleopPeriodic() {
     MyAppendage.control_panel(0);
   }
 
+if (c2_btn_lb){
+  if (!leftbuttonstate){
+    leftbuttonstate = true;
+    shootercounter--;
+  }
 }
+else{leftbuttonstate=false;}
+if (c2_btn_rb){
+  if (!rightbuttonstate){
+  
+    rightbuttonstate = true;
+    shootercounter++;
+  }
+}
+else {rightbuttonstate=false;}
 
+MyAppendage.shooter_pid(shootercounter * 25000);
+}
 void Robot::TestPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS

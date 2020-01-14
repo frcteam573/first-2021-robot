@@ -28,6 +28,9 @@ class Appendage : public frc::Subsystem {
     frc::Encoder * s_controlpanel_encoder;
     rev::ColorSensorV3 *m_colorSensor;
     rev::ColorMatch * m_colorMatcher;
+    frc::VictorSP * m_shooter;
+    frc::Encoder * s_shooter_encoder;
+
 
     
 
@@ -42,6 +45,7 @@ class Appendage : public frc::Subsystem {
      void controlpanel_colorsense_periodic();
      //void controlpanel_colorsense_init();
      std::string driverstation_color();
+    void shooter_pid (double setpoint);
     
 
 };
