@@ -18,6 +18,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 */
 #include "Robot.h"
 #include "Drive.h"
+#include "Paths.h"
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -55,6 +56,9 @@ void Robot::AutonomousInit() {
   //     kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
+  int count = 0;
+
+
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
   } else {
@@ -65,6 +69,28 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
+
+  double count_max = MyAuto.ReturnTableVal(0,5);
+  int count_max_int = (int)count_max;
+
+  if (count < count_max_int){
+
+    //Get setpoint values from tables
+    
+    double left_pos = MyPaths.ReturnTableVal(count,0);
+    double left_speed = MyPaths.ReturnTableVal(count,1);
+    double right_pos = MyPaths.ReturnTableVal(count,2);
+    double right_speed = MyPaths.ReturnTableVal(count,3);
+    double heading = MyPaths.ReturnTableVal(count,4);
+    
+
+    //Call PID Loop to follow path
+    MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+    count ++;
+    
+  }
+
+
   } else {
     // Default Auto goes here
   }
