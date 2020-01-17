@@ -128,7 +128,7 @@ if (c2_btn_rb){
 }
 else {rightbuttonstate=false;}
 
-MyAppendage.shooter_pid(shootercounter * 25000);
+MyAppendage.shooter_pid(shootercounter * 500);
 }
 void Robot::TestPeriodic() {}
 
