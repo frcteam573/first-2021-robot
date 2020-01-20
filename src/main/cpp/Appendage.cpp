@@ -197,4 +197,6 @@ void Appendage::shooter_pid(double setpoint){
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
+    auto encoder_valstr3 = std::to_string(output_e+.25);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
 }
