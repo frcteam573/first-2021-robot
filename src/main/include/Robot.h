@@ -17,7 +17,7 @@
 #include "Paths.h"
 class Robot : public frc::TimedRobot {
  public:
-  //Include subsystem object defenitions here
+  //Include subsystem object definitions here
   Drive MyDrive;
   Paths MyPaths;
   void RobotInit() override;

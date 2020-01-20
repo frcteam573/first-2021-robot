@@ -12,19 +12,19 @@ using namespace std;
 
 Drive::Drive() : Subsystem("Drive") {
     // Define CAN and PWM Ids used in Drive here
-    int leftdriveID = 2;
-    int leftdriveID2 = 3;
-    int rightdriveID = 4;
-    int rightdriveID2 = 5;
-    int leftdriveencID_a = 2;
-    int leftdriveencID_b = 3;
-    int rightdriveencID_a = 0;
-    int rightdriveencID_b = 1;
+    int leftdriveID = 2; // left motor 1
+    int leftdriveID2 = 3; // left motor 2
+    int rightdriveID = 4; // right motor 1
+    int rightdriveID2 = 5; // right motor 2
+    int leftdriveencID_a = 2; // left motor encoder 
+    int leftdriveencID_b = 3; // left motor encoder 
+    int rightdriveencID_a = 0; // right motor encoder 
+    int rightdriveencID_b = 1; // right motor encoder 
 
     // Define motors, sensors, and pneumatics here
     m_leftdrive = new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless};
     m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
-    m_leftdrive->SetInverted(true);
+    m_leftdrive->SetInverted(true); // inverting left side
     m_leftdrive2->SetInverted(true);
     m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
@@ -33,14 +33,20 @@ Drive::Drive() : Subsystem("Drive") {
     s_gyro = new frc::AnalogGyro(1);
 }
 
+
+/* DEADBAND FUNCTION */
+/* use to create a deadband on the controls, passing the input and the deadband size */
 double Drive::deadband(double input, double deadband_size){
     if (abs(input) < deadband_size){
         input = 0;
     }
     return input;
 }
+
+/* JOYSTICK DRIVE */
+/* This function provides basic joystick control of the drive base*/
 void Drive::Joystick_Drive(double LeftStick, double RightStick){
-    // This function provides basic joystick control of the drive base
+    
     
     // cubing function
     LeftStick = LeftStick * LeftStick * LeftStick;
@@ -59,7 +65,7 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
 
 }
 
-
+/* FOLLOWING THE PATH CODE */
 
 void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, double setpoint_left_speed, double setpoint_right_speed, double heading, int count) {
   
