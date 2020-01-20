@@ -16,7 +16,7 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
-
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace std;
 

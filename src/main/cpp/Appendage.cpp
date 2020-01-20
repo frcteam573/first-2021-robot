@@ -10,6 +10,7 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 
 
@@ -92,15 +93,18 @@ void Appendage::controlpanel_rotation_auto(){
 }*/
 
 void Appendage::controlpanel_colorsense_periodic(){
+  frc::SmartDashboard::PutString("DB/String 3", "a");
     // Fucntion spins contorl panel to specified color recieved from driver station
     std::string color_in = driverstation_color(); // Get color from driver station
+    frc::SmartDashboard::PutString("DB/String 3", color_in);
     if (color_in != "z"){
+      frc::SmartDashboard::PutString("DB/String 3", "a");
       //Setup possible colors
       static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
       static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
       static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
       static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
-      
+      frc::SmartDashboard::PutString("DB/String 3", "b");
       // Add colors to color matcher
       m_colorMatcher->AddColorMatch(kBlueTarget);
       m_colorMatcher->AddColorMatch(kGreenTarget);
@@ -109,7 +113,7 @@ void Appendage::controlpanel_colorsense_periodic(){
       
       frc::Color detectedColor = m_colorSensor->GetColor(); // Get color from sensor
       
-      
+      frc::SmartDashboard::PutString("DB/String 3", "c");
       //Run the color match algorithm on our detected color
 
       std::string colorString;
@@ -128,7 +132,7 @@ void Appendage::controlpanel_colorsense_periodic(){
       } else {
         colorString = "Unknown";
       }
-
+frc::SmartDashboard::PutString("DB/String 3", colorString);
       if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
@@ -155,6 +159,7 @@ std::string Appendage::driverstation_color(){
     std::string output = "z"; // Create default value
     std::string gameData;
     gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage(); // Read in message
+    frc::SmartDashboard::PutString("DB/String 4", gameData);
     if(gameData.length() > 0)
     {
       switch (gameData[0])
