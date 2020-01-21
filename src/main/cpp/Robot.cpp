@@ -71,7 +71,10 @@ void Robot::AutonomousPeriodic() {
   }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+
+  MyAppendage.controlpanel_colorsense_init();
+}
 
 void Robot::TeleopPeriodic() {
 
