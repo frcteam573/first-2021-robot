@@ -87,7 +87,6 @@ void Robot::TeleopPeriodic() {
 
   // Drive Code
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
-  MyLed.led_control("Party_Mode");
 }
 
 void Robot::TestPeriodic() {}
