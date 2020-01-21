@@ -16,8 +16,8 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
-
-
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc\I2C.h>
 using namespace std;
 
 class Appendage : public frc::Subsystem {
@@ -27,9 +27,16 @@ class Appendage : public frc::Subsystem {
     frc::VictorSP * m_controlpanel;
     frc::Encoder * s_controlpanel_encoder;
     rev::ColorSensorV3 *m_colorSensor;
+    //frc::I2C * i2cPort;
     rev::ColorMatch * m_colorMatcher;
 
-    
+    //Any updates here also have to be done in controlpanel_colorsense_init
+    static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
+    static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
+    static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
+    static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
+    static constexpr frc::Color kWhiteTarget = frc::Color(0.365, 0.464, 0.169);
+
 
     public:
      Appendage();  
@@ -40,7 +47,7 @@ class Appendage : public frc::Subsystem {
      void control_panel(double input);
      void controlpanel_rotation_auto();
      void controlpanel_colorsense_periodic();
-     //void controlpanel_colorsense_init();
+     void controlpanel_colorsense_init();
      std::string driverstation_color();
     
 

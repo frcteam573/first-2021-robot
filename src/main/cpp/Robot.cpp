@@ -71,7 +71,11 @@ void Robot::AutonomousPeriodic() {
   }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+
+  MyAppendage.controlpanel_colorsense_init(); //Initalize the color sensor
+  
+}
 
 void Robot::TeleopPeriodic() {
 
@@ -91,11 +95,9 @@ void Robot::TeleopPeriodic() {
   // Appendage Code
 
   // control panel 
-  if (c2_btn_a){
+
+  if (c2_btn_b){
     MyAppendage.control_panel(0.6);
-  }
-  else if (c2_btn_b){
-    MyAppendage.control_panel(-0.6);
   }
   else if (c2_btn_y){
     MyAppendage.controlpanel_rotation_auto();
