@@ -19,7 +19,9 @@ class Drive : public frc::Subsystem {
     private:
     // Define motor, sensors, and pnematic pointers here
     rev::CANSparkMax * m_leftdrive;
+    rev::CANSparkMax * m_leftdrive2;
     rev::CANSparkMax * m_rightdrive;
+    rev::CANSparkMax * m_rightdrive2;
 
 
     public:
