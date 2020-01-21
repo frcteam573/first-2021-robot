@@ -18,6 +18,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 */
 #include "Robot.h"
 #include "Drive.h"
+#include "Led.h"
 #include "Appendage.h"
 #include <iostream>
 
@@ -27,6 +28,7 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  
 }
 
 /**
@@ -37,7 +39,10 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  
+}
+
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
