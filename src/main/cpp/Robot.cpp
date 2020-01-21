@@ -73,7 +73,8 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 
-  MyAppendage.controlpanel_colorsense_init();
+  MyAppendage.controlpanel_colorsense_init(); //Initalize the color sensor
+  
 }
 
 void Robot::TeleopPeriodic() {

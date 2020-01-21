@@ -79,19 +79,19 @@ void Appendage::controlpanel_rotation_auto(){
 // color sensing control panel
 void Appendage::controlpanel_colorsense_init(){
 
-  // Probably isn't needed. This stuff was added to peridoic function.
-    
-    static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
-    static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
-    static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
-    static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
-    static constexpr frc::Color kWhiteTarget = frc::Color(0.365, 0.464, 0.169);
 
-    m_colorMatcher->AddColorMatch(kBlueTarget);
-    m_colorMatcher->AddColorMatch(kGreenTarget);
-    m_colorMatcher->AddColorMatch(kRedTarget);
-    m_colorMatcher->AddColorMatch(kYellowTarget);
-    m_colorMatcher->AddColorMatch(kWhiteTarget);
+  //Any updates here also have to be done in Appendage.h
+  static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
+  static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
+  static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
+  static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
+  static constexpr frc::Color kWhiteTarget = frc::Color(0.365, 0.464, 0.169);
+
+  m_colorMatcher->AddColorMatch(kBlueTarget);
+  m_colorMatcher->AddColorMatch(kGreenTarget);
+  m_colorMatcher->AddColorMatch(kRedTarget);
+  m_colorMatcher->AddColorMatch(kYellowTarget);
+  m_colorMatcher->AddColorMatch(kWhiteTarget);
 
 }
 
@@ -101,17 +101,19 @@ void Appendage::controlpanel_colorsense_periodic(){
     if (color_in != "z"){
 
       frc::Color detectedColor = m_colorSensor->GetColor();
-   /*   frc::SmartDashboard::PutNumber("Red", detectedColor.red);
-      auto encoder_valstr = std::to_string(detectedColor.red);
+    
+    // Get raw RGB values from color sensor and display on DS
+    /*frc::SmartDashboard::PutNumber("Red", detectedColor.red);
+    auto encoder_valstr = std::to_string(detectedColor.red);
     frc::SmartDashboard::PutString("DB/String 0",encoder_valstr);
     frc::SmartDashboard::PutNumber("Green", detectedColor.green);
     frc::SmartDashboard::PutNumber("Blue", detectedColor.blue);
-     auto encoder_valstr1 = std::to_string(detectedColor.blue);
+    auto encoder_valstr1 = std::to_string(detectedColor.blue);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr1);
-     auto encoder_valstr2 = std::to_string(detectedColor.green);
+    auto encoder_valstr2 = std::to_string(detectedColor.green);
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2); */
       
-      //Run the color match algorithm on our detected color
+    //Run the color match algorithm on our detected color
 
       std::string colorString;
       double confidence = 0.99;
@@ -131,7 +133,8 @@ void Appendage::controlpanel_colorsense_periodic(){
       } else {
         colorString = "Unknown";
       }
-frc::SmartDashboard::PutString("DB/String 5", colorString);
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
       if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
