@@ -41,4 +41,5 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
+  bool buddyclimb_enable;
 };
