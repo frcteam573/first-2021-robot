@@ -74,61 +74,65 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
 
 }
 
-void Drive::buddyclimb_motor(double input){
-
+void Drive::buddyclimb_motor(double input){ 
+    //Runs buddy climb roller
     m_buddyclimb->Set(input);
 
 }
 
 void Drive::buddyclimb_out(){
-
+    // Deploy buddy climb claw
     p_buddyclimb->Set(frc::DoubleSolenoid::Value::kForward);
 
 }
 
 void Drive::buddyclimb_in(){
-
+    // Retract buddy climb claw
     p_buddyclimb->Set(frc::DoubleSolenoid::Value::kReverse);
     
 }
 
 void Drive::climb(double input){
-    
+    // Run climber motors
     m_leftclimb->Set(input);
     m_rightclimb->Set(input);
 
 }
 
 void Drive::shift_low(){
-
+    // Set drive transmissions into low gear
     p_driveshift->Set(frc::DoubleSolenoid::Value::kReverse);
 
 }
 
 void Drive::shift_high(){
-
+    // Set drive transmissions into high gear
     p_driveshift->Set(frc::DoubleSolenoid::Value::kForward);
 
 }
 
 void Drive::shift_auto(){
+    // Auto shifting logic
 
     double enc_left_rate = s_leftdrive_enc->GetRate();
     double enc_right_rate = s_rightdrive_enc->GetRate();
-    enc_left_rate = enc_left_rate * -1;
-    double enc_avg_rate = (enc_left_rate + enc_right_rate)/2;
-    enc_avg_rate = abs(enc_avg_rate); 
 
-    if (enc_left_rate * enc_right_rate > 0){
+    enc_left_rate = enc_left_rate * -1; //Inverting left drive rate
+    double enc_avg_rate = (enc_left_rate + enc_right_rate)/2; // Avg rate
+    enc_avg_rate = abs(enc_avg_rate); // Absolute value in encoder rate
+
+    if (enc_left_rate * enc_right_rate > 0){ // Checking if left and right side are going the same direction
 
         if (enc_avg_rate > 5000){ // 5000 is a fake number 
+            // If wheel speed is high enough shift into high gear
             shift_high();
         }
         
     }
     else {
-            shift_low();
-        }
+        // Default is low gear
+        shift_low();
+    }
 
     
 
