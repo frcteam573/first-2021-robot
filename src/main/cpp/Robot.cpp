@@ -28,6 +28,12 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  MyDrive.buddyclimb_in();
+  bool buddyclimb_enable = false;
+  MyDrive.buddyclimb_motor(0);
+  bool climb_enable = false;
+
   
 }
 
@@ -91,6 +97,13 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
   bool c2_btn_x = controller2.GetRawButton(3);
+  bool c2_btn_back = controller2.GetRawButton(7);
+  bool c2_btn_start = controller2.GetRawButton(8);
+  bool c1_btn_back = controller1.GetRawButton(7);
+  bool c1_btn_start = controller1.GetRawButton(8);
+  double c1_righttrigger = controller1.GetRawAxis(3);
+  double c1_lefttrigger = controller1.GetRawAxis(2);
+
 
 
 
@@ -100,19 +113,69 @@ void Robot::TeleopPeriodic() {
   // Appendage Code
 
   // control panel 
+if (!buddyclimb_enable){
 
-  if (c2_btn_b){
-    MyAppendage.control_panel(0.6);
+    if (c2_btn_b){
+      MyAppendage.control_panel(0.6);
+    }
+    else if (c2_btn_y){
+      MyAppendage.controlpanel_rotation_auto();
+    }
+    else if (c2_btn_x){
+      MyAppendage.controlpanel_colorsense_periodic();
+    }
+    else {
+      MyAppendage.control_panel(0);
+    }
+}
+// buddy climb code !
+
+if (c2_btn_back && c2_btn_start){
+
+  buddyclimb_enable = true;
+
+}
+
+if (buddyclimb_enable){
+
+    if (c2_btn_b){
+      MyDrive.buddyclimb_in();
+    }
+    else if (c2_btn_y){
+      MyDrive.buddyclimb_out();
+    }
+    if (c2_btn_a){
+      MyDrive.buddyclimb_motor(0.8);
+    }
+    else {
+      MyDrive.buddyclimb_motor(0);
+    }
+
+}
+
+// climb code
+
+if (c1_btn_back && c1_btn_start){
+
+  climb_enable = true;
+
+}
+
+if (climb_enable){
+
+  if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
+
+    MyDrive.climb(0.7);
+
   }
-  else if (c2_btn_y){
-    MyAppendage.controlpanel_rotation_auto();
+  if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
+
+    MyDrive.climb(-0.7);
+
   }
-  else if (c2_btn_x){
-    MyAppendage.controlpanel_colorsense_periodic();
-  }
-  else {
-    MyAppendage.control_panel(0);
-  }
+  
+}
+
 
 }
 
