@@ -103,6 +103,8 @@ void Robot::TeleopPeriodic() {
   bool c1_btn_start = controller1.GetRawButton(8);
   double c1_righttrigger = controller1.GetRawAxis(3);
   double c1_lefttrigger = controller1.GetRawAxis(2);
+  bool c2_rightbumper = controller2.GetRawButton(6);
+  bool c2_leftbumper = controller2.GetRawButton(5);
 
 
 
@@ -113,7 +115,7 @@ void Robot::TeleopPeriodic() {
   // Appendage Code
 
   // control panel 
-if (!buddyclimb_enable){
+  if (!buddyclimb_enable){
 
     if (c2_btn_b){
       MyAppendage.control_panel(0.6);
@@ -127,7 +129,7 @@ if (!buddyclimb_enable){
     else {
       MyAppendage.control_panel(0);
     }
-}
+  }
 // buddy climb code !
 
 if (c2_btn_back && c2_btn_start){
@@ -176,6 +178,19 @@ if (climb_enable){
   
 }
 
+//intake code
+if(c2_rightbumper){ 
+  MyAppendage.intake_out();
+ MyAppendage.intakemotor(0.8);
+}
+
+else if (c2_leftbumper){
+  MyAppendage.intakemotor(-0.8);
+}
+else {
+  MyAppendage.intakemotor(0);
+  MyAppendage.intake_in();
+}
 
 }
 

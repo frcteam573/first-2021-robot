@@ -12,6 +12,7 @@
 #include <frc/DriverStation.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
+#include <frc/DoubleSolenoid.h>
 
 
 
@@ -23,6 +24,9 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 0;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
+    int intakeIDa = 0;
+    int intakeIDb = 1;
+    int intakeIDc = 8;
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new frc::VictorSP(controlpanelID);
@@ -30,10 +34,11 @@ Appendage::Appendage() : Subsystem("Appendage") {
     //i2cPort = new frc::I2C;
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
+    m_intake = new frc::VictorSP(intakeIDc);
+    p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
 
 
     }
-
 double Appendage::deadband(double input, double deadband_size){
   // Deadband function - Takes input and checks it againist a provided deadband
   // then returns the value or zero depending if it is within or outside of the deadband.
@@ -177,3 +182,20 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+void Appendage::intakemotor(double input){
+
+    m_intake->Set(input);
+
+}
+
+void Appendage::intake_out(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::intake_in(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kReverse);
+    
+}
