@@ -33,7 +33,7 @@ void Robot::RobotInit() {
   bool buddyclimb_enable = false;
   MyDrive.buddyclimb_motor(0);
   bool climb_enable = false;
-
+  MyDrive.shift_low();
   
 }
 
@@ -103,12 +103,25 @@ void Robot::TeleopPeriodic() {
   bool c1_btn_start = controller1.GetRawButton(8);
   double c1_righttrigger = controller1.GetRawAxis(3);
   double c1_lefttrigger = controller1.GetRawAxis(2);
+  bool c1_leftbmp = controller1.GetRawButton(5);
+  bool c1_rightbmp = controller1.GetRawButton(6);
+  
 
 
 
 
   // Drive Code
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+
+  if (c1_leftbmp){
+    MyDrive.shift_low();
+  }
+  else if (c1_rightbmp){
+    MyDrive.shift_high();
+  }
+  else {
+    MyDrive.shift_auto();
+  }
 
   // Appendage Code
 
