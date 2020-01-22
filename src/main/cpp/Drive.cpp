@@ -19,6 +19,8 @@ Drive::Drive() : Subsystem("Drive") {
     int buddyclimbID = 5;
     int buddyclimbpIDa = 6;
     int buddyclimbpIDb = 7;
+    int leftclimbID = 6;
+    int rightclimbID = 7;
 
     // Define motors, sensors, and pneumatics here
     m_leftdrive = new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless};
@@ -29,6 +31,9 @@ Drive::Drive() : Subsystem("Drive") {
     m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
     m_buddyclimb = new frc::VictorSP(buddyclimbID);
     p_buddyclimb = new frc::DoubleSolenoid(1, buddyclimbpIDa, buddyclimbpIDb);
+    m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
+    m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftclimb->SetInverted(true);
 }
 
 double Drive::deadband(double input, double deadband_size){
@@ -57,13 +62,11 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
 
 }
 
-
 void Drive::buddyclimb_motor(double input){
 
     m_buddyclimb->Set(input);
 
 }
-
 
 void Drive::buddyclimb_out(){
 
@@ -71,9 +74,15 @@ void Drive::buddyclimb_out(){
 
 }
 
-
 void Drive::buddyclimb_in(){
 
     p_buddyclimb->Set(frc::DoubleSolenoid::Value::kReverse);
     
+}
+
+void Drive::climb(double input){
+    
+    m_leftclimb->Set(input);
+    m_rightclimb->Set(input);
+
 }

@@ -32,6 +32,8 @@ void Robot::RobotInit() {
   MyDrive.buddyclimb_in();
   bool buddyclimb_enable = false;
   MyDrive.buddyclimb_motor(0);
+  bool climb_enable = false;
+
   
 }
 
@@ -97,6 +99,10 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_x = controller2.GetRawButton(3);
   bool c2_btn_back = controller2.GetRawButton(7);
   bool c2_btn_start = controller2.GetRawButton(8);
+  bool c1_btn_back = controller1.GetRawButton(7);
+  bool c1_btn_start = controller1.GetRawButton(8);
+  double c1_righttrigger = controller1.GetRawAxis(3);
+  double c1_lefttrigger = controller1.GetRawAxis(2);
 
 
 
@@ -147,7 +153,28 @@ if (buddyclimb_enable){
 
 }
 
+// climb code
 
+if (c1_btn_back && c1_btn_start){
+
+  climb_enable = true;
+
+}
+
+if (climb_enable){
+
+  if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
+
+    MyDrive.climb(0.7);
+
+  }
+  if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
+
+    MyDrive.climb(-0.7);
+
+  }
+  
+}
 
 
 }

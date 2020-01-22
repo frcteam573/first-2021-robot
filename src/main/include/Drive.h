@@ -26,7 +26,8 @@ class Drive : public frc::Subsystem {
     rev::CANSparkMax * m_rightdrive2;
     frc::VictorSP * m_buddyclimb;
     frc::DoubleSolenoid * p_buddyclimb;
-    
+    rev::CANSparkMax * m_leftclimb;
+    rev::CANSparkMax * m_rightclimb;
 
     public:
      Drive();  
@@ -36,6 +37,7 @@ class Drive : public frc::Subsystem {
      void buddyclimb_motor(double input);
      void buddyclimb_out();
      void buddyclimb_in();
+     void climb(double input);
     
 
 };
