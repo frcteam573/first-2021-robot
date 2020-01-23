@@ -20,10 +20,10 @@ class Drive : public frc::Subsystem {
 
     private:
     // Define motor, sensors, and pnematic pointers here
-    rev::CANSparkMax * m_leftdrive;
-    rev::CANSparkMax * m_leftdrive2;
-    rev::CANSparkMax * m_rightdrive;
-    rev::CANSparkMax * m_rightdrive2;
+    /*rev::CANSparkMax*/ frc::VictorSP * m_leftdrive;
+    //rev::CANSparkMax * m_leftdrive2;
+    /*rev::CANSparkMax*/ frc::VictorSP * m_rightdrive;
+    //rev::CANSparkMax * m_rightdrive2;
     frc::VictorSP * m_buddyclimb;
     frc::DoubleSolenoid * p_buddyclimb;
     rev::CANSparkMax * m_leftclimb;
@@ -38,6 +38,8 @@ class Drive : public frc::Subsystem {
      void buddyclimb_out();
      void buddyclimb_in();
      void climb(double input);
+     bool camera_centering(float camera_x, float camera_s, double d);
+     double camera_getdistance(float camera_y);
     
 
 };

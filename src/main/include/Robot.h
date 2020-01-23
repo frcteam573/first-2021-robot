@@ -16,6 +16,8 @@
 #include "Drive.h"
 #include "Led.h"
 #include "Appendage.h"
+#include "NetworkTables/NetworkTable.h"
+#include "NetworkTables/NetworkTableInstance.h"
 
 
 class Robot : public frc::TimedRobot {
@@ -43,4 +45,7 @@ class Robot : public frc::TimedRobot {
   frc::Joystick controller2{1}; // Operator controller
   bool buddyclimb_enable;
   bool climb_enable;
+  float camera_x;
+  float camera_exist;
+  float image_size;
 };
