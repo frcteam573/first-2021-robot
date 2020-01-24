@@ -127,6 +127,7 @@ void Robot::TeleopPeriodic() {
   float camera_y = table->GetNumber("ty", 0);
   float camera_s = table->GetNumber("ts", 0);
   auto leftinstr = std::to_string(camera_x);
+  frc::SmartDashboard::PutString("DB/String 6", leftinstr);
 
   auto sstr = std::to_string(camera_s);
   frc::SmartDashboard::PutString("DB/String 4", sstr);

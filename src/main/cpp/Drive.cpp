@@ -89,19 +89,24 @@ void Drive::climb(double input){
 
 bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
-    double setpoint = 0;
-    double x = 30;
+    double setpoint = 0.0;
+    double denominator = 20.0;
+    double numerator = 20.0;
+    double x = 30.0;
     
 
-    if (camera_s < -85 && camera_s > -90){
+    if (camera_s < -80 && camera_s > -90){
 
         camera_s = camera_s + 90;
 
     }
 
-    if (camera_s > -5 && camera_s < 5){
+    if (camera_s > -10 && camera_s < 10){
 
-        setpoint = 90 - ((d * sin(camera_s*3.1415/180)/(d * cos(camera_s*3.14159/180) + x))*180/3.14159);
+        numerator = d * (sin(camera_s*3.1415/180.0));
+        denominator = (d* cos(camera_s*3.14159/180.0) + x);
+
+        setpoint = ((numerator/denominator)*180.0/3.14159);
 
     }
     else {
@@ -110,6 +115,8 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     }
 
+    
+
     auto setpointstr = std::to_string(setpoint);
     frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
@@ -117,7 +124,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
 
 
-    double error = 0 - camera_x;
+    double error = setpoint - camera_x;
     double kp_c = .025;
     double output = kp_c * error;
     
@@ -140,4 +147,5 @@ double Drive::camera_getdistance(float camera_y){
     auto dstr = std::to_string(d);
     frc::SmartDashboard::PutString("DB/String 3", dstr);
 
+    return d;
 }
