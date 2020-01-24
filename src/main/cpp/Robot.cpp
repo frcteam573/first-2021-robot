@@ -181,15 +181,20 @@ if (climb_enable){
 //intake code
 if(c2_rightbumper){ 
   MyAppendage.intake_out();
- MyAppendage.intakemotor(0.8);
+  MyAppendage.intakemotor(0.8);
+  MyAppendage.conveyor_motor(0.8);
+  MyAppendage.conveyor_close();
 }
 
 else if (c2_leftbumper){
   MyAppendage.intakemotor(-0.8);
+  MyAppendage.conveyor_motor(-0.8);
+  MyAppendage.conveyor_close();
 }
 else {
   MyAppendage.intakemotor(0);
   MyAppendage.intake_in();
+  MyAppendage.conveyor_open();
 }
 
 }

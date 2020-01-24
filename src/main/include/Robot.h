@@ -43,4 +43,5 @@ class Robot : public frc::TimedRobot {
   frc::Joystick controller2{1}; // Operator controller
   bool buddyclimb_enable;
   bool climb_enable;
+  
 };

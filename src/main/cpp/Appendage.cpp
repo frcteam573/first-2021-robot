@@ -27,6 +27,10 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDa = 0;
     int intakeIDb = 1;
     int intakeIDc = 8;
+    int conveyormID = 12;
+    int conveyorpIDa = 4;
+    int conveyorpIDb = 5;
+
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new frc::VictorSP(controlpanelID);
@@ -36,7 +40,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new frc::VictorSP(intakeIDc);
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
-
+    m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
+    p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
 
     }
 double Appendage::deadband(double input, double deadband_size){
@@ -198,4 +203,22 @@ void Appendage::intake_in(){
 
     p_intake->Set(frc::DoubleSolenoid::Value::kReverse);
     
+}
+
+void Appendage::conveyor_motor(double input){
+
+  m_conveyor->Set(input);
+
+}
+
+void Appendage::conveyor_open(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::conveyor_close(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
+
 }
