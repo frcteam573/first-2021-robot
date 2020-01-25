@@ -23,6 +23,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
     int shooterID = 2;
+    int shooterID3 = 3;
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
@@ -34,7 +35,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     rev::ColorMatch m_colorMatcher;
     m_shooter = new frc::VictorSP(shooterID);
     s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
-
+    m_shooter2 = new frc::VictorSP(shooterID3);
     }
 
 double Appendage::deadband(double input, double deadband_size){
@@ -193,6 +194,7 @@ void Appendage::shooter_pid(double setpoint){
     double output_e = error * kpe; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
     m_shooter->Set(output_e+.25); // Set motor to value
+    m_shooter2->Set(output_e+.25);
     auto encoder_valstr = std::to_string(encoder_val);
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);

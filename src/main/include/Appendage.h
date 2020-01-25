@@ -29,6 +29,7 @@ class Appendage : public frc::Subsystem {
     rev::ColorSensorV3 *m_colorSensor;
     rev::ColorMatch * m_colorMatcher;
     frc::VictorSP * m_shooter;
+    frc::VictorSP * m_shooter2;
     frc::Encoder * s_shooter_encoder;
 
 
