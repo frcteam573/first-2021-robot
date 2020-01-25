@@ -21,6 +21,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "Led.h"
 #include "Appendage.h"
 #include <iostream>
+#include "Log.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -176,6 +177,7 @@ if (climb_enable){
   
 }
 
+MyLog.Dashboard();
 
 }
 
