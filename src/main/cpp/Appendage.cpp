@@ -187,8 +187,9 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 void Appendage::shooter_pid(double setpoint){
+    s_shooter_encoder->SetDistancePerPulse(1.0/1024.0);
     double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
-    encoder_val = encoder_val*60/(1024*4);
+    encoder_val = encoder_val*60;
     double error = setpoint - encoder_val; // Calculate current error
     error = deadband(error, 10); // Apply a deadband to help overshoot.
     double kpe = .0005; // P gain
