@@ -202,6 +202,7 @@ if (climb_enable){
 
     MyDrive.climb(-0.7);
   }
+}
 
 if (c2_dpad > 45 && c2_dpad < 135){
   if (!leftbuttonstate){
