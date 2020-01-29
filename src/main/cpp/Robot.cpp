@@ -20,6 +20,8 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "Drive.h"
 #include "Led.h"
 #include "Appendage.h"
+#include "NetworkTables/NetworkTable.h"
+#include "NetworkTables/NetworkTableInstance.h"
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -93,8 +95,52 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
+
+// Read in camera Stuff
+  
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  
+  table->PutNumber("ledMode", 0);
+  table->PutNumber("camMode", 0);
+
+  // -----------PIPELINE STUFF-----------//
+  /*auto pos_1 = frc::SmartDashboard::GetString("Position 1","0");
+  auto left_or_right = frc::SmartDashboard::GetString("Left or Right?","2");
+
+   if (pos_1 == "3" and left_or_right == "2" || pos_1 == "4" and left_or_right == "1"){
+    cam_state = 2;
+  }
+  if (pos_1 == "3" and left_or_right == "1" || pos_1 == "4" and left_or_right == "2"){
+    cam_state = 3;
+  }
+
+  if (cam_state == 2){
+    table->PutNumber("pipeline", 2); //Vision Target pipeline ****RIGHTMOST****
+  }
+  else if (cam_state == 3) {
+    table->PutNumber("pipeline", 3); //Vision Target pipeline ****LEFTMOST****
+  }
+  else {
+    table->PutNumber("pipeline", 1);
+  }*/
+
+  float camera_x = table->GetNumber("tx", 0);
+  float camera_exist = table->GetNumber("tv", 0);
+  float image_size = table->GetNumber("ta", 0);
+  float camera_y = table->GetNumber("ty", 0);
+  float camera_s = table->GetNumber("ts", 0);
+  auto leftinstr = std::to_string(camera_x);
+  frc::SmartDashboard::PutString("DB/String 6", leftinstr);
+
+  auto sstr = std::to_string(camera_s);
+  frc::SmartDashboard::PutString("DB/String 4", sstr);
+  
+
+  double d = MyDrive.camera_getdistance(camera_y);
+
   //********** Read in Joystick Values ******************************************
   //------------- Driver Controller ---------------------------------------------
+
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
   bool c1_btn_back = controller1.GetRawButton(7);
@@ -103,6 +149,7 @@ void Robot::TeleopPeriodic() {
   double c1_lefttrigger = controller1.GetRawAxis(2);
   bool c1_leftbmp = controller1.GetRawButton(5);
   bool c1_rightbmp = controller1.GetRawButton(6);
+  bool c1_btn_b = controller1.GetRawButton(2);
 
   //-----------------------------------------------------------------------------
   //------------ Operator Controller --------------------------------------------
@@ -139,6 +186,11 @@ void Robot::TeleopPeriodic() {
 //******************************************************************************
 //************* Appendage Code *************************************************
 
+  if (c1_btn_b){
+
+    MyDrive.camera_centering(camera_x, camera_s, d);
+
+  }
 
 //--------------- control panel ------------------------------------------------- 
 if (!buddyclimb_enable){
