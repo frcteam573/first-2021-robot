@@ -24,7 +24,7 @@ class Appendage : public frc::Subsystem {
 
     private:
     // Define motor, sensors, and pnematic pointers here
-    frc::VictorSP * m_controlpanel;
+    rev::CANSparkMax * m_controlpanel;
     frc::Encoder * s_controlpanel_encoder;
     rev::ColorSensorV3 *m_colorSensor;
     //frc::I2C * i2cPort;

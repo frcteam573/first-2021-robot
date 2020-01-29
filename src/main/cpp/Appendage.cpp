@@ -20,12 +20,12 @@ using namespace std;
 Appendage::Appendage() : Subsystem("Appendage") {
     // Define CAN and PWM Ids used in Drive here
     
-    int controlpanelID = 0;
+    int controlpanelID = 14;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
 
     // Define motors, sensors, and pneumatics here
-    m_controlpanel = new frc::VictorSP(controlpanelID);
+    m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
     //i2cPort = new frc::I2C;
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
@@ -177,3 +177,8 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+void Appendage::Dashboard(){
+
+  
+
+}

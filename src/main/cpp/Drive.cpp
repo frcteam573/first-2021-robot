@@ -16,7 +16,7 @@ Drive::Drive() : Subsystem("Drive") {
     int leftdriveID2 = 3;
     int rightdriveID = 4;
     int rightdriveID2 = 5;
-    int buddyclimbID = 5;
+    int buddyclimbID = 11;
     int buddyclimbpIDa = 6;
     int buddyclimbpIDb = 7;
     int leftclimbID = 6;
@@ -29,7 +29,7 @@ Drive::Drive() : Subsystem("Drive") {
     m_leftdrive2->SetInverted(true);
     m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
-    m_buddyclimb = new frc::VictorSP(buddyclimbID);
+    m_buddyclimb = new rev::CANSparkMax{buddyclimbID, rev::CANSparkMax::MotorType::kBrushless};
     p_buddyclimb = new frc::DoubleSolenoid(1, buddyclimbpIDa, buddyclimbpIDb);
     m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
