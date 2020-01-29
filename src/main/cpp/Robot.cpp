@@ -18,6 +18,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 */
 #include "Robot.h"
 #include "Drive.h"
+#include "Led.h"
 #include "Appendage.h"
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -29,6 +30,14 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  // Set default positions and values upon start up.
+  MyDrive.buddyclimb_in();
+  bool buddyclimb_enable = false;
+  MyDrive.buddyclimb_motor(0);
+  bool climb_enable = false;
+  MyDrive.shift_low();
+  
 }
 
 /**
@@ -39,7 +48,10 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  
+}
+
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -73,13 +85,27 @@ void Robot::AutonomousPeriodic() {
   }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+
+  MyAppendage.controlpanel_colorsense_init(); //Initalize the color sensor
+  
+}
 
 void Robot::TeleopPeriodic() {
 
-  // Read in Joystick Values
+  //********** Read in Joystick Values ******************************************
+  //------------- Driver Controller ---------------------------------------------
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
+  bool c1_btn_back = controller1.GetRawButton(7);
+  bool c1_btn_start = controller1.GetRawButton(8);
+  double c1_righttrigger = controller1.GetRawAxis(3);
+  double c1_lefttrigger = controller1.GetRawAxis(2);
+  bool c1_leftbmp = controller1.GetRawButton(5);
+  bool c1_rightbmp = controller1.GetRawButton(6);
+
+  //-----------------------------------------------------------------------------
+  //------------ Operator Controller --------------------------------------------
   bool c2_btn_a = controller2.GetRawButton(1);
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
@@ -87,31 +113,94 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_lb = controller2.GetRawButton(5);
   bool c2_btn_rb = controller2.GetRawButton(6);
   double c2_dpad = controller2.GetPOV(0);
+  bool c2_btn_back = controller2.GetRawButton(7);
+  bool c2_btn_start = controller2.GetRawButton(8);
+  bool c2_rightbumper = controller2.GetRawButton(6);
+  bool c2_leftbumper = controller2.GetRawButton(5);
 
-
-
-
-  // Drive Code
+  //----------------------------------------------------------------------------
+  // ***************************************************************************
+  //************* Drive Code ***************************************************
+  
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
 
-  // Appendage Code
+  //------------ Shifting Logic ----------------------------------------
+  if (c1_leftbmp){
+    MyDrive.shift_low();
 
-  
-  // control panel 
-  if (c2_btn_a){
-    MyAppendage.control_panel(0.6);
   }
-  else if (c2_btn_b){
-    MyAppendage.control_panel(-0.6);
-  }
-  else if (c2_btn_y){
-    MyAppendage.controlpanel_rotation_auto();
-  }
-  else if (c2_btn_x){
-    MyAppendage.controlpanel_colorsense_periodic();
+  else if (c1_rightbmp){
+    MyDrive.shift_high();
   }
   else {
-    MyAppendage.control_panel(0);
+    MyDrive.shift_auto();
+  }
+  //--------------------------------------------------------------------
+//******************************************************************************
+//************* Appendage Code *************************************************
+
+
+//--------------- control panel ------------------------------------------------- 
+if (!buddyclimb_enable){
+
+    if (c2_btn_b){
+      MyAppendage.control_panel(0.6);
+    }
+    else if (c2_btn_y){
+      MyAppendage.controlpanel_rotation_auto();
+    }
+    else if (c2_btn_x){
+      MyAppendage.controlpanel_colorsense_periodic();
+    }
+    else {
+      MyAppendage.control_panel(0);
+    }
+
+  }
+//-----------------------------------------------------------------------------
+//----------- buddy climb ----------------------------------------------------- 
+
+if (c2_btn_back && c2_btn_start){
+
+  buddyclimb_enable = true;
+
+}
+
+if (buddyclimb_enable){
+
+    if (c2_btn_b){
+      MyDrive.buddyclimb_in();
+    }
+    else if (c2_btn_y){
+      MyDrive.buddyclimb_out();
+    }
+    if (c2_btn_a){
+      MyDrive.buddyclimb_motor(0.8);
+    }
+    else {
+      MyDrive.buddyclimb_motor(0);
+    }
+
+}
+//------------------------------------------------------------------------
+//----------- climber code -----------------------------------------------
+
+if (c1_btn_back && c1_btn_start){
+
+  climb_enable = true;
+
+}
+
+if (climb_enable){
+
+  if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
+
+    MyDrive.climb(0.7);
+
+  }
+  if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
+
+    MyDrive.climb(-0.7);
   }
 
 if (c2_dpad > 45 && c2_dpad < 135){
@@ -130,8 +219,31 @@ if (c2_dpad > 225 && c2_dpad < 315){
 }
 else {rightbuttonstate=false;}
 
-MyAppendage.shooter_pid(shootercounter * 250);
+
+//intake code
+if(c2_rightbumper){ 
+  MyAppendage.intake_out();
+  MyAppendage.intakemotor(0.8);
+  MyAppendage.conveyor_motor(0.8);
+  MyAppendage.conveyor_close();
 }
+
+else if (c2_leftbumper){
+  MyAppendage.intakemotor(-0.8);
+  MyAppendage.conveyor_motor(-0.8);
+  MyAppendage.conveyor_close();
+}
+else {
+  MyAppendage.intakemotor(0);
+  MyAppendage.intake_in();
+  MyAppendage.conveyor_open();
+}
+
+MyAppendage.shooter_pid(shootercounter * 250);
+
+} // End of TeleOpPeriodic
+
+
 void Robot::TestPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS

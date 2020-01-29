@@ -12,6 +12,9 @@
 #include <frc/DriverStation.h>
 #include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc\I2C.h>
+#include <frc/DoubleSolenoid.h>
+
 
 
 
@@ -23,22 +26,36 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 0;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
+  
     int shooterID = 8;
     int shooterID2 = 9;
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
+    int intakeIDa = 0;
+    int intakeIDb = 1;
+    int intakeIDc = 8;
+    int conveyormID = 12;
+    int conveyorpIDa = 4;
+    int conveyorpIDb = 5;
+
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new frc::VictorSP(controlpanelID);
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
-    static constexpr auto i2cPort = frc::I2C::Port::kOnboard;
-    rev::ColorSensorV3 m_colorSensor{i2cPort};
-    rev::ColorMatch m_colorMatcher;
+
     m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
     s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
     m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
-    }
+   
+    m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
+    m_colorMatcher = new rev::ColorMatch;
+    m_intake = new frc::VictorSP(intakeIDc);
+    p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
+    m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
+    p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
 
+
+    }
 double Appendage::deadband(double input, double deadband_size){
   // Deadband function - Takes input and checks it againist a provided deadband
   // then returns the value or zero depending if it is within or outside of the deadband.
@@ -82,45 +99,46 @@ void Appendage::controlpanel_rotation_auto(){
 }
 
 // color sensing control panel
-/*void Appendage::controlpanel_colorsense_init(){
+void Appendage::controlpanel_colorsense_init(){
 
-  // Probably isn't needed. This stuff was added to peridoic function.
-    
-    static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
-    static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
-    static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
-    static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
 
-    m_colorMatcher->AddColorMatch(kBlueTarget);
-    m_colorMatcher->AddColorMatch(kGreenTarget);
-    m_colorMatcher->AddColorMatch(kRedTarget);
-    m_colorMatcher->AddColorMatch(kYellowTarget);
+  //Any updates here also have to be done in Appendage.h
+  static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
+  static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
+  static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
+  static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
+  static constexpr frc::Color kWhiteTarget = frc::Color(0.365, 0.464, 0.169);
 
-}*/
+  m_colorMatcher->AddColorMatch(kBlueTarget);
+  m_colorMatcher->AddColorMatch(kGreenTarget);
+  m_colorMatcher->AddColorMatch(kRedTarget);
+  m_colorMatcher->AddColorMatch(kYellowTarget);
+  m_colorMatcher->AddColorMatch(kWhiteTarget);
+
+}
 
 void Appendage::controlpanel_colorsense_periodic(){
     // Fucntion spins contorl panel to specified color recieved from driver station
     std::string color_in = driverstation_color(); // Get color from driver station
     if (color_in != "z"){
-      //Setup possible colors
-      static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
-      static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
-      static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
-      static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
+
+      frc::Color detectedColor = m_colorSensor->GetColor();
+    
+    // Get raw RGB values from color sensor and display on DS
+    /*frc::SmartDashboard::PutNumber("Red", detectedColor.red);
+    auto encoder_valstr = std::to_string(detectedColor.red);
+    frc::SmartDashboard::PutString("DB/String 0",encoder_valstr);
+    frc::SmartDashboard::PutNumber("Green", detectedColor.green);
+    frc::SmartDashboard::PutNumber("Blue", detectedColor.blue);
+    auto encoder_valstr1 = std::to_string(detectedColor.blue);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr1);
+    auto encoder_valstr2 = std::to_string(detectedColor.green);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2); */
       
-      // Add colors to color matcher
-      m_colorMatcher->AddColorMatch(kBlueTarget);
-      m_colorMatcher->AddColorMatch(kGreenTarget);
-      m_colorMatcher->AddColorMatch(kRedTarget);
-      m_colorMatcher->AddColorMatch(kYellowTarget);
-      
-      frc::Color detectedColor = m_colorSensor->GetColor(); // Get color from sensor
-      
-      
-      //Run the color match algorithm on our detected color
+    //Run the color match algorithm on our detected color
 
       std::string colorString;
-      double confidence = 0.0;
+      double confidence = 0.99;
 
       frc::Color matchedColor = m_colorMatcher->MatchClosestColor(detectedColor, confidence); // Determine color
 
@@ -132,26 +150,19 @@ void Appendage::controlpanel_colorsense_periodic(){
         colorString = "G";
       } else if (matchedColor == kYellowTarget) {
         colorString = "Y";
+      } else if (matchedColor == kWhiteTarget) {
+        colorString = "W";
       } else {
         colorString = "Unknown";
       }
-
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
       if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
       else {
           m_controlpanel->Set(0.6); // if color doesn't match desired color keep spinning
       }
-
-      /**
-       * Open Smart Dashboard or Shuffleboard to see the color detected by the 
-       * sensor.
-       */
-      /*frc::SmartDashboard::PutNumber("Red", detectedColor.red);
-      frc::SmartDashboard::PutNumber("Green", detectedColor.green);
-      frc::SmartDashboard::PutNumber("Blue", detectedColor.blue);
-      frc::SmartDashboard::PutNumber("Confidence", confidence);
-      frc::SmartDashboard::PutString("Detected Color", colorString);*/
     }
   }
 
@@ -187,6 +198,7 @@ std::string Appendage::driverstation_color(){
     }
     return output; 
 }
+
 void Appendage::shooter_pid(double setpoint){
     s_shooter_encoder->SetDistancePerPulse(1.0/1024.0);
     double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
@@ -205,3 +217,41 @@ void Appendage::shooter_pid(double setpoint){
     auto encoder_valstr3 = std::to_string(output_e+.25);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
 }
+
+
+void Appendage::intakemotor(double input){
+
+    m_intake->Set(input);
+
+}
+
+void Appendage::intake_out(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::intake_in(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kReverse);
+    
+}
+
+void Appendage::conveyor_motor(double input){
+
+  m_conveyor->Set(input);
+
+}
+
+void Appendage::conveyor_open(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::conveyor_close(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
+
+}
+
