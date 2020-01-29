@@ -86,6 +86,7 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_x = controller2.GetRawButton(3);
   bool c2_btn_lb = controller2.GetRawButton(5);
   bool c2_btn_rb = controller2.GetRawButton(6);
+  double c2_dpad = controller2.GetPOV(0);
 
 
 
@@ -95,6 +96,7 @@ void Robot::TeleopPeriodic() {
 
   // Appendage Code
 
+  
   // control panel 
   if (c2_btn_a){
     MyAppendage.control_panel(0.6);
@@ -112,14 +114,14 @@ void Robot::TeleopPeriodic() {
     MyAppendage.control_panel(0);
   }
 
-if (c2_btn_lb){
+if (c2_dpad > 45 && c2_dpad < 135){
   if (!leftbuttonstate){
     leftbuttonstate = true;
     shootercounter--;
   }
 }
 else{leftbuttonstate=false;}
-if (c2_btn_rb){
+if (c2_dpad > 225 && c2_dpad < 315){
   if (!rightbuttonstate){
   
     rightbuttonstate = true;
