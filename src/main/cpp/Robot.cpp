@@ -29,11 +29,12 @@ void Robot::RobotInit() {
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
+  // Set default positions and values upon start up.
   MyDrive.buddyclimb_in();
   bool buddyclimb_enable = false;
   MyDrive.buddyclimb_motor(0);
   bool climb_enable = false;
-
+  MyDrive.shift_low();
   
 }
 
@@ -90,29 +91,47 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-  // Read in Joystick Values
+  //********** Read in Joystick Values ******************************************
+  //------------- Driver Controller ---------------------------------------------
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
+  bool c1_btn_back = controller1.GetRawButton(7);
+  bool c1_btn_start = controller1.GetRawButton(8);
+  double c1_righttrigger = controller1.GetRawAxis(3);
+  double c1_lefttrigger = controller1.GetRawAxis(2);
+  bool c1_leftbmp = controller1.GetRawButton(5);
+  bool c1_rightbmp = controller1.GetRawButton(6);
+
+  //-----------------------------------------------------------------------------
+  //------------ Operator Controller --------------------------------------------
   bool c2_btn_a = controller2.GetRawButton(1);
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
   bool c2_btn_x = controller2.GetRawButton(3);
   bool c2_btn_back = controller2.GetRawButton(7);
   bool c2_btn_start = controller2.GetRawButton(8);
-  bool c1_btn_back = controller1.GetRawButton(7);
-  bool c1_btn_start = controller1.GetRawButton(8);
-  double c1_righttrigger = controller1.GetRawAxis(3);
-  double c1_lefttrigger = controller1.GetRawAxis(2);
 
-
-
-
-  // Drive Code
+  //----------------------------------------------------------------------------
+  // ***************************************************************************
+  //************* Drive Code ***************************************************
+  
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
 
-  // Appendage Code
+  //------------ Shifting Logic ----------------------------------------
+  if (c1_leftbmp){
+    MyDrive.shift_low();
+  }
+  else if (c1_rightbmp){
+    MyDrive.shift_high();
+  }
+  else {
+    MyDrive.shift_auto();
+  }
+  //--------------------------------------------------------------------
+//******************************************************************************
+//************* Appendage Code *************************************************
 
-  // control panel 
+//--------------- control panel ------------------------------------------------- 
 if (!buddyclimb_enable){
 
     if (c2_btn_b){
@@ -128,7 +147,8 @@ if (!buddyclimb_enable){
       MyAppendage.control_panel(0);
     }
 }
-// buddy climb code !
+//-----------------------------------------------------------------------------
+//----------- buddy climb ----------------------------------------------------- 
 
 if (c2_btn_back && c2_btn_start){
 
@@ -152,8 +172,8 @@ if (buddyclimb_enable){
     }
 
 }
-
-// climb code
+//------------------------------------------------------------------------
+//----------- climber code -----------------------------------------------
 
 if (c1_btn_back && c1_btn_start){
 
@@ -175,9 +195,9 @@ if (climb_enable){
   }
   
 }
+//---------------------------------------------------------
 
-
-}
+} // End of TeleOpPeriodic
 
 void Robot::TestPeriodic() {}
 

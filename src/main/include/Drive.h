@@ -10,6 +10,7 @@
 #include "rev/CANSparkMax.h"
 #include "frc/VictorSP.h"
 #include "frc/DoubleSolenoid.h"
+#include "frc/Encoder.h"
 #include "Robot.h"
 #include "Drive.h"
 
@@ -24,10 +25,13 @@ class Drive : public frc::Subsystem {
     rev::CANSparkMax * m_leftdrive2;
     rev::CANSparkMax * m_rightdrive;
     rev::CANSparkMax * m_rightdrive2;
+    frc::DoubleSolenoid * p_driveshift;
     frc::VictorSP * m_buddyclimb;
     frc::DoubleSolenoid * p_buddyclimb;
     rev::CANSparkMax * m_leftclimb;
     rev::CANSparkMax * m_rightclimb;
+    frc::Encoder * s_leftdrive_enc;
+    frc::Encoder * s_rightdrive_enc;
 
     public:
      Drive();  
@@ -38,7 +42,9 @@ class Drive : public frc::Subsystem {
      void buddyclimb_out();
      void buddyclimb_in();
      void climb(double input);
-    
+     void shift_low();
+     void shift_high();
+     void shift_auto();    
 
 };
 #endif
