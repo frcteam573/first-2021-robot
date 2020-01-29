@@ -110,6 +110,8 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_x = controller2.GetRawButton(3);
   bool c2_btn_back = controller2.GetRawButton(7);
   bool c2_btn_start = controller2.GetRawButton(8);
+  bool c2_rightbumper = controller2.GetRawButton(6);
+  bool c2_leftbumper = controller2.GetRawButton(5);
 
   //----------------------------------------------------------------------------
   // ***************************************************************************
@@ -131,6 +133,7 @@ void Robot::TeleopPeriodic() {
 //******************************************************************************
 //************* Appendage Code *************************************************
 
+
 //--------------- control panel ------------------------------------------------- 
 if (!buddyclimb_enable){
 
@@ -146,7 +149,8 @@ if (!buddyclimb_enable){
     else {
       MyAppendage.control_panel(0);
     }
-}
+
+  }
 //-----------------------------------------------------------------------------
 //----------- buddy climb ----------------------------------------------------- 
 
@@ -197,7 +201,30 @@ if (climb_enable){
 }
 //---------------------------------------------------------
 
+
+//intake code
+if(c2_rightbumper){ 
+  MyAppendage.intake_out();
+  MyAppendage.intakemotor(0.8);
+  MyAppendage.conveyor_motor(0.8);
+  MyAppendage.conveyor_close();
+}
+
+else if (c2_leftbumper){
+  MyAppendage.intakemotor(-0.8);
+  MyAppendage.conveyor_motor(-0.8);
+  MyAppendage.conveyor_close();
+}
+else {
+  MyAppendage.intakemotor(0);
+  MyAppendage.intake_in();
+  MyAppendage.conveyor_open();
+}
+
+
+
 } // End of TeleOpPeriodic
+
 
 void Robot::TestPeriodic() {}
 
