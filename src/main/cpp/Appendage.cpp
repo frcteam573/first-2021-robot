@@ -10,6 +10,7 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 
@@ -22,8 +23,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 0;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
-    int shooterID = 2;
-    int shooterID3 = 3;
+    int shooterID = 8;
+    int shooterID2 = 9;
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
@@ -33,9 +34,9 @@ Appendage::Appendage() : Subsystem("Appendage") {
     static constexpr auto i2cPort = frc::I2C::Port::kOnboard;
     rev::ColorSensorV3 m_colorSensor{i2cPort};
     rev::ColorMatch m_colorMatcher;
-    m_shooter = new frc::VictorSP(shooterID);
+    m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
     s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
-    m_shooter2 = new frc::VictorSP(shooterID3);
+    m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
     }
 
 double Appendage::deadband(double input, double deadband_size){

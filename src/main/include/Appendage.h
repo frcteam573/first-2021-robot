@@ -16,6 +16,7 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include "rev/CANSparkMax.h"
 
 
 using namespace std;
@@ -28,8 +29,8 @@ class Appendage : public frc::Subsystem {
     frc::Encoder * s_controlpanel_encoder;
     rev::ColorSensorV3 *m_colorSensor;
     rev::ColorMatch * m_colorMatcher;
-    frc::VictorSP * m_shooter;
-    frc::VictorSP * m_shooter2;
+    rev::CANSparkMax * m_shooter;
+    rev::CANSparkMax * m_shooter2;
     frc::Encoder * s_shooter_encoder;
 
 
