@@ -26,7 +26,7 @@ class Drive : public frc::Subsystem {
     rev::CANSparkMax * m_rightdrive;
     rev::CANSparkMax * m_rightdrive2;
     frc::DoubleSolenoid * p_driveshift;
-    frc::VictorSP * m_buddyclimb;
+    rev::CANSparkMax * m_buddyclimb;
     frc::DoubleSolenoid * p_buddyclimb;
     rev::CANSparkMax * m_leftclimb;
     rev::CANSparkMax * m_rightclimb;

@@ -23,7 +23,7 @@ using namespace std;
 Appendage::Appendage() : Subsystem("Appendage") {
     // Define CAN and PWM Ids used in Drive here
     
-    int controlpanelID = 0;
+    int controlpanelID = 14;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
   
@@ -34,13 +34,13 @@ Appendage::Appendage() : Subsystem("Appendage") {
 
     int intakeIDa = 0;
     int intakeIDb = 1;
-    int intakeIDc = 8;
+    int intakeIDc = 10;
     int conveyormID = 12;
     int conveyorpIDa = 4;
     int conveyorpIDb = 5;
 
     // Define motors, sensors, and pneumatics here
-    m_controlpanel = new frc::VictorSP(controlpanelID);
+    m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
 
     m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
@@ -49,7 +49,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
    
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
-    m_intake = new frc::VictorSP(intakeIDc);
+    m_intake = new rev::CANSparkMax{intakeIDc, rev::CANSparkMax::MotorType::kBrushless};
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
