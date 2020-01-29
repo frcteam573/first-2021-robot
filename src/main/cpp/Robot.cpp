@@ -23,19 +23,22 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "NetworkTables/NetworkTable.h"
 #include "NetworkTables/NetworkTableInstance.h"
 #include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  bool leftbuttonstate = false;
+  bool rightbuttonstate = false;
+  int shootercounter = 0;
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
+  // Set default positions and values upon start up.
   MyDrive.buddyclimb_in();
   bool buddyclimb_enable = false;
   MyDrive.buddyclimb_motor(0);
   bool climb_enable = false;
-
+  MyDrive.shift_low();
   
 }
 
@@ -135,37 +138,61 @@ void Robot::TeleopPeriodic() {
 
   double d = MyDrive.camera_getdistance(camera_y);
 
-  // Read in Joystick Values
+  //********** Read in Joystick Values ******************************************
+  //------------- Driver Controller ---------------------------------------------
+
   double c1_joy_leftdrive = controller1.GetRawAxis(1);
   double c1_joy_rightdrive = controller1.GetRawAxis(5);
-  bool c2_btn_a = controller2.GetRawButton(1);
-  bool c2_btn_b = controller2.GetRawButton(2);
-  bool c2_btn_y = controller2.GetRawButton(4);
-  bool c2_btn_x = controller2.GetRawButton(3);
-  bool c2_btn_back = controller2.GetRawButton(7);
-  bool c2_btn_start = controller2.GetRawButton(8);
   bool c1_btn_back = controller1.GetRawButton(7);
   bool c1_btn_start = controller1.GetRawButton(8);
   double c1_righttrigger = controller1.GetRawAxis(3);
   double c1_lefttrigger = controller1.GetRawAxis(2);
+  bool c1_leftbmp = controller1.GetRawButton(5);
+  bool c1_rightbmp = controller1.GetRawButton(6);
   bool c1_btn_b = controller1.GetRawButton(2);
+
+  //-----------------------------------------------------------------------------
+  //------------ Operator Controller --------------------------------------------
+  bool c2_btn_a = controller2.GetRawButton(1);
+  bool c2_btn_b = controller2.GetRawButton(2);
+  bool c2_btn_y = controller2.GetRawButton(4);
+  bool c2_btn_x = controller2.GetRawButton(3);
+  bool c2_btn_lb = controller2.GetRawButton(5);
+  bool c2_btn_rb = controller2.GetRawButton(6);
+  double c2_dpad = controller2.GetPOV(0);
+  bool c2_btn_back = controller2.GetRawButton(7);
+  bool c2_btn_start = controller2.GetRawButton(8);
+  bool c2_rightbumper = controller2.GetRawButton(6);
+  bool c2_leftbumper = controller2.GetRawButton(5);
+
+  //----------------------------------------------------------------------------
+  // ***************************************************************************
+  //************* Drive Code ***************************************************
   
-
-
-
-  // Drive Code
   MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+
+  //------------ Shifting Logic ----------------------------------------
+  if (c1_leftbmp){
+    MyDrive.shift_low();
+
+  }
+  else if (c1_rightbmp){
+    MyDrive.shift_high();
+  }
+  else {
+    MyDrive.shift_auto();
+  }
+  //--------------------------------------------------------------------
+//******************************************************************************
+//************* Appendage Code *************************************************
 
   if (c1_btn_b){
 
     MyDrive.camera_centering(camera_x, camera_s, d);
 
   }
-  
 
-  // Appendage Code
-
-  // control panel 
+//--------------- control panel ------------------------------------------------- 
 if (!buddyclimb_enable){
 
     if (c2_btn_b){
@@ -180,8 +207,10 @@ if (!buddyclimb_enable){
     else {
       MyAppendage.control_panel(0);
     }
-}
-// buddy climb code !
+
+  }
+//-----------------------------------------------------------------------------
+//----------- buddy climb ----------------------------------------------------- 
 
 if (c2_btn_back && c2_btn_start){
 
@@ -205,8 +234,8 @@ if (buddyclimb_enable){
     }
 
 }
-
-// climb code
+//------------------------------------------------------------------------
+//----------- climber code -----------------------------------------------
 
 if (c1_btn_back && c1_btn_start){
 
@@ -224,13 +253,49 @@ if (climb_enable){
   if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
 
     MyDrive.climb(-0.7);
-
   }
+}
+
+if (c2_dpad > 45 && c2_dpad < 135){
+  if (!leftbuttonstate){
+    leftbuttonstate = true;
+    shootercounter--;
+  }
+}
+else{leftbuttonstate=false;}
+if (c2_dpad > 225 && c2_dpad < 315){
+  if (!rightbuttonstate){
   
+    rightbuttonstate = true;
+    shootercounter++;
+  }
 }
+else {rightbuttonstate=false;}
 
 
+//intake code
+if(c2_rightbumper){ 
+  MyAppendage.intake_out();
+  MyAppendage.intakemotor(0.8);
+  MyAppendage.conveyor_motor(0.8);
+  MyAppendage.conveyor_close();
 }
+
+else if (c2_leftbumper){
+  MyAppendage.intakemotor(-0.8);
+  MyAppendage.conveyor_motor(-0.8);
+  MyAppendage.conveyor_close();
+}
+else {
+  MyAppendage.intakemotor(0);
+  MyAppendage.intake_in();
+  MyAppendage.conveyor_open();
+}
+
+MyAppendage.shooter_pid(shootercounter * 250);
+
+} // End of TeleOpPeriodic
+
 
 void Robot::TestPeriodic() {}
 

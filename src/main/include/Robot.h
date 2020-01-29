@@ -36,6 +36,9 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   
 
+  
+
+
  private:
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
@@ -43,6 +46,9 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
+  bool leftbuttonstate;
+  bool rightbuttonstate;
+  int shootercounter;
   bool buddyclimb_enable;
   bool climb_enable;
   float camera_x;
