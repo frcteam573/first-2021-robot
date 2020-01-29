@@ -21,10 +21,12 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "Led.h"
 #include "Appendage.h"
 #include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  bool leftbuttonstate = false;
+  bool rightbuttonstate = false;
+  int shootercounter = 0;
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -108,6 +110,9 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
   bool c2_btn_x = controller2.GetRawButton(3);
+  bool c2_btn_lb = controller2.GetRawButton(5);
+  bool c2_btn_rb = controller2.GetRawButton(6);
+  double c2_dpad = controller2.GetPOV(0);
   bool c2_btn_back = controller2.GetRawButton(7);
   bool c2_btn_start = controller2.GetRawButton(8);
   bool c2_rightbumper = controller2.GetRawButton(6);
@@ -122,6 +127,7 @@ void Robot::TeleopPeriodic() {
   //------------ Shifting Logic ----------------------------------------
   if (c1_leftbmp){
     MyDrive.shift_low();
+
   }
   else if (c1_rightbmp){
     MyDrive.shift_high();
@@ -195,11 +201,23 @@ if (climb_enable){
   if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
 
     MyDrive.climb(-0.7);
-
   }
-  
+
+if (c2_dpad > 45 && c2_dpad < 135){
+  if (!leftbuttonstate){
+    leftbuttonstate = true;
+    shootercounter--;
+  }
 }
-//---------------------------------------------------------
+else{leftbuttonstate=false;}
+if (c2_dpad > 225 && c2_dpad < 315){
+  if (!rightbuttonstate){
+  
+    rightbuttonstate = true;
+    shootercounter++;
+  }
+}
+else {rightbuttonstate=false;}
 
 
 //intake code
@@ -221,7 +239,7 @@ else {
   MyAppendage.conveyor_open();
 }
 
-
+MyAppendage.shooter_pid(shootercounter * 250);
 
 } // End of TeleOpPeriodic
 

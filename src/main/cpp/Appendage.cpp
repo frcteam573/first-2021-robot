@@ -10,9 +10,11 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
 #include <frc/DoubleSolenoid.h>
+
 
 
 
@@ -24,6 +26,12 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 0;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
+  
+    int shooterID = 8;
+    int shooterID2 = 9;
+    int shooterencID_a = 6;
+    int shooterencID_b = 7;
+
     int intakeIDa = 0;
     int intakeIDb = 1;
     int intakeIDc = 8;
@@ -31,17 +39,21 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int conveyorpIDa = 4;
     int conveyorpIDb = 5;
 
-
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new frc::VictorSP(controlpanelID);
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
-    //i2cPort = new frc::I2C;
+
+    m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
+    s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
+    m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
+   
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new frc::VictorSP(intakeIDc);
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
+
 
     }
 double Appendage::deadband(double input, double deadband_size){
@@ -187,6 +199,26 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+void Appendage::shooter_pid(double setpoint){
+    s_shooter_encoder->SetDistancePerPulse(1.0/1024.0);
+    double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
+    encoder_val = encoder_val*60;
+    double error = setpoint - encoder_val; // Calculate current error
+    error = deadband(error, 10); // Apply a deadband to help overshoot.
+    double kpe = .0005; // P gain
+    double output_e = error * kpe; // Calculate motor value
+    //output_e = Threshold(output_e, 0.9); // Threshold motor value
+    m_shooter->Set(output_e+.25); // Set motor to value
+    m_shooter2->Set(output_e+.25);
+    auto encoder_valstr = std::to_string(encoder_val);
+    frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
+    auto encoder_valstr2 = std::to_string(setpoint);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
+    auto encoder_valstr3 = std::to_string(output_e+.25);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
+}
+
+
 void Appendage::intakemotor(double input){
 
     m_intake->Set(input);
@@ -222,3 +254,4 @@ void Appendage::conveyor_close(){
   p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
 
 }
+
