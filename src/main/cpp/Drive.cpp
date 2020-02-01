@@ -11,6 +11,9 @@
 
 using namespace std;
 
+double leftdriveold;
+double rightdriveold;
+
 Drive::Drive() : Subsystem("Drive") {
     // Define CAN and PWM Ids used in Drive here
 
@@ -33,7 +36,7 @@ Drive::Drive() : Subsystem("Drive") {
 
 
     // Define motors, sensors, and pneumatics here
-    m_leftdrive = new frc::VictorSP(1); //new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftdrive = new frc::VictorSP(9); //new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless}; //actually 1
     //m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
     m_leftdrive->SetInverted(true);
     //m_leftdrive2->SetInverted(true);
@@ -69,10 +72,26 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     LeftStick = deadband (LeftStick, 0.05);
     RightStick = deadband (RightStick, 0.05);
 
+    if (LeftStick > (leftdriveold + 0.3)){
+        LeftStick = leftdriveold + 0.3;
+    }
+    else if (LeftStick < (leftdriveold - 0.3)){
+        LeftStick = leftdriveold - 0.3;
+    }
+
+    if (RightStick > (rightdriveold + 0.3)){
+        RightStick = rightdriveold + 0.3;
+    }
+    else if (RightStick < (rightdriveold - 0.3)){
+        RightStick = rightdriveold - 0.3;
+    }
+
     m_leftdrive->Set(LeftStick);
     //m_leftdrive2->Set(LeftStick);
+    leftdriveold = LeftStick;
     m_rightdrive->Set(RightStick);
     //m_rightdrive2->Set(RightStick);
+    rightdriveold = RightStick;
 
 
 
@@ -142,6 +161,11 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     //m_leftdrive2->Set(output);
     m_rightdrive->Set(-output);
     //m_rightdrive2->Set(-output);
+    bool output1 = false;
+    if (abs(error) < 1){ // not sure if it's one so yeah
+      output1 = true;
+    }
+    return output1;
   
 }
 
@@ -182,7 +206,6 @@ void Drive::shift_auto(){
 
 }
 
-    
 double Drive::camera_getdistance(float camera_y){
 
     double h2 = 92; // height to the center of the vision target on the goal

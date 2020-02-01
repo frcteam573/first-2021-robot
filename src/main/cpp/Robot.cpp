@@ -164,12 +164,27 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_start = controller2.GetRawButton(8);
   bool c2_rightbumper = controller2.GetRawButton(6);
   bool c2_leftbumper = controller2.GetRawButton(5);
+  bool c2_right_trigger = controller2.GetRawAxis(3);
+  bool c2_left_trigger = controller2.GetRawAxis(2);
 
   //----------------------------------------------------------------------------
   // ***************************************************************************
   //************* Drive Code ***************************************************
+
+  bool aligned = false;
   
-  MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+  if (c1_btn_b && camera_exist == 1){
+
+    aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+    
+  }
+  else {
+
+    MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+
+  }
+  
+  
 
   //------------ Shifting Logic ----------------------------------------
   if (c1_leftbmp){
@@ -186,11 +201,7 @@ void Robot::TeleopPeriodic() {
 //******************************************************************************
 //************* Appendage Code *************************************************
 
-  if (c1_btn_b){
-
-    MyDrive.camera_centering(camera_x, camera_s, d);
-
-  }
+  
 
 //--------------- control panel ------------------------------------------------- 
 if (!buddyclimb_enable){
@@ -292,7 +303,53 @@ else {
   MyAppendage.conveyor_open();
 }
 
-MyAppendage.shooter_pid(shootercounter * 250);
+
+
+
+
+//------------------------------------------------------------
+//----------shooter modes-------------------------------------
+
+bool wheel_speed = false;
+if (c2_left_trigger > 0.5){
+
+  wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+  
+  if (aligned && wheel_speed && c2_right_trigger > 0.5){
+
+    MyAppendage.conveyor_motor(0.8);
+  
+  }
+  else {
+
+    MyAppendage.conveyor_motor(0);
+
+  }
+
+}
+//---------------------LED CODE----------------------------------
+if (camera_exist && aligned && wheel_speed){
+
+  MyLed.led_control("Hot_Pink");
+}
+else if ((camera_exist && !aligned && wheel_speed) || (camera_exist && aligned && !wheel_speed)){
+
+  MyLed.led_control("Blue");
+}
+
+else if (camera_exist && !aligned && !wheel_speed){
+
+  MyLed.led_control("White");
+}
+else {
+
+  MyLed.led_control("Black");
+
+}
+
+
+
+
 
 } // End of TeleOpPeriodic
 
