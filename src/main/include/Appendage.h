@@ -11,6 +11,7 @@
 #include "frc/VictorSP.h"
 #include "Robot.h"
 #include "Appendage.h"
+#include "Log.h"
 #include "frc\Encoder.h"
 #include <frc/util/color.h>
 #include "rev/ColorSensorV3.h"
@@ -51,7 +52,9 @@ class Appendage : public frc::Subsystem {
 
 
     public:
+    
      Appendage();  
+     Log MyLog;
      // Define Appendage class functions here   
     
      double deadband(double input, double deadband_size);
@@ -69,6 +72,7 @@ class Appendage : public frc::Subsystem {
      void conveyor_open();
      void conveyor_close();
      void shooter_feed(double input);
+     void dashboard();
 
     
 

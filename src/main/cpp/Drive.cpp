@@ -7,6 +7,8 @@
 #include "frc/Encoder.h"
 #include "Robot.h"
 #include "Drive.h"
+#include "Log.h"
+#include <frc/ADXRS450_Gyro.h>
 
 
 using namespace std;
@@ -42,6 +44,8 @@ Drive::Drive() : Subsystem("Drive") {
     //m_leftdrive2->SetInverted(true);
     m_rightdrive = new frc::VictorSP(0); //new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
     //m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
+
+    s_gyro = new frc::ADXRS450_Gyro();
 
     //m_leftdrive2->SetInverted(true);
     s_leftdrive_enc = new frc::Encoder( leftdriveencID_a, leftdriveencID_b, false, frc::Encoder::k4X);
@@ -219,4 +223,30 @@ double Drive::camera_getdistance(float camera_y){
     frc::SmartDashboard::PutString("DB/String 3", dstr);
 
     return d;
+}
+
+
+void Drive::dashboard(){
+
+    // sensor outputs
+    double val_1 = s_leftdrive_enc->Get();
+    auto val_1_str = std::to_string(val_1);
+    frc::SmartDashboard::PutString("Left Drive Encoder",val_1_str);
+
+    double val_2 = s_rightdrive_enc->Get();
+    auto val_2_str = std::to_string(val_2);
+    frc::SmartDashboard::PutString("Right Drive Encoder",val_2_str);
+
+    double val_3 = s_gyro->GetAngle();
+    auto val_3_str = std::to_string(val_3);
+    frc::SmartDashboard::PutString("Gyro", val_3_str);
+
+    double leftdrive_log = m_leftdrive->Get();
+    double rightdrive_log = m_rightdrive->Get();
+    MyLog.CurrentCompare(1, leftdrive_log);
+    MyLog.CurrentCompare(14, leftdrive_log);
+    MyLog.CurrentCompare(0, rightdrive_log);
+    MyLog.CurrentCompare(15, rightdrive_log);
+
+
 }

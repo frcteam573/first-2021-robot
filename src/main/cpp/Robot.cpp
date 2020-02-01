@@ -131,13 +131,22 @@ void Robot::TeleopPeriodic() {
   float camera_y = table->GetNumber("ty", 0);
   float camera_s = table->GetNumber("ts", 0);
   auto leftinstr = std::to_string(camera_x);
-  frc::SmartDashboard::PutString("DB/String 6", leftinstr);
+  frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
 
   auto sstr = std::to_string(camera_s);
-  frc::SmartDashboard::PutString("DB/String 4", sstr);
+  frc::SmartDashboard::PutString("Limelight-TS", sstr);
+
+  auto ystr = std::to_string(camera_y);
+  frc::SmartDashboard::PutString("Limelight-TY", ystr);
+  
   
 
   double d = MyDrive.camera_getdistance(camera_y);
+
+  auto dstr = std::to_string(d);
+  frc::SmartDashboard::PutString("Limelight-Distance", dstr);
+
+  
 
   //********** Read in Joystick Values ******************************************
   //------------- Driver Controller ---------------------------------------------
@@ -182,6 +191,7 @@ void Robot::TeleopPeriodic() {
   else {
 
     MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
+    
 
   }
   
@@ -332,24 +342,43 @@ if (c2_left_trigger > 0.5){
 if (camera_exist && aligned && wheel_speed){
 
   MyLed.led_control("Hot_Pink");
+  frc::SmartDashboard::PutBoolean("Ready to Fire", true);
+  frc::SmartDashboard::PutBoolean("In Camera", true);
+  frc::SmartDashboard::PutBoolean("Wheel at Speed", true);
+  frc::SmartDashboard::PutBoolean("Aligned", true);
 }
 else if ((camera_exist && !aligned && wheel_speed) || (camera_exist && aligned && !wheel_speed)){
 
   MyLed.led_control("Blue");
+  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
+  frc::SmartDashboard::PutBoolean("In Camera", true);
+  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
+  frc::SmartDashboard::PutBoolean("Aligned", aligned);
 }
 
 else if (camera_exist && !aligned && !wheel_speed){
 
 
   MyLed.led_control("White");
+  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
+  frc::SmartDashboard::PutBoolean("In Camera", true);
+  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
+  frc::SmartDashboard::PutBoolean("Aligned", aligned);
 }
 else {
 
   MyLed.led_control("Black");
+  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
+  frc::SmartDashboard::PutBoolean("In Camera", false);
+  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
+  frc::SmartDashboard::PutBoolean("Aligned", aligned);
 
 }
 
 MyLog.Dashboard();
+MyLog.PDPTotal();
+MyDrive.dashboard();
+MyAppendage.dashboard();
 
 
 
