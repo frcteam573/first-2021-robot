@@ -16,7 +16,11 @@
 #include "Drive.h"
 #include "Led.h"
 #include "Appendage.h"
+
 #include "Log.h"
+#include "NetworkTables/NetworkTable.h"
+#include "NetworkTables/NetworkTableInstance.h"
+
 
 
 class Robot : public frc::TimedRobot {
@@ -35,6 +39,9 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   
 
+  
+
+
  private:
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
@@ -42,6 +49,12 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
+  bool leftbuttonstate;
+  bool rightbuttonstate;
+  int shootercounter;
   bool buddyclimb_enable;
   bool climb_enable;
+  float camera_x;
+  float camera_exist;
+  float image_size;
 };

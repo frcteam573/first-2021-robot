@@ -16,8 +16,12 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
+#include <frc/DoubleSolenoid.h>
+#include <rev/CANEncoder.h>
+
 using namespace std;
 
 class Appendage : public frc::Subsystem {
@@ -29,6 +33,14 @@ class Appendage : public frc::Subsystem {
     rev::ColorSensorV3 *m_colorSensor;
     //frc::I2C * i2cPort;
     rev::ColorMatch * m_colorMatcher;
+    rev::CANSparkMax * m_shooter;
+    rev::CANSparkMax * m_shooter2;
+    rev::CANEncoder * s_shooter_encoder;
+    rev::CANSparkMax * m_intake;
+    frc::DoubleSolenoid * p_intake;
+    rev::CANSparkMax * m_conveyor;
+    frc::DoubleSolenoid * p_conveyor;
+    rev::CANSparkMax * m_shooterfeed;
 
     //Any updates here also have to be done in controlpanel_colorsense_init
     static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
@@ -49,6 +61,15 @@ class Appendage : public frc::Subsystem {
      void controlpanel_colorsense_periodic();
      void controlpanel_colorsense_init();
      std::string driverstation_color();
+     bool shooter_pid (double distance, int trim);
+     void intakemotor(double input);
+     void intake_out();
+     void intake_in();
+     void conveyor_motor(double input);
+     void conveyor_open();
+     void conveyor_close();
+     void shooter_feed(double input);
+
     
 
 };

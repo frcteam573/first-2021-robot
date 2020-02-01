@@ -10,8 +10,12 @@
 #include "rev/ColorSensorV3.h"
 #include "rev/ColorMatch.h"
 #include <frc/DriverStation.h>
+#include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
+#include <frc/DoubleSolenoid.h>
+#include <rev/CANEncoder.h>
+
 
 
 
@@ -23,17 +27,39 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelID = 14;
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
+  
+    int shooterID = 8;
+    int shooterID2 = 9;
+    int shooterencID_a = 6;
+    int shooterencID_b = 7;
+
+    int intakeIDa = 0;
+    int intakeIDb = 1;
+    int intakeIDc = 10;
+    int conveyormID = 12;
+    int conveyorpIDa = 4;
+    int conveyorpIDb = 5;
+
+    int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
-    //i2cPort = new frc::I2C;
+
+    m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
+    s_shooter_encoder = new  rev::CANEncoder(*m_shooter);
+    m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
+   
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
+    m_intake = new rev::CANSparkMax{intakeIDc, rev::CANSparkMax::MotorType::kBrushless};
+    p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
+    m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
+    p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
 
+    m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
-
 double Appendage::deadband(double input, double deadband_size){
   // Deadband function - Takes input and checks it againist a provided deadband
   // then returns the value or zero depending if it is within or outside of the deadband.
@@ -177,8 +203,75 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
-void Appendage::Dashboard(){
 
-  
+void Appendage::Dashboard(){}
+bool Appendage::shooter_pid(double distance, int trim){
+
+    double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+
+    setpoint = setpoint + setpoint * trim/100.0;
+    
+    double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
+    
+    double error = setpoint - encoder_val; // Calculate current error
+    error = deadband(error, 10); // Apply a deadband to help overshoot.
+    double kpe = .0005; // P gain
+    double output_e = error * kpe; // Calculate motor value
+    //output_e = Threshold(output_e, 0.9); // Threshold motor value
+    m_shooter->Set(output_e+.25); // Set motor to value
+    m_shooter2->Set(output_e+.25);
+    auto encoder_valstr = std::to_string(encoder_val);
+    frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
+    auto encoder_valstr2 = std::to_string(setpoint);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
+    auto encoder_valstr3 = std::to_string(output_e+.25);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
+    bool output = false;
+    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+      output = true;
+    }
+    return output;
+}
+
+
+void Appendage::intakemotor(double input){
+
+    m_intake->Set(input);
+
+}
+
+void Appendage::intake_out(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::intake_in(){
+
+    p_intake->Set(frc::DoubleSolenoid::Value::kReverse);
+    
+}
+
+void Appendage::conveyor_motor(double input){
+
+  m_conveyor->Set(input);
+
+}
+
+void Appendage::conveyor_open(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kForward);
+
+}
+
+void Appendage::conveyor_close(){
+
+  p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
+
+}
+
+void Appendage::shooter_feed(double input){
+
+  m_shooterfeed->Set(input);
 
 }
