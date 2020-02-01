@@ -37,6 +37,12 @@ void Led::led_control(std::string input){
     else if(input == "Party_Mode"){
         m_leds->Set(-0.89);
     }
+    else if(input == "Black"){
+        m_leds->Set(0.99);
+    }
+    else if(input == "White"){
+        m_leds->Set(0.93);
+    }
     else{
         m_leds->Set(0.99);
     }
