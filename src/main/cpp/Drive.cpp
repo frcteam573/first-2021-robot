@@ -44,8 +44,6 @@ Drive::Drive() : Subsystem("Drive") {
     //m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
 
     //m_leftdrive2->SetInverted(true);
-    //m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
-    //m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
     s_leftdrive_enc = new frc::Encoder( leftdriveencID_a, leftdriveencID_b, false, frc::Encoder::k4X);
     s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, false, frc::Encoder::k4X);
     p_driveshift = new frc::DoubleSolenoid(1, driveshiftIDa, driveshiftIDb);
@@ -206,7 +204,8 @@ void Drive::shift_auto(){
         shift_low();
     }
 
-} 
+}
+
 double Drive::camera_getdistance(float camera_y){
 
     double h2 = 92; // height to the center of the vision target on the goal
