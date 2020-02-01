@@ -39,6 +39,7 @@ class Appendage : public frc::Subsystem {
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
     frc::DoubleSolenoid * p_conveyor;
+    rev::CANSparkMax * m_shooterfeed;
 
     //Any updates here also have to be done in controlpanel_colorsense_init
     static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
@@ -59,14 +60,14 @@ class Appendage : public frc::Subsystem {
      void controlpanel_colorsense_periodic();
      void controlpanel_colorsense_init();
      std::string driverstation_color();
-     void shooter_pid (double setpoint);
+     bool shooter_pid (double setpoint);
      void intakemotor(double input);
      void intake_out();
      void intake_in();
      void conveyor_motor(double input);
      void conveyor_open();
      void conveyor_close();
-    
+     void shooter_feed(double input);
 
     
 

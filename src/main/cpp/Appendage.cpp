@@ -39,6 +39,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int conveyorpIDa = 4;
     int conveyorpIDb = 5;
 
+    int shooter_feedID = 15;
+
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
@@ -54,6 +56,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
 
+    m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
 double Appendage::deadband(double input, double deadband_size){
@@ -199,7 +202,7 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
-void Appendage::shooter_pid(double setpoint){
+bool Appendage::shooter_pid(double setpoint){
     s_shooter_encoder->SetDistancePerPulse(1.0/1024.0);
     double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
     encoder_val = encoder_val*60;
@@ -216,6 +219,11 @@ void Appendage::shooter_pid(double setpoint){
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
     auto encoder_valstr3 = std::to_string(output_e+.25);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
+    bool output = false;
+    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+      output = true;
+    }
+    return output;
 }
 
 
@@ -255,3 +263,8 @@ void Appendage::conveyor_close(){
 
 }
 
+void Appendage::shooter_feed(double input){
+
+  m_shooterfeed->Set(input);
+
+}

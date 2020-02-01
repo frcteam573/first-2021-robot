@@ -164,6 +164,8 @@ void Robot::TeleopPeriodic() {
   bool c2_btn_start = controller2.GetRawButton(8);
   bool c2_rightbumper = controller2.GetRawButton(6);
   bool c2_leftbumper = controller2.GetRawButton(5);
+  bool c2_right_trigger = controller2.GetRawAxis(3);
+  bool c2_left_trigger = controller2.GetRawAxis(2);
 
   //----------------------------------------------------------------------------
   // ***************************************************************************
