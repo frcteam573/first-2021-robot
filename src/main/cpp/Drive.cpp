@@ -11,6 +11,7 @@
 #include <frc/ADXRS450_Gyro.h>
 
 
+
 using namespace std;
 
 double leftdriveold;
@@ -57,6 +58,8 @@ Drive::Drive() : Subsystem("Drive") {
     m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_leftclimb->SetInverted(true);
+
+    
 }
 
 double Drive::deadband(double input, double deadband_size){
@@ -250,3 +253,5 @@ void Drive::dashboard(){
 
 
 }
+
+

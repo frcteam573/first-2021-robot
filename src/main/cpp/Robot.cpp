@@ -25,6 +25,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include <iostream>
 #include "Log.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/Compressor.h>
 
 void Robot::RobotInit() {
   bool leftbuttonstate = false;
@@ -105,31 +106,16 @@ void Robot::TeleopPeriodic() {
   table->PutNumber("camMode", 0);
 
   // -----------PIPELINE STUFF-----------//
-  /*auto pos_1 = frc::SmartDashboard::GetString("Position 1","0");
-  auto left_or_right = frc::SmartDashboard::GetString("Left or Right?","2");
+  table->PutNumber("pipeline", 0);
 
-   if (pos_1 == "3" and left_or_right == "2" || pos_1 == "4" and left_or_right == "1"){
-    cam_state = 2;
-  }
-  if (pos_1 == "3" and left_or_right == "1" || pos_1 == "4" and left_or_right == "2"){
-    cam_state = 3;
-  }
-
-  if (cam_state == 2){
-    table->PutNumber("pipeline", 2); //Vision Target pipeline ****RIGHTMOST****
-  }
-  else if (cam_state == 3) {
-    table->PutNumber("pipeline", 3); //Vision Target pipeline ****LEFTMOST****
-  }
-  else {
-    table->PutNumber("pipeline", 1);
-  }*/
-
+  //--------CAMERA VALUES-----------------//
   float camera_x = table->GetNumber("tx", 0);
   float camera_exist = table->GetNumber("tv", 0);
   float image_size = table->GetNumber("ta", 0);
   float camera_y = table->GetNumber("ty", 0);
   float camera_s = table->GetNumber("ts", 0);
+
+  // values to dashboard
   auto leftinstr = std::to_string(camera_x);
   frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
 
@@ -139,12 +125,15 @@ void Robot::TeleopPeriodic() {
   auto ystr = std::to_string(camera_y);
   frc::SmartDashboard::PutString("Limelight-TY", ystr);
   
-  
-
   double d = MyDrive.camera_getdistance(camera_y);
 
   auto dstr = std::to_string(d);
   frc::SmartDashboard::PutString("Limelight-Distance", dstr);
+
+  //create compressor
+
+  Compressor = new frc::Compressor(1);
+
 
   
 
@@ -266,6 +255,7 @@ if (c1_btn_back && c1_btn_start){
 }
 
 if (climb_enable){
+  
 
   if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
 
@@ -278,6 +268,8 @@ if (climb_enable){
   }
 }
 
+
+// ---- shooter trim value ---------//
 if (c2_dpad > 45 && c2_dpad < 135){
   if (!leftbuttonstate){
     leftbuttonstate = true;
@@ -315,6 +307,16 @@ else {
 }
 
 
+// ---------- compressor start/stop --------------------
+
+if (climb_enable || c2_left_trigger > 0.5){
+
+  Compressor->Stop();
+}
+else {
+
+  Compressor->Start();
+}
 
 
 
@@ -374,6 +376,9 @@ else {
   frc::SmartDashboard::PutBoolean("Aligned", aligned);
 
 }
+
+
+// --------- dashboard code ---------------
 
 MyLog.Dashboard();
 MyLog.PDPTotal();
