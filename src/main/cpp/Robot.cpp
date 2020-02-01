@@ -23,6 +23,7 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 #include "NetworkTables/NetworkTable.h"
 #include "NetworkTables/NetworkTableInstance.h"
 #include <iostream>
+#include "Log.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
@@ -339,6 +340,7 @@ else if ((camera_exist && !aligned && wheel_speed) || (camera_exist && aligned &
 
 else if (camera_exist && !aligned && !wheel_speed){
 
+
   MyLed.led_control("White");
 }
 else {
@@ -347,7 +349,7 @@ else {
 
 }
 
-
+MyLog.Dashboard();
 
 
 

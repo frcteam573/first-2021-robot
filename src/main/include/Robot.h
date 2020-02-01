@@ -16,8 +16,11 @@
 #include "Drive.h"
 #include "Led.h"
 #include "Appendage.h"
+
+#include "Log.h"
 #include "NetworkTables/NetworkTable.h"
 #include "NetworkTables/NetworkTableInstance.h"
+
 
 
 class Robot : public frc::TimedRobot {
@@ -26,7 +29,7 @@ class Robot : public frc::TimedRobot {
   Drive MyDrive;
   Led MyLed;
   Appendage MyAppendage;
-
+  Log MyLog;
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;
