@@ -324,6 +324,8 @@ else {
 //----------shooter modes-------------------------------------
 
 bool wheel_speed = false;
+auto shootertrimstr = std::to_string(shootercounter);
+frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
 
   wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
@@ -341,42 +343,38 @@ if (c2_left_trigger > 0.5){
 
 }
 //---------------------LED CODE----------------------------------
+bool ready_to_fire = false;
 if (camera_exist && aligned && wheel_speed){
 
   MyLed.led_control("Hot_Pink");
-  frc::SmartDashboard::PutBoolean("Ready to Fire", true);
-  frc::SmartDashboard::PutBoolean("In Camera", true);
-  frc::SmartDashboard::PutBoolean("Wheel at Speed", true);
-  frc::SmartDashboard::PutBoolean("Aligned", true);
+  ready_to_fire = true;
+  
 }
 else if ((camera_exist && !aligned && wheel_speed) || (camera_exist && aligned && !wheel_speed)){
 
   MyLed.led_control("Blue");
-  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
-  frc::SmartDashboard::PutBoolean("In Camera", true);
-  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
-  frc::SmartDashboard::PutBoolean("Aligned", aligned);
+  
 }
 
 else if (camera_exist && !aligned && !wheel_speed){
 
-
   MyLed.led_control("White");
-  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
-  frc::SmartDashboard::PutBoolean("In Camera", true);
-  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
-  frc::SmartDashboard::PutBoolean("Aligned", aligned);
+  
 }
 else {
 
   MyLed.led_control("Black");
-  frc::SmartDashboard::PutBoolean("Ready to Fire", false);
-  frc::SmartDashboard::PutBoolean("In Camera", false);
-  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
-  frc::SmartDashboard::PutBoolean("Aligned", aligned);
-
+  
+}
+bool camera_exist1 = false;
+if (camera_exist == 1){
+  camera_exist1 = true;
 }
 
+  frc::SmartDashboard::PutBoolean("Ready to Fire", ready_to_fire);
+  frc::SmartDashboard::PutBoolean("In Camera", camera_exist1);
+  frc::SmartDashboard::PutBoolean("Wheel at Speed", wheel_speed);
+  frc::SmartDashboard::PutBoolean("Aligned", aligned);
 
 // --------- dashboard code ---------------
 
