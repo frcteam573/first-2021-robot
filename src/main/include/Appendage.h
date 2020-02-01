@@ -20,6 +20,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
 #include <frc/DoubleSolenoid.h>
+#include <rev/CANEncoder.h>
 
 using namespace std;
 
@@ -34,7 +35,7 @@ class Appendage : public frc::Subsystem {
     rev::ColorMatch * m_colorMatcher;
     rev::CANSparkMax * m_shooter;
     rev::CANSparkMax * m_shooter2;
-    frc::Encoder * s_shooter_encoder;
+    rev::CANEncoder * s_shooter_encoder;
     rev::CANSparkMax * m_intake;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
@@ -60,7 +61,7 @@ class Appendage : public frc::Subsystem {
      void controlpanel_colorsense_periodic();
      void controlpanel_colorsense_init();
      std::string driverstation_color();
-     bool shooter_pid (double setpoint);
+     bool shooter_pid (double distance, int trim);
      void intakemotor(double input);
      void intake_out();
      void intake_in();

@@ -294,7 +294,7 @@ else {
   MyAppendage.conveyor_open();
 }
 
-MyAppendage.shooter_pid(shootercounter * 250);
+MyAppendage.shooter_pid(d, shootercounter);
 
 } // End of TeleOpPeriodic
 

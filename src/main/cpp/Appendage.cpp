@@ -14,6 +14,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc\I2C.h>
 #include <frc/DoubleSolenoid.h>
+#include <rev/CANEncoder.h>
 
 
 
@@ -46,7 +47,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     s_controlpanel_encoder = new frc::Encoder( controlpanelencID_a, controlpanelencID_b, false, frc::Encoder::k4X);
 
     m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
-    s_shooter_encoder = new frc::Encoder( shooterencID_a, shooterencID_b, false, frc::Encoder::k4X);
+    s_shooter_encoder = new  rev::CANEncoder(*m_shooter);
     m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
    
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
@@ -202,10 +203,14 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
-bool Appendage::shooter_pid(double setpoint){
-    s_shooter_encoder->SetDistancePerPulse(1.0/1024.0);
-    double encoder_val = s_shooter_encoder->GetRate(); // Get encoder value
-    encoder_val = encoder_val*60;
+bool Appendage::shooter_pid(double distance, int trim){
+
+    double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+
+    setpoint = setpoint + setpoint * trim/100.0;
+    
+    double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
+    
     double error = setpoint - encoder_val; // Calculate current error
     error = deadband(error, 10); // Apply a deadband to help overshoot.
     double kpe = .0005; // P gain
