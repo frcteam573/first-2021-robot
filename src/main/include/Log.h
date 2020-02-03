@@ -21,6 +21,8 @@ class Log : public frc::Subsystem {
     Log();  
      // Define Log class functions here 
     void Dashboard();
+    void PDPTotal();
+    void CurrentCompare(int slot,double PWMin);
 };
 
 #endif

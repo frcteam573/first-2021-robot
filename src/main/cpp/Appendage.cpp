@@ -5,6 +5,7 @@
 #include "frc/VictorSP.h"
 #include "Robot.h"
 #include "Appendage.h"
+#include "Log.h"
 #include "frc\Encoder.h"
 #include <frc/util/color.h>
 #include "rev/ColorSensorV3.h"
@@ -204,7 +205,7 @@ std::string Appendage::driverstation_color(){
 }
 
 
-void Appendage::Dashboard(){}
+
 bool Appendage::shooter_pid(double distance, int trim){
 
     double setpoint = distance * 30; // don't actually use we have no idea what's going on 
@@ -274,4 +275,22 @@ void Appendage::shooter_feed(double input){
 
   m_shooterfeed->Set(input);
 
+}
+
+void Appendage::dashboard(){
+
+  // sensor dashboard outputs
+  double val_1 = s_controlpanel_encoder->Get();
+  auto val_1_str = std::to_string(val_1);
+  frc::SmartDashboard::PutString("Control Panel Encoder",val_1_str);
+
+  double val_2 = s_shooter_encoder->GetVelocity();
+  auto val_2_str = std::to_string(val_2);
+  frc::SmartDashboard::PutString("Shooter Encoder", val_2_str);
+
+  double shooter_log = m_shooter->Get();
+  MyLog.CurrentCompare(11, shooter_log);
+  MyLog.CurrentCompare(10, shooter_log);
+  
+  
 }

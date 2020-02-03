@@ -13,6 +13,9 @@
 #include "frc/Encoder.h"
 #include "Robot.h"
 #include "Drive.h"
+#include "Log.h"
+#include <frc/ADXRS450_Gyro.h>
+
 
 
 using namespace std;
@@ -32,9 +35,13 @@ class Drive : public frc::Subsystem {
     rev::CANSparkMax * m_rightclimb;
     frc::Encoder * s_leftdrive_enc;
     frc::Encoder * s_rightdrive_enc;
+    frc::ADXRS450_Gyro * s_gyro;
+    
 
     public:
+    
      Drive();  
+     Log MyLog;
      // Define Drive class functions here   
      void Joystick_Drive(double LeftStick, double RightStick);
      double deadband(double input, double deadband_size);
@@ -47,6 +54,7 @@ class Drive : public frc::Subsystem {
      void shift_low();
      void shift_high();
      void shift_auto();    
+     void dashboard();
 
 };
 #endif

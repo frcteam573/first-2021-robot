@@ -20,6 +20,7 @@
 #include "Log.h"
 #include "NetworkTables/NetworkTable.h"
 #include "NetworkTables/NetworkTableInstance.h"
+#include <frc/Compressor.h>
 
 
 
@@ -57,4 +58,5 @@ class Robot : public frc::TimedRobot {
   float camera_x;
   float camera_exist;
   float image_size;
+  frc::Compressor * Compressor;
 };

@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int counter;
+
 frc::PowerDistributionPanel Board;
 
 Log::Log() : Subsystem("Led") {
@@ -56,4 +58,41 @@ void Log::Dashboard (){
     frc::SmartDashboard::PutString("Conveyor Motor",to_string(val));
 
 
+}
+
+void Log::PDPTotal(){
+	double val = Board.GetTotalCurrent();
+	bool light;
+
+
+	if (val > 250){
+
+		counter = counter + 1;
+		if (counter > 50){
+			light = true;
+		}
+		else{
+			light = false;
+		}
+	}
+	else {
+		counter = 0;
+		light = false;
+	}
+
+	frc::SmartDashboard::PutBoolean("Over 250 Amps", light);
+	//auto Gyrooutstr = std::to_string(counter);
+	//frc::SmartDashboard::PutString("DB/String 5",Gyrooutstr);
+}
+
+void Log::CurrentCompare(int slot,double PWMin){
+
+	double current = Board.GetCurrent(slot);
+
+	if (abs(PWMin) > .2){
+		if (abs(current) < 1){
+			
+			frc::SmartDashboard::PutString("No Current Draw",to_string(slot));
+		}
+	}
 }
