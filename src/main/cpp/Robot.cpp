@@ -67,13 +67,20 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
+  
+  auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
 
   double count_max = MyAuto.ReturnTableVal(0,5);
   int count_max_int = (int)count_max;
 
-  if (count < count_max_int){
+  if (mode =="1"){
+    // Custom Auto goes here
+
+
+  if (count < 250){
+    
+  }
+  else if (count > 250 && count < count_max_int + 250){
 
     //Get setpoint values from tables
     
@@ -86,14 +93,15 @@ void Robot::AutonomousPeriodic() {
 
     //Call PID Loop to follow path
     MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
-    count ++;
+   
     
   }
 
 
-  } else {
-    // Default Auto goes here
   }
+  
+
+  count ++;
 }
 
 void Robot::TeleopInit() {}
