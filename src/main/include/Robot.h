@@ -14,6 +14,7 @@
 
 // Include subsystem header files here
 #include "Drive.h"
+#include "Paths.h"
 #include "Led.h"
 #include "Appendage.h"
 
@@ -26,11 +27,13 @@
 
 class Robot : public frc::TimedRobot {
  public:
-  //Include subsystem object defenitions here
+  //Include subsystem object definitions here
   Drive MyDrive;
+  Paths MyPaths;
   Led MyLed;
   Appendage MyAppendage;
   Log MyLog;
+  
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;
@@ -50,6 +53,7 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
+  int count;
   bool leftbuttonstate;
   bool rightbuttonstate;
   int shootercounter;

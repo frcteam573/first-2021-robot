@@ -24,6 +24,7 @@ class Drive : public frc::Subsystem {
 
     private:
     // Define motor, sensors, and pnematic pointers here
+
     /*rev::CANSparkMax*/ frc::VictorSP * m_leftdrive;
     //rev::CANSparkMax * m_leftdrive2;
     /*rev::CANSparkMax*/ frc::VictorSP * m_rightdrive;
@@ -45,6 +46,7 @@ class Drive : public frc::Subsystem {
      // Define Drive class functions here   
      void Joystick_Drive(double LeftStick, double RightStick);
      double deadband(double input, double deadband_size);
+     void drive_PID(double setpoint_left_pos, double setpoint_right_pos, double setpoint_left_speed, double setpoint_right_speed, double heading, int count);
      void buddyclimb_motor(double input);
      void buddyclimb_out();
      void buddyclimb_in();
