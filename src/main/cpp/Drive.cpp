@@ -155,7 +155,7 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   //double error_right_speed = setpoint_right_speed - encoder_speed_right;
   double error_heading = heading - gyro_val;
 
-  double max_speed = 13; //ft/s
+  double max_speed = 15.5; //ft/s
   double kp_speed = -1/max_speed;
   double kp_pos = -0.025;
   double kph = -0.01;  //0.01;
@@ -168,9 +168,9 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   //double output_right = (error_right_pos * kp_pos) + (error_right_speed * kp_speed) * .05;
 
   m_leftdrive->Set(output_left + turn_val);
-  m_leftdrive2->Set(output_left + turn_val);
+ // m_leftdrive2->Set(output_left + turn_val);
   m_rightdrive->Set(output_right - turn_val);
-  m_rightdrive2->Set(output_right - turn_val);
+  //m_rightdrive2->Set(output_right - turn_val);
 
   /*auto Left_encoderstr = std::to_string(output_left);
   frc::SmartDashboard::PutString("DB/String 6",Left_encoderstr);
