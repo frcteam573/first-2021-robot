@@ -15,11 +15,25 @@
 // Include subsystem header files here
 #include "Drive.h"
 #include "Paths.h"
+#include "Led.h"
+#include "Appendage.h"
+
+#include "Log.h"
+#include "NetworkTables/NetworkTable.h"
+#include "NetworkTables/NetworkTableInstance.h"
+#include <frc/Compressor.h>
+
+
+
 class Robot : public frc::TimedRobot {
  public:
   //Include subsystem object definitions here
   Drive MyDrive;
   Paths MyPaths;
+  Led MyLed;
+  Appendage MyAppendage;
+  Log MyLog;
+  
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;
@@ -27,6 +41,10 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+  
+
+  
+
 
  private:
   frc::SendableChooser<std::string> m_chooser;
@@ -36,4 +54,13 @@ class Robot : public frc::TimedRobot {
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
   int count;
+  bool leftbuttonstate;
+  bool rightbuttonstate;
+  int shootercounter;
+  bool buddyclimb_enable;
+  bool climb_enable;
+  float camera_x;
+  float camera_exist;
+  float image_size;
+  frc::Compressor * Compressor;
 };
