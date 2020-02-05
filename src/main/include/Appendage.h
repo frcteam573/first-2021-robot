@@ -73,8 +73,7 @@ class Appendage : public frc::Subsystem {
      void conveyor_close();
      void shooter_feed(double input);
      void dashboard();
-
-    
+     void shooter_speed(double input);
 
 };
 #endif

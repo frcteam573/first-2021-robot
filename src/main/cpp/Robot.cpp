@@ -70,7 +70,9 @@ void Robot::RobotPeriodic() {
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
+
+
+    m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
@@ -86,6 +88,44 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
+
+
+
+  // Read in camera Stuff
+  
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  
+  table->PutNumber("ledMode", 0);
+  table->PutNumber("camMode", 0);
+
+  // -----------PIPELINE STUFF-----------//
+  table->PutNumber("pipeline", 0);
+
+  //--------CAMERA VALUES-----------------//
+  float camera_x = table->GetNumber("tx", 0);
+  float camera_exist = table->GetNumber("tv", 0);
+  float image_size = table->GetNumber("ta", 0);
+  float camera_y = table->GetNumber("ty", 0);
+  float camera_s = table->GetNumber("ts", 0);
+
+  // values to dashboard
+  auto leftinstr = std::to_string(camera_x);
+  frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
+
+  auto sstr = std::to_string(camera_s);
+  frc::SmartDashboard::PutString("Limelight-TS", sstr);
+
+  auto ystr = std::to_string(camera_y);
+  frc::SmartDashboard::PutString("Limelight-TY", ystr);
+  
+  double d = MyDrive.camera_getdistance(camera_y);
+
+  auto dstr = std::to_string(d);
+  frc::SmartDashboard::PutString("Limelight-Distance", dstr);
+
+
+
+
   
   auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
 
@@ -97,12 +137,27 @@ void Robot::AutonomousPeriodic() {
 
 
   if (count < 250){
+
+    bool aligned = false;
+    aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+    bool wheel_speed = false;
+    wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+    if (aligned && wheel_speed ){
+
+      MyAppendage.conveyor_motor(0.8);
+    
+    }
+    else {
+
+      MyAppendage.conveyor_motor(0);
+
+    }
     
   }
   else if (count > 250 && count < count_max_int + 250){
 
     //Get setpoint values from tables
-    
+    MyAppendage.shooter_speed(0);
     double left_pos = MyPaths.ReturnTableVal(count,0);
     double left_speed = MyPaths.ReturnTableVal(count,1);
     double right_pos = MyPaths.ReturnTableVal(count,2);
@@ -115,7 +170,9 @@ void Robot::AutonomousPeriodic() {
    
     
   }
-
+  else{
+    MyDrive.Joystick_Drive(0,0);
+  }
 
   }
   

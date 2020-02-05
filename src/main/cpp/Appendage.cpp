@@ -294,3 +294,8 @@ void Appendage::dashboard(){
   
   
 }
+
+void Appendage::shooter_speed(double input){
+  m_shooter->Set(input);
+  m_shooter2->Set(input);
+}
