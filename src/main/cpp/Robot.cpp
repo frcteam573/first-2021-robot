@@ -89,7 +89,7 @@ void Robot::AutonomousPeriodic() {
   
   auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
 
-  double count_max = MyAuto.ReturnTableVal(0,5);
+  double count_max = MyPaths.ReturnTableVal(0,5);
   int count_max_int = (int)count_max;
 
   if (mode =="1"){
