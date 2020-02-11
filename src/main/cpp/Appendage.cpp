@@ -56,7 +56,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_intake = new rev::CANSparkMax{intakeIDc, rev::CANSparkMax::MotorType::kBrushless};
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
-    p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
+    
 
     m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
@@ -259,17 +259,7 @@ void Appendage::conveyor_motor(double input){
 
 }
 
-void Appendage::conveyor_open(){
 
-  p_conveyor->Set(frc::DoubleSolenoid::Value::kForward);
-
-}
-
-void Appendage::conveyor_close(){
-
-  p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
-
-}
 
 void Appendage::shooter_feed(double input){
 

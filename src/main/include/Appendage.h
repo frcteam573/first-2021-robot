@@ -40,7 +40,6 @@ class Appendage : public frc::Subsystem {
     rev::CANSparkMax * m_intake;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
-    frc::DoubleSolenoid * p_conveyor;
     rev::CANSparkMax * m_shooterfeed;
 
     //Any updates here also have to be done in controlpanel_colorsense_init
@@ -69,8 +68,6 @@ class Appendage : public frc::Subsystem {
      void intake_out();
      void intake_in();
      void conveyor_motor(double input);
-     void conveyor_open();
-     void conveyor_close();
      void shooter_feed(double input);
      void dashboard();
 
