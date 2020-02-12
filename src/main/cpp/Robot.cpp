@@ -326,18 +326,20 @@ if(c2_rightbumper){
   MyAppendage.intake_out();
   MyAppendage.intakemotor(0.8);
   MyAppendage.conveyor_motor(0.8);
-  MyAppendage.conveyor_close();
+  MyAppendage.shooter_feed(-0.8);
 }
 
 else if (c2_leftbumper){
   MyAppendage.intakemotor(-0.8);
   MyAppendage.conveyor_motor(-0.8);
-  MyAppendage.conveyor_close();
+  MyAppendage.shooter_feed(-0.8);
+  
 }
 else {
   MyAppendage.intakemotor(0);
   MyAppendage.intake_in();
-  MyAppendage.conveyor_open();
+  MyAppendage.shooter_feed(0);
+  
 }
 
 
@@ -367,11 +369,12 @@ if (c2_left_trigger > 0.5){
   if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
     MyAppendage.conveyor_motor(0.8);
-  
+    MyAppendage.shooter_feed(0.8);
   }
   else {
 
     MyAppendage.conveyor_motor(0);
+    MyAppendage.shooter_feed(0);
 
   }
 
