@@ -240,19 +240,19 @@ std::string Appendage::driverstation_color(){
       switch (gameData[0])
       {
           case 'B' :
-          output = 'B';
+          output = 'R';
           //Blue case code
           break;
           case 'G' :
-          output = 'G';
+          output = 'Y';
           //Green case code
           break;
           case 'R' :
-          output = 'R';
+          output = 'B';
           //Red case code
           break;
           case 'Y' :
-          output = 'Y';
+          output = 'G';
           //Yellow case code
           break;
           
