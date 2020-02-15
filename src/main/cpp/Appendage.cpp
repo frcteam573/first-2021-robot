@@ -162,6 +162,7 @@ void Appendage::controlpanel_colorsense_periodic(){
       } else {
         colorString = "Unknown";
       }
+  frc::SmartDashboard::PutString("Current Color", colorString);
  if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
@@ -211,14 +212,13 @@ void Appendage::controlpanel_colorsense_periodicrotation(){
 
 
       //Display what color is seen on DS
-      frc::SmartDashboard::PutString("DB/String 5", colorString);
+      frc::SmartDashboard::PutString("Current Color", colorString);
       if (colorStringold != colorString){
           colorStringold = colorString;
           colorcounter++;
       }
 
       //Display what color is seen on DS
-      frc::SmartDashboard::PutString("DB/String 5", colorString);
       if (colorcounter < 28){
           m_controlpanel->Set(0.6); // If color matches desired stop motor
       }
