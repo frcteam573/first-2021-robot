@@ -42,10 +42,10 @@ void Log::Dashboard (){
     val=Board.GetCurrent(4);
     frc::SmartDashboard::PutString("Control Panel",to_string(val));
 
-    val=Board.GetCurrent(15);
+    val=Board.GetCurrent(12);
     frc::SmartDashboard::PutString("Intake Motor",to_string(val));
 
-    val=Board.GetCurrent(9);
+    val=Board.GetCurrent(6);
     frc::SmartDashboard::PutString("Buddy Climb Motor",to_string(val));
 
     val=Board.GetCurrent(3);
@@ -54,7 +54,7 @@ void Log::Dashboard (){
     val=Board.GetCurrent(2);
     frc::SmartDashboard::PutString("Left Climber",to_string(val));
 
-    val=Board.GetCurrent(6);
+    val=Board.GetCurrent(9);
     frc::SmartDashboard::PutString("Conveyor Motor",to_string(val));
 
 
