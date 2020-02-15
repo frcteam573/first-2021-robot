@@ -31,7 +31,9 @@ BRANCHES OF CODE: section/what you're working on     ex: Drive/JoystickControl
 void Robot::RobotInit() {
   bool leftbuttonstate = false;
   bool rightbuttonstate = false;
-  int shootercounter = 0;
+  auto trimstart=frc::SmartDashboard::GetNumber("Trim Start",0);
+
+  int shootercounter = (int)trimstart;
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -331,6 +333,8 @@ if (c2_dpad > 225 && c2_dpad < 315){
   }
 }
 else {rightbuttonstate=false;}
+frc::SmartDashboard::PutNumber("Current Trim",shootercounter);
+
 
 
 //intake code
