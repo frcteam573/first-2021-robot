@@ -296,10 +296,14 @@ if (climb_enable){
     MyDrive.climb(0.7);
 
   }
-  if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
+  else if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
 
     MyDrive.climb(-0.7);
   }
+  else{
+    MyDrive.climb(0);
+  }
+
 }
 
 
