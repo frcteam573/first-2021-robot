@@ -24,13 +24,13 @@ void Log::Dashboard (){
     val=Board.GetCurrent(0);
     frc::SmartDashboard::PutString("Right Drive Motor 1",to_string(val));
 
-    val=Board.GetCurrent(1);
+    val=Board.GetCurrent(14);
     frc::SmartDashboard::PutString("Right Drive Motor 2",to_string(val));
 
-    val=Board.GetCurrent(14);
+    val=Board.GetCurrent(1);
     frc::SmartDashboard::PutString("Left Drive Motor 1",to_string(val));
 
-    val=Board.GetCurrent(15);
+    val=Board.GetCurrent(13);
     frc::SmartDashboard::PutString("Left Drive Motor 2",to_string(val));
 
     val=Board.GetCurrent(10);
@@ -42,7 +42,7 @@ void Log::Dashboard (){
     val=Board.GetCurrent(4);
     frc::SmartDashboard::PutString("Control Panel",to_string(val));
 
-    val=Board.GetCurrent(5);
+    val=Board.GetCurrent(15);
     frc::SmartDashboard::PutString("Intake Motor",to_string(val));
 
     val=Board.GetCurrent(9);
