@@ -209,7 +209,7 @@ void Robot::TeleopPeriodic() {
   bool aligned = false;
   
   if (c1_btn_b && camera_exist == 1){
-
+    MyDrive.shift_low();
     aligned = MyDrive.camera_centering(camera_x, camera_s, d);
     
   }
@@ -219,8 +219,6 @@ void Robot::TeleopPeriodic() {
     
 
   }
-  
-  
 
   //------------ Shifting Logic ----------------------------------------
   if (c1_leftbmp){
@@ -379,9 +377,9 @@ bool wheel_speed = false;
 auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
-
+if (camera_exist==1){
   wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
-  
+
   if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
     MyAppendage.conveyor_motor(0.8);
@@ -393,7 +391,22 @@ if (c2_left_trigger > 0.5){
     MyAppendage.shooter_feed(0);
 
   }
+  }
+else {
+  wheel_speed = MyAppendage.shooter_pid(120, shootercounter);
 
+  if (c2_right_trigger > 0.5){
+
+    MyAppendage.conveyor_motor(0.8);
+    MyAppendage.shooter_feed(0.8);
+  }
+  else {
+
+    MyAppendage.conveyor_motor(0);
+    MyAppendage.shooter_feed(0);
+
+  }
+}
 }
 //---------------------LED CODE----------------------------------
 bool ready_to_fire = false;
