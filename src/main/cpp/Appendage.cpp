@@ -22,6 +22,9 @@
 
 using namespace std;
 
+    std::string colorStringold;
+    int colorcounter=0;
+
 Appendage::Appendage() : Subsystem("Appendage") {
     // Define CAN and PWM Ids used in Drive here
     
@@ -101,6 +104,7 @@ void Appendage::controlpanel_rotation_auto(){
     //frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
 }
 
+
 // color sensing control panel
 void Appendage::controlpanel_colorsense_init(){
 
@@ -158,16 +162,71 @@ void Appendage::controlpanel_colorsense_periodic(){
       } else {
         colorString = "Unknown";
       }
-      //Display what color is seen on DS
-      frc::SmartDashboard::PutString("DB/String 5", colorString);
-      if (colorString == color_in){
+ if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
       else {
           m_controlpanel->Set(0.6); // if color doesn't match desired color keep spinning
-      }
     }
   }
+}
+
+void Appendage::controlpanel_colorsense_periodicrotation(){
+    // Fucntion spins contorl panel to specified color recieved from driver station
+
+      frc::Color detectedColor = m_colorSensor->GetColor();
+    
+    // Get raw RGB values from color sensor and display on DS
+    /*frc::SmartDashboard::PutNumber("Red", detectedColor.red);
+    auto encoder_valstr = std::to_string(detectedColor.red);
+    frc::SmartDashboard::PutString("DB/String 0",encoder_valstr);
+    frc::SmartDashboard::PutNumber("Green", detectedColor.green);
+    frc::SmartDashboard::PutNumber("Blue", detectedColor.blue);
+    auto encoder_valstr1 = std::to_string(detectedColor.blue);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr1);
+    auto encoder_valstr2 = std::to_string(detectedColor.green);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2); */
+      
+    //Run the color match algorithm on our detected color
+
+      std::string colorString;
+      double confidence = 0.99;
+
+      frc::Color matchedColor = m_colorMatcher->MatchClosestColor(detectedColor, confidence); // Determine color
+
+      if (matchedColor == kBlueTarget) {
+        colorString = "B";
+      } else if (matchedColor == kRedTarget) {
+        colorString = "R";
+      } else if (matchedColor == kGreenTarget) {
+        colorString = "G";
+      } else if (matchedColor == kYellowTarget) {
+        colorString = "Y";
+      } else if (matchedColor == kWhiteTarget) {
+        colorString = "W";
+      } else {
+        colorString = "Unknown";
+      }
+
+
+
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
+      if (colorStringold != colorString){
+          colorStringold = colorString;
+          colorcounter++;
+      }
+
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
+      if (colorcounter < 28){
+          m_controlpanel->Set(0.6); // If color matches desired stop motor
+      }
+      else {
+          m_controlpanel->Set(0); // if color doesn't match desired color keep spinning
+      }
+    }
+  
 
 
 // driver station data
