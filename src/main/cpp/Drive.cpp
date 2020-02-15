@@ -26,16 +26,17 @@ Drive::Drive() : Subsystem("Drive") {
     //int rightdriveID2 = 5;
     int driveshiftIDa = 2;
     int driveshiftIDb = 3;
-    int buddyclimbID = 11;
+    int buddyclimbID = 12;
     int buddyclimbpIDa = 6;
     int buddyclimbpIDb = 7;
-    int leftclimbID = 6;
-    int rightclimbID = 7;
+    int leftclimbID = 7;
+    int rightclimbID = 8;
     int leftdriveencID_a = 2;
     int leftdriveencID_b = 3;
     int rightdriveencID_a = 0;
     int rightdriveencID_b = 1;    
-
+    int climberlockIDa = 4;
+    int climberlockIDb = 5;
 
 
     // Define motors, sensors, and pneumatics here
@@ -59,8 +60,8 @@ Drive::Drive() : Subsystem("Drive") {
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_leftclimb->SetInverted(true);
 
+    p_climberlock = new frc::DoubleSolenoid(1, climberlockIDa, climberlockIDb);
 }
-
 
 /* DEADBAND FUNCTION */
 /* use to create a deadband on the controls, passing the input and the deadband size */
@@ -306,4 +307,13 @@ void Drive::dashboard(){
 
 }
 
+void Drive::climberunlock(){
+    // Deploy buddy climb claw
+    p_climberlock->Set(frc::DoubleSolenoid::Value::kForward);
+}
 
+void Drive::climberlock(){
+    // Retract buddy climb claw
+    p_climberlock->Set(frc::DoubleSolenoid::Value::kReverse);
+
+}

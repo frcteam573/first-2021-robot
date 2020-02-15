@@ -22,6 +22,9 @@
 
 using namespace std;
 
+    std::string colorStringold;
+    int colorcounter=0;
+
 Appendage::Appendage() : Subsystem("Appendage") {
     // Define CAN and PWM Ids used in Drive here
     
@@ -29,17 +32,15 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
   
-    int shooterID = 8;
-    int shooterID2 = 9;
+    int shooterID = 9;
+    int shooterID2 = 10;
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
     int intakeIDa = 0;
     int intakeIDb = 1;
-    int intakeIDc = 10;
-    int conveyormID = 12;
-    int conveyorpIDa = 4;
-    int conveyorpIDb = 5;
+    int intakeIDc = 11;
+    int conveyormID = 13;
 
     int shooter_feedID = 15;
 
@@ -56,7 +57,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_intake = new rev::CANSparkMax{intakeIDc, rev::CANSparkMax::MotorType::kBrushless};
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
-    p_conveyor = new frc::DoubleSolenoid(1, conveyorpIDa, conveyorpIDb);
+    
 
     m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
@@ -102,6 +103,7 @@ void Appendage::controlpanel_rotation_auto(){
     //auto encoder_valstr = std::to_string(encoder_val);
     //frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
 }
+
 
 // color sensing control panel
 void Appendage::controlpanel_colorsense_init(){
@@ -160,16 +162,71 @@ void Appendage::controlpanel_colorsense_periodic(){
       } else {
         colorString = "Unknown";
       }
-      //Display what color is seen on DS
-      frc::SmartDashboard::PutString("DB/String 5", colorString);
-      if (colorString == color_in){
+ if (colorString == color_in){
           m_controlpanel->Set(0); // If color matches desired stop motor
       }
       else {
           m_controlpanel->Set(0.6); // if color doesn't match desired color keep spinning
-      }
     }
   }
+}
+
+void Appendage::controlpanel_colorsense_periodicrotation(){
+    // Fucntion spins contorl panel to specified color recieved from driver station
+
+      frc::Color detectedColor = m_colorSensor->GetColor();
+    
+    // Get raw RGB values from color sensor and display on DS
+    /*frc::SmartDashboard::PutNumber("Red", detectedColor.red);
+    auto encoder_valstr = std::to_string(detectedColor.red);
+    frc::SmartDashboard::PutString("DB/String 0",encoder_valstr);
+    frc::SmartDashboard::PutNumber("Green", detectedColor.green);
+    frc::SmartDashboard::PutNumber("Blue", detectedColor.blue);
+    auto encoder_valstr1 = std::to_string(detectedColor.blue);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr1);
+    auto encoder_valstr2 = std::to_string(detectedColor.green);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2); */
+      
+    //Run the color match algorithm on our detected color
+
+      std::string colorString;
+      double confidence = 0.99;
+
+      frc::Color matchedColor = m_colorMatcher->MatchClosestColor(detectedColor, confidence); // Determine color
+
+      if (matchedColor == kBlueTarget) {
+        colorString = "B";
+      } else if (matchedColor == kRedTarget) {
+        colorString = "R";
+      } else if (matchedColor == kGreenTarget) {
+        colorString = "G";
+      } else if (matchedColor == kYellowTarget) {
+        colorString = "Y";
+      } else if (matchedColor == kWhiteTarget) {
+        colorString = "W";
+      } else {
+        colorString = "Unknown";
+      }
+
+
+
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
+      if (colorStringold != colorString){
+          colorStringold = colorString;
+          colorcounter++;
+      }
+
+      //Display what color is seen on DS
+      frc::SmartDashboard::PutString("DB/String 5", colorString);
+      if (colorcounter < 28){
+          m_controlpanel->Set(0.6); // If color matches desired stop motor
+      }
+      else {
+          m_controlpanel->Set(0); // if color doesn't match desired color keep spinning
+      }
+    }
+  
 
 
 // driver station data
@@ -259,17 +316,7 @@ void Appendage::conveyor_motor(double input){
 
 }
 
-void Appendage::conveyor_open(){
 
-  p_conveyor->Set(frc::DoubleSolenoid::Value::kForward);
-
-}
-
-void Appendage::conveyor_close(){
-
-  p_conveyor->Set(frc::DoubleSolenoid::Value::kReverse);
-
-}
 
 void Appendage::shooter_feed(double input){
 
