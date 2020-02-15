@@ -54,6 +54,7 @@ class Robot : public frc::TimedRobot {
   frc::Joystick controller1{0}; // Driver controller
   frc::Joystick controller2{1}; // Operator controller
   int count;
+  int count_delay;
   bool leftbuttonstate;
   bool rightbuttonstate;
   int shootercounter;

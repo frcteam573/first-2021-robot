@@ -80,6 +80,7 @@ void Robot::AutonomousInit() {
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
   int count = 0;
+  int count_delay = 0;
 
 
   if (m_autoSelected == kAutoNameCustom) {
@@ -125,113 +126,169 @@ void Robot::AutonomousPeriodic() {
   auto dstr = std::to_string(d);
   frc::SmartDashboard::PutString("Limelight-Distance", dstr);
 
-
-
-
-  
+ 
   auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
+  auto delay = frc::SmartDashboard::GetNumber("Auton Delay",0);
+  int delay_int = (int)delay;
+  delay_int = delay_int * 50; 
 
   double count_max = MyPaths.ReturnTableVal(0,5);
   int count_max_int = (int)count_max;
   bool aligned = false;
   bool wheel_speed = false;
 
-  if (mode =="0"){
+  if (count_delay > delay_int){
+    if (mode =="0"){
       // Custom Auto goes here
 
 
-    if (count < 250){
+      if (count < 250){
 
-      aligned = false;
-      aligned = MyDrive.camera_centering(camera_x, camera_s, d);
-      wheel_speed = false;
-      wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
-    }
-      if (aligned && wheel_speed ){
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
 
-        MyAppendage.conveyor_motor(0.8);
-      
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+
+        }
       }
+    
+      else if (count > 250 && count < count_max_int + 250){
+
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+      
+        
+      }
+    }
+    if (mode =="2"){
+        // Custom Auto goes here
+      
+
+        if (count < count_max_int){
+        MyDrive.shift_high();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        if (count < 216){
+          MyAppendage.intake_out();
+          MyAppendage.intakemotor(0.8);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(-0.8);
+        }
+        else{
+          MyAppendage.intake_in();
+          MyAppendage.intakemotor(0);
+          MyAppendage.shooter_feed(0);
+        }
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+
+
+      
+        
+        }
+
+    
       else {
+        bool aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        bool wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        if (aligned && wheel_speed ){
 
-        MyAppendage.conveyor_motor(0);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
 
+          MyAppendage.conveyor_motor(0);
+
+        }
       }
-      
+
+
     }
-    else if (count > 250 && count < count_max_int + 250){
-
-      //Get setpoint values from tables
-      MyAppendage.shooter_speed(0);
-      double left_pos = MyPaths.ReturnTableVal(count,0);
-      double left_speed = MyPaths.ReturnTableVal(count,1);
-      double right_pos = MyPaths.ReturnTableVal(count,2);
-      double right_speed = MyPaths.ReturnTableVal(count,3);
-      double heading = MyPaths.ReturnTableVal(count,4);
-      
-
-      //Call PID Loop to follow path
-      MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
-    
-      
-  }
-
-
-  if (mode =="2"){
-      // Custom Auto goes here
-    
-
-      if (count < count_max_int){
-      MyDrive.shift_high();
-      //Get setpoint values from tables
-      MyAppendage.shooter_speed(0);
-      double left_pos = MyPaths.ReturnTableVal(count,0);
-      double left_speed = MyPaths.ReturnTableVal(count,1);
-      double right_pos = MyPaths.ReturnTableVal(count,2);
-      double right_speed = MyPaths.ReturnTableVal(count,3);
-      double heading = MyPaths.ReturnTableVal(count,4);
-      if (count < 216){
-        MyAppendage.intake_out();
-        MyAppendage.intakemotor(0.8);
-        MyAppendage.conveyor_motor(0.8);
-      }
-      else{
-        MyAppendage.intake_in();
-        MyAppendage.intakemotor(0);
-      }
-      
-
-      //Call PID Loop to follow path
-      MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
-
-
-    
-      
-    }
-
   
-  else {
-    bool aligned = false;
-    aligned = MyDrive.camera_centering(camera_x, camera_s, d);
-    bool wheel_speed = false;
-    wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
-    if (aligned && wheel_speed ){
+    if (mode =="3"){
+      if (count < 250){
 
-      MyAppendage.conveyor_motor(0.8);
-    
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+
+        }
+      }
+      
+      else if (count > 250 && count < count_max_int + 250){
+
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        if (count < 220){
+          MyAppendage.intake_out();
+          MyAppendage.intakemotor(0.8);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(-0.8);
+        }
+        else{
+          MyAppendage.intake_in();
+          MyAppendage.intakemotor(0);
+          MyAppendage.shooter_feed(0);
+        }
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+      
+      }
     }
-    else {
-
-      MyAppendage.conveyor_motor(0);
-
-    }
-  }
+    count ++;
+  }  
 
 
-  }
-  
 
-  count ++;
+  count_delay ++;
 }
 
 void Robot::TeleopInit() {
