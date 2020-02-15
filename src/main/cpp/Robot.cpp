@@ -42,7 +42,7 @@ void Robot::RobotInit() {
   MyDrive.buddyclimb_motor(0);
   bool climb_enable = false;
   MyDrive.shift_low();
-  
+  MyDrive.climberlock();
 }
 
 /**
@@ -293,16 +293,24 @@ if (climb_enable){
 
   if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
 
+    MyDrive.climberunlock();
+
     MyDrive.climb(0.7);
 
   }
   else if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
 
+    MyDrive.climberunlock();
+
     MyDrive.climb(-0.7);
   }
   else{
+
+MyDrive.climberlock();
+
     MyDrive.climb(0);
   }
+
 
 }
 

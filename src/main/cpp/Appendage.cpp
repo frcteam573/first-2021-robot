@@ -29,17 +29,15 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int controlpanelencID_a = 4;
     int controlpanelencID_b = 5;
   
-    int shooterID = 8;
-    int shooterID2 = 9;
+    int shooterID = 9;
+    int shooterID2 = 10;
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
     int intakeIDa = 0;
     int intakeIDb = 1;
-    int intakeIDc = 10;
-    int conveyormID = 12;
-    int conveyorpIDa = 4;
-    int conveyorpIDb = 5;
+    int intakeIDc = 11;
+    int conveyormID = 13;
 
     int shooter_feedID = 15;
 

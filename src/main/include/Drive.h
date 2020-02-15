@@ -18,6 +18,7 @@
 
 
 
+
 using namespace std;
 
 class Drive : public frc::Subsystem {
@@ -37,6 +38,7 @@ class Drive : public frc::Subsystem {
     frc::Encoder * s_leftdrive_enc;
     frc::Encoder * s_rightdrive_enc;
     frc::ADXRS450_Gyro * s_gyro;
+    frc::DoubleSolenoid * p_climberlock;
     
 
     public:
@@ -57,6 +59,8 @@ class Drive : public frc::Subsystem {
      void shift_high();
      void shift_auto();    
      void dashboard();
+     void climberlock();
+     void climberunlock();
 
 };
 #endif
