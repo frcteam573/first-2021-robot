@@ -249,6 +249,9 @@ if (!buddyclimb_enable){
     else if (c2_btn_x){
       MyAppendage.controlpanel_colorsense_periodic();
     }
+    else if (c2_btn_a){
+        MyAppendage.control_panel(-0.6);
+    }
     else {
       MyAppendage.control_panel(0);
     }
@@ -336,9 +339,18 @@ frc::SmartDashboard::PutNumber("Current Trim",shootercounter);
 
 
 //intake code
+if (buddyclimb_enable){
+if(c2_rightbumper){ 
+  MyAppendage.intake_out();
+}}
+else{
 if(c2_rightbumper){ 
   MyAppendage.intake_out();
   MyAppendage.intakemotor(0.8);
+
+
+
+
   MyAppendage.conveyor_motor(0.8);
   MyAppendage.shooter_feed(-0.8);
 }
@@ -354,6 +366,7 @@ else {
   MyAppendage.intake_in();
   MyAppendage.shooter_feed(0);
   
+}
 }
 
 
