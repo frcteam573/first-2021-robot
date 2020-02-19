@@ -16,6 +16,8 @@
 #include <frc\I2C.h>
 #include <frc/DoubleSolenoid.h>
 #include <rev/CANEncoder.h>
+#include "rev/SparkMax.h"
+
 
 
 
@@ -39,7 +41,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
 
     int intakeIDa = 0;
     int intakeIDb = 1;
-    int intakeIDc = 11;
+    int intakeIDc = 0;
     int conveyormID = 13;
 
     int shooter_feedID = 15;
@@ -54,7 +56,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
    
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
-    m_intake = new rev::CANSparkMax{intakeIDc, rev::CANSparkMax::MotorType::kBrushless};
+    m_intake = new rev::SparkMax{intakeIDc};
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
