@@ -293,6 +293,34 @@ bool Appendage::shooter_pid(double distance, int trim){
     return output;
 }
 
+bool Appendage::shooter_get_distance(int trim){
+
+    //double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+
+    setpoint = trim*250;
+    
+    double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
+    
+    double error = setpoint - encoder_val; // Calculate current error
+    error = deadband(error, 10); // Apply a deadband to help overshoot.
+    double kpe = .0005; // P gain
+    double output_e = error * kpe; // Calculate motor value
+    //output_e = Threshold(output_e, 0.9); // Threshold motor value
+    m_shooter->Set(output_e+.25); // Set motor to value
+    m_shooter2->Set(output_e+.25);
+    auto encoder_valstr = std::to_string(encoder_val);
+    frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
+    auto encoder_valstr2 = std::to_string(setpoint);
+    frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
+    auto encoder_valstr3 = std::to_string(output_e+.25);
+    frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
+    bool output = false;
+    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+      output = true;
+    }
+    return output;
+}
+
 
 void Appendage::intakemotor(double input){
 
