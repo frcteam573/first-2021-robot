@@ -67,6 +67,7 @@ class Appendage : public frc::Subsystem {
      void controlpanel_colorsense_init();
      std::string driverstation_color();
      bool shooter_pid (double distance, int trim);
+     bool shooter_get_distance (int trim);
      void intakemotor(double input);
      void intake_out();
      void intake_in();
