@@ -40,16 +40,16 @@ Drive::Drive() : Subsystem("Drive") {
 
 
     // Define motors, sensors, and pneumatics here
-    m_leftdrive = new frc::VictorSP(9); //new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless}; //actually 1
-    //m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftdrive = new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless}; //actually 1
+    m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
     m_leftdrive->SetInverted(true);
-    //m_leftdrive2->SetInverted(true);
-    m_rightdrive = new frc::VictorSP(0); //new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
-    //m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftdrive2->SetInverted(true);
+    m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
+    m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
 
     s_gyro = new frc::ADXRS450_Gyro();
 
-    //m_leftdrive2->SetInverted(true);
+    m_leftdrive2->SetInverted(true);
     s_leftdrive_enc = new frc::Encoder( leftdriveencID_a, leftdriveencID_b, false, frc::Encoder::k4X);
     s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, true, frc::Encoder::k4X);
     p_driveshift = new frc::DoubleSolenoid(1, driveshiftIDa, driveshiftIDb);
@@ -100,10 +100,10 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     }
 
     m_leftdrive->Set(LeftStick);
-    //m_leftdrive2->Set(LeftStick);
+    m_leftdrive2->Set(LeftStick);
     leftdriveold = LeftStick;
     m_rightdrive->Set(RightStick);
-    //m_rightdrive2->Set(RightStick);
+    m_rightdrive2->Set(RightStick);
     rightdriveold = RightStick;
 
 
