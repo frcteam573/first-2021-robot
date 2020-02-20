@@ -20,10 +20,10 @@ double rightdriveold;
 Drive::Drive() : Subsystem("Drive") {
     // Define CAN and PWM Ids used in Drive here
 
-    //int leftdriveID = 2;
-    //int leftdriveID2 = 3;
-    //int rightdriveID = 4;
-    //int rightdriveID2 = 5;
+    int leftdriveID = 3;
+    int leftdriveID2 = 4;
+    int rightdriveID = 5;
+    int rightdriveID2 = 6;
     int driveshiftIDa = 2;
     int driveshiftIDb = 3;
     int buddyclimbID = 12;
