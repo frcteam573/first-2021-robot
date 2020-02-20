@@ -22,6 +22,8 @@
 #include <frc\I2C.h>
 #include <frc/DoubleSolenoid.h>
 #include <rev/CANEncoder.h>
+#include "rev/SparkMax.h"
+
 
 using namespace std;
 
@@ -37,7 +39,7 @@ class Appendage : public frc::Subsystem {
     rev::CANSparkMax * m_shooter;
     rev::CANSparkMax * m_shooter2;
     rev::CANEncoder * s_shooter_encoder;
-    rev::CANSparkMax * m_intake;
+    rev::SparkMax * m_intake;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
     rev::CANSparkMax * m_shooterfeed;
