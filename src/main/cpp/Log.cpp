@@ -34,7 +34,7 @@ void Log::Dashboard (){
     frc::SmartDashboard::PutString("Left Drive Motor 2",to_string(val));
 
     val=Board.GetCurrent(10);
-    frc::SmartDashboard::PutString("Shooter Motor 1",to_string(val));
+    frc::SmartDashboard::PutString("Shooter Motor 2",to_string(val));
 
     val=Board.GetCurrent(11);
     frc::SmartDashboard::PutString("Shooter Motor 1",to_string(val));

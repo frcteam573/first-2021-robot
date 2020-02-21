@@ -24,15 +24,15 @@ Drive::Drive() : Subsystem("Drive") {
     int leftdriveID2 = 4;
     int rightdriveID = 5;
     int rightdriveID2 = 6;
-    int driveshiftIDa = 2;
-    int driveshiftIDb = 3;
+    int driveshiftIDa = 4;
+    int driveshiftIDb = 5;
     int buddyclimbID = 12;
     int buddyclimbpIDa = 6;
     int buddyclimbpIDb = 7;
     int leftclimbID = 7;
     int rightclimbID = 8;
-    int leftdriveencID_a = 2;
-    int leftdriveencID_b = 3;
+    int leftdriveencID_a = 4;
+    int leftdriveencID_b = 5;
     int rightdriveencID_a = 0;
     int rightdriveencID_b = 1;    
     int climberlockIDa = 4;
@@ -52,7 +52,7 @@ Drive::Drive() : Subsystem("Drive") {
     m_leftdrive2->SetInverted(true);
     s_leftdrive_enc = new frc::Encoder( leftdriveencID_a, leftdriveencID_b, false, frc::Encoder::k4X);
     s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, true, frc::Encoder::k4X);
-    p_driveshift = new frc::DoubleSolenoid(1, driveshiftIDa, driveshiftIDb);
+    p_driveshift = new frc::DoubleSolenoid(2, driveshiftIDa, driveshiftIDb);
     m_buddyclimb = new rev::CANSparkMax{buddyclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_buddyclimb -> SetInverted(true);
     p_buddyclimb = new frc::DoubleSolenoid(1, buddyclimbpIDa, buddyclimbpIDb);
