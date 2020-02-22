@@ -74,6 +74,7 @@ class Appendage : public frc::Subsystem {
      void conveyor_motor(double input);
      void shooter_feed(double input);
      void dashboard();
+     void shooter_raw(double input);
 
     
 

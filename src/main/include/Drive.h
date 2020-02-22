@@ -26,10 +26,10 @@ class Drive : public frc::Subsystem {
     private:
     // Define motor, sensors, and pnematic pointers here
 
-    /*rev::CANSparkMax*/ frc::VictorSP * m_leftdrive;
-    //rev::CANSparkMax * m_leftdrive2;
-    /*rev::CANSparkMax*/ frc::VictorSP * m_rightdrive;
-    //rev::CANSparkMax * m_rightdrive2;
+    rev::CANSparkMax * m_leftdrive;
+    rev::CANSparkMax * m_leftdrive2;
+    rev::CANSparkMax * m_rightdrive;
+    rev::CANSparkMax * m_rightdrive2;
     frc::DoubleSolenoid * p_driveshift;
     rev::CANSparkMax * m_buddyclimb;
     frc::DoubleSolenoid * p_buddyclimb;

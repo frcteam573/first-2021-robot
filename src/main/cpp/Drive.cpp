@@ -20,19 +20,19 @@ double rightdriveold;
 Drive::Drive() : Subsystem("Drive") {
     // Define CAN and PWM Ids used in Drive here
 
-    //int leftdriveID = 2;
-    //int leftdriveID2 = 3;
-    //int rightdriveID = 4;
-    //int rightdriveID2 = 5;
-    int driveshiftIDa = 2;
-    int driveshiftIDb = 3;
+    int leftdriveID = 3;
+    int leftdriveID2 = 4;
+    int rightdriveID = 5;
+    int rightdriveID2 = 6;
+    int driveshiftIDa = 4;
+    int driveshiftIDb = 5;
     int buddyclimbID = 12;
     int buddyclimbpIDa = 6;
     int buddyclimbpIDb = 7;
     int leftclimbID = 7;
     int rightclimbID = 8;
-    int leftdriveencID_a = 2;
-    int leftdriveencID_b = 3;
+    int leftdriveencID_a = 4;
+    int leftdriveencID_b = 5;
     int rightdriveencID_a = 0;
     int rightdriveencID_b = 1;    
     int climberlockIDa = 4;
@@ -40,21 +40,21 @@ Drive::Drive() : Subsystem("Drive") {
 
 
     // Define motors, sensors, and pneumatics here
-    m_leftdrive = new frc::VictorSP(9); //new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless}; //actually 1
-    //m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftdrive = new rev::CANSparkMax{leftdriveID, rev::CANSparkMax::MotorType::kBrushless}; //actually 1
+    m_leftdrive2 = new rev::CANSparkMax{leftdriveID2, rev::CANSparkMax::MotorType::kBrushless};
     m_leftdrive->SetInverted(true);
-    //m_leftdrive2->SetInverted(true);
-    m_rightdrive = new frc::VictorSP(0); //new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
-    //m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
+    m_leftdrive2->SetInverted(true);
+    m_rightdrive = new rev::CANSparkMax{rightdriveID, rev::CANSparkMax::MotorType::kBrushless};
+    m_rightdrive2 = new rev::CANSparkMax{rightdriveID2, rev::CANSparkMax::MotorType::kBrushless};
 
     s_gyro = new frc::ADXRS450_Gyro();
 
-    //m_leftdrive2->SetInverted(true);
+    m_leftdrive2->SetInverted(true);
     s_leftdrive_enc = new frc::Encoder( leftdriveencID_a, leftdriveencID_b, false, frc::Encoder::k4X);
-    s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, false, frc::Encoder::k4X);
-    p_driveshift = new frc::DoubleSolenoid(1, driveshiftIDa, driveshiftIDb);
+    s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, true, frc::Encoder::k4X);
+    p_driveshift = new frc::DoubleSolenoid(2, driveshiftIDa, driveshiftIDb);
     m_buddyclimb = new rev::CANSparkMax{buddyclimbID, rev::CANSparkMax::MotorType::kBrushless};
-
+    m_buddyclimb -> SetInverted(true);
     p_buddyclimb = new frc::DoubleSolenoid(1, buddyclimbpIDa, buddyclimbpIDb);
     m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
@@ -100,10 +100,10 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     }
 
     m_leftdrive->Set(LeftStick);
-    //m_leftdrive2->Set(LeftStick);
+    m_leftdrive2->Set(LeftStick);
     leftdriveold = LeftStick;
     m_rightdrive->Set(RightStick);
-    //m_rightdrive2->Set(RightStick);
+    m_rightdrive2->Set(RightStick);
     rightdriveold = RightStick;
 
 

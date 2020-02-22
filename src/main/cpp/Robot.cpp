@@ -340,33 +340,31 @@ frc::SmartDashboard::PutNumber("Current Trim",shootercounter);
 
 //intake code
 if (buddyclimb_enable){
-if(c2_rightbumper){ 
-  MyAppendage.intake_out();
-}}
+  if(c2_rightbumper){ 
+    MyAppendage.intake_out();
+  }
+}
 else{
-if(c2_rightbumper){ 
-  MyAppendage.intake_out();
-  MyAppendage.intakemotor(0.8);
+  if(c2_rightbumper){ 
+    MyAppendage.intake_out();
+    MyAppendage.intakemotor(0.8);
 
+    MyAppendage.conveyor_motor(0.95);
+    MyAppendage.shooter_feed(-0.8);
+  }
 
-
-
-  MyAppendage.conveyor_motor(0.8);
-  MyAppendage.shooter_feed(-0.8);
-}
-
-else if (c2_leftbumper){
-  MyAppendage.intakemotor(-0.8);
-  MyAppendage.conveyor_motor(-0.8);
-  MyAppendage.shooter_feed(-0.8);
-  
-}
-else {
-  MyAppendage.intakemotor(0);
-  MyAppendage.intake_in();
-  MyAppendage.shooter_feed(0);
-  
-}
+  else if (c2_leftbumper){
+    MyAppendage.intakemotor(-0.8);
+    MyAppendage.conveyor_motor(-0.95);
+    MyAppendage.shooter_feed(-0.8);
+    
+  }
+  else {
+    MyAppendage.intakemotor(0);
+    MyAppendage.intake_in();
+    MyAppendage.shooter_feed(0);
+    
+  }
 }
 
 
@@ -393,33 +391,41 @@ if (c2_left_trigger > 0.5){
 if (camera_exist==1){
   wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
-  if (aligned && wheel_speed && c2_right_trigger > 0.5){
+    if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
-    MyAppendage.conveyor_motor(0.8);
-    MyAppendage.shooter_feed(0.8);
-  }
-  else {
+      MyAppendage.conveyor_motor(0.95);
+      MyAppendage.shooter_feed(0.8);
+    }
+    else {
 
-    MyAppendage.conveyor_motor(0);
-    MyAppendage.shooter_feed(0);
+      MyAppendage.conveyor_motor(0);
+      MyAppendage.shooter_feed(0);
 
   }
   }
 else {
   wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
-  if (c2_right_trigger > 0.5){
+    if (c2_right_trigger > 0.5){
 
-    MyAppendage.conveyor_motor(0.8);
-    MyAppendage.shooter_feed(0.8);
-  }
-  else {
+      MyAppendage.conveyor_motor(0.8);
+      MyAppendage.shooter_feed(0.8);
+    }
+    else {
 
-    MyAppendage.conveyor_motor(0);
-    MyAppendage.shooter_feed(0);
+      MyAppendage.conveyor_motor(0);
+      MyAppendage.shooter_feed(0);
 
+    }
   }
 }
+else{
+  if(!c2_leftbumper && !c2_rightbumper){
+    MyAppendage.conveyor_motor(0);
+  }
+  
+  //MyAppendage.shooter_feed(0);
+  MyAppendage.shooter_raw(0);
 }
 //---------------------LED CODE----------------------------------
 bool ready_to_fire = false;

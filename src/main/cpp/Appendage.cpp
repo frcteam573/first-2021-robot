@@ -52,11 +52,15 @@ Appendage::Appendage() : Subsystem("Appendage") {
 
     m_shooter =new rev::CANSparkMax{shooterID, rev::CANSparkMax::MotorType::kBrushless};
     s_shooter_encoder = new  rev::CANEncoder(*m_shooter);
+    m_shooter -> SetInverted(true);
     m_shooter2 =new rev::CANSparkMax{shooterID2, rev::CANSparkMax::MotorType::kBrushless};
+    m_shooter2 -> SetInverted (true);
+
    
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new rev::SparkMax{intakeIDc};
+    m_intake -> SetInverted(true);
     p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
@@ -263,6 +267,10 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+void Appendage::shooter_raw(double input){
+  m_shooter->Set(input); // Set motor to value
+  m_shooter2->Set(input);
+}
 
 
 bool Appendage::shooter_pid(double distance, int trim){
@@ -272,14 +280,15 @@ bool Appendage::shooter_pid(double distance, int trim){
     setpoint = setpoint + setpoint * trim/100.0;
     
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
+    encoder_val = -1*encoder_val;
     
     double error = setpoint - encoder_val; // Calculate current error
     error = deadband(error, 10); // Apply a deadband to help overshoot.
     double kpe = .0005; // P gain
     double output_e = error * kpe; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
-    m_shooter->Set(output_e+.25); // Set motor to value
-    m_shooter2->Set(output_e+.25);
+    m_shooter->Set(output_e); // Set motor to value
+    m_shooter2->Set(output_e);
     auto encoder_valstr = std::to_string(encoder_val);
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
@@ -362,6 +371,7 @@ void Appendage::dashboard(){
   frc::SmartDashboard::PutString("Control Panel Encoder",val_1_str);
 
   double val_2 = s_shooter_encoder->GetVelocity();
+  val_2 = -1*val_2;
   auto val_2_str = std::to_string(val_2);
   frc::SmartDashboard::PutString("Shooter Encoder", val_2_str);
 
