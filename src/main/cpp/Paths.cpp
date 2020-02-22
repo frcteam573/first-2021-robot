@@ -44,7 +44,7 @@ double Paths::ReturnTableVal(int count, int select){
     }
 
 
-    double dist_conv = 550/5; //ticks to feet
+    double dist_conv = 6628/5; //ticks to feet
     double speed_conv = 1;
 
     double output;

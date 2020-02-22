@@ -280,13 +280,25 @@ bool Appendage::shooter_pid(double distance, int trim){
     setpoint = setpoint + setpoint * trim/100.0;
     
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
-    encoder_val = -1*encoder_val;
+    
     
     double error = setpoint - encoder_val; // Calculate current error
-    error = deadband(error, 10); // Apply a deadband to help overshoot.
-    double kpe = .00015; // P gain
-    double output_e = error * kpe; // Calculate motor value
-    //output_e = Threshold(output_e, 0.9); // Threshold motor value
+    //error = deadband(error, 10); // Apply a deadband to help overshoot.
+    double kpe = 0.00015; //
+    //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
+    double coach_marc = 0;
+    if (setpoint > 7500 && setpoint < 9000){
+        coach_marc = 0.75;
+    }
+    else if (setpoint >= 9000 && setpoint < 11000){
+      coach_marc = 0.85;
+    }
+    else if (setpoint >= 11000){
+      coach_marc = 0.9;
+    }
+    double output_e = error * kpe + coach_marc; // Calculate motor value
+
+
     m_shooter->Set(output_e); // Set motor to value
     m_shooter2->Set(output_e);
     auto encoder_valstr = std::to_string(encoder_val);
@@ -313,8 +325,19 @@ bool Appendage::shooter_get_distance(int trim){
     double error = setpoint - encoder_val; // Calculate current error
     //error = deadband(error, 10); // Apply a deadband to help overshoot.
     
-    double kpe = 0.00015; //frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
-    double output_e = error * kpe + 0.8; // Calculate motor value
+    double kpe = 0.00015; //
+    //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
+    double coach_marc = 0;
+    if (setpoint > 7500 && setpoint < 9000){
+        coach_marc = 0.75;
+    }
+    else if (setpoint >= 9000 && setpoint < 11000){
+      coach_marc = 0.85;
+    }
+    else if (setpoint >= 11000){
+      coach_marc = 0.9;
+    }
+    double output_e = error * kpe + coach_marc; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
     m_shooter->Set(output_e); // Set motor to value
     m_shooter2->Set(output_e);

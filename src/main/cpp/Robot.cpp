@@ -229,7 +229,8 @@ void Robot::TeleopPeriodic() {
     MyDrive.shift_high();
   }
   else {
-    MyDrive.shift_auto();
+    //MyDrive.shift_auto();
+    MyDrive.shift_low();
   }
   //--------------------------------------------------------------------
 //******************************************************************************
@@ -388,39 +389,39 @@ bool wheel_speed = false;
 auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
-if (camera_exist==0){
-  wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
+  if (camera_exist==0){
+    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
-    if (aligned && wheel_speed && c2_right_trigger > 0.5){
+      if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
-      MyAppendage.conveyor_motor(0.95);
-      MyAppendage.shooter_feed(0.8);
-    }
-    else {
+        MyAppendage.conveyor_motor(0.95);
+        MyAppendage.shooter_feed(0.8);
+      }
+      else {
 
-      MyAppendage.conveyor_motor(0);
-      MyAppendage.shooter_feed(0);
-
-  }
-  }
-else {
-  wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
-
-    if (c2_right_trigger > 0.5){
-
-      MyAppendage.conveyor_motor(0.8);
-      MyAppendage.shooter_feed(0.8);
-    }
-    else {
-
-      MyAppendage.conveyor_motor(0);
-      MyAppendage.shooter_feed(0);
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
 
     }
-  }
+    }
+  else {
+    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
+
+      if (c2_right_trigger > 0.5){
+
+        MyAppendage.conveyor_motor(0.8);
+        MyAppendage.shooter_feed(0.8);
+      }
+      else {
+
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
+
+      }
+    }
 }
 else{
-  if(!c2_leftbumper && !c2_rightbumper){
+  if((!c2_leftbumper) && (!c2_rightbumper)){
     MyAppendage.conveyor_motor(0);
   }
   
