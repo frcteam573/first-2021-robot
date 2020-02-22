@@ -75,8 +75,7 @@ class Appendage : public frc::Subsystem {
      void shooter_feed(double input);
      void dashboard();
      void shooter_raw(double input);
-
-    
+     void shooter_speed(double input);
 
 };
 #endif
