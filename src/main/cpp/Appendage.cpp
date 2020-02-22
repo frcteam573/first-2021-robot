@@ -39,8 +39,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int shooterencID_a = 6;
     int shooterencID_b = 7;
 
-    int intakeIDa = 0;
-    int intakeIDb = 1;
+    int intakeIDa = 6;
+    int intakeIDb = 7;
     int intakeIDc = 0;
     int conveyormID = 13;
 
@@ -61,7 +61,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new rev::SparkMax{intakeIDc};
     m_intake -> SetInverted(true);
-    p_intake = new frc::DoubleSolenoid(1, intakeIDa, intakeIDb);
+    p_intake = new frc::DoubleSolenoid(2, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
 
@@ -284,7 +284,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     
     double error = setpoint - encoder_val; // Calculate current error
     error = deadband(error, 10); // Apply a deadband to help overshoot.
-    double kpe = .0005; // P gain
+    double kpe = .00015; // P gain
     double output_e = error * kpe; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
     m_shooter->Set(output_e); // Set motor to value
@@ -311,10 +311,10 @@ bool Appendage::shooter_get_distance(int trim){
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
     
     double error = setpoint - encoder_val; // Calculate current error
-    error = deadband(error, 10); // Apply a deadband to help overshoot.
+    //error = deadband(error, 10); // Apply a deadband to help overshoot.
     
-    double kpe = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
-    double output_e = error * kpe; // Calculate motor value
+    double kpe = 0.00015; //frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
+    double output_e = error * kpe + 0.8; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
     m_shooter->Set(output_e); // Set motor to value
     m_shooter2->Set(output_e);
@@ -322,7 +322,7 @@ bool Appendage::shooter_get_distance(int trim){
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
-    auto encoder_valstr3 = std::to_string(output_e+.25);
+    auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
     if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){

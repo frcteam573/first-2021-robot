@@ -305,7 +305,7 @@ if (climb_enable){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(-0.7);
+    MyDrive.climb(-1);
   }
   else{
 
@@ -388,7 +388,7 @@ bool wheel_speed = false;
 auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
-if (camera_exist==1){
+if (camera_exist==0){
   wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
     if (aligned && wheel_speed && c2_right_trigger > 0.5){
