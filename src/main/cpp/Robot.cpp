@@ -347,14 +347,14 @@ if (buddyclimb_enable){
 else{
   if(c2_rightbumper){ 
     MyAppendage.intake_out();
-    MyAppendage.intakemotor(0.8);
+    MyAppendage.intakemotor(1);
 
     MyAppendage.conveyor_motor(0.95);
     MyAppendage.shooter_feed(-0.8);
   }
 
   else if (c2_leftbumper){
-    MyAppendage.intakemotor(-0.8);
+    MyAppendage.intakemotor(-1);
     MyAppendage.conveyor_motor(-0.95);
     MyAppendage.shooter_feed(-0.8);
     
