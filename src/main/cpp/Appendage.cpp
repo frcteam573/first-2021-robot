@@ -312,11 +312,12 @@ bool Appendage::shooter_get_distance(int trim){
     
     double error = setpoint - encoder_val; // Calculate current error
     error = deadband(error, 10); // Apply a deadband to help overshoot.
-    double kpe = .0005; // P gain
+    
+    double kpe = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double output_e = error * kpe; // Calculate motor value
     //output_e = Threshold(output_e, 0.9); // Threshold motor value
-    m_shooter->Set(output_e+.25); // Set motor to value
-    m_shooter2->Set(output_e+.25);
+    m_shooter->Set(output_e); // Set motor to value
+    m_shooter2->Set(output_e);
     auto encoder_valstr = std::to_string(encoder_val);
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
