@@ -143,7 +143,7 @@ void Robot::AutonomousPeriodic() {
 
 
       if (count < 250){
-
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -164,7 +164,7 @@ void Robot::AutonomousPeriodic() {
       }
     
       else if (count > 250 && count < count_max_int + 250){
-
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         double left_pos = MyPaths.ReturnTableVal(count,0);
@@ -180,6 +180,7 @@ void Robot::AutonomousPeriodic() {
         
       }
     }
+
     if (mode =="2"){
         // Custom Auto goes here
       
@@ -216,6 +217,7 @@ void Robot::AutonomousPeriodic() {
 
     
       else {
+        MyDrive.shift_low();
         bool aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         bool wheel_speed = false;
@@ -239,7 +241,7 @@ void Robot::AutonomousPeriodic() {
   
     if (mode =="3"){
       if (count < 250){
-
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -260,7 +262,7 @@ void Robot::AutonomousPeriodic() {
       }
       
       else if (count > 250 && count < count_max_int + 250){
-
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         double left_pos = MyPaths.ReturnTableVal(count,0);
@@ -286,6 +288,7 @@ void Robot::AutonomousPeriodic() {
       
       }
       else {
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -310,7 +313,7 @@ void Robot::AutonomousPeriodic() {
     
     if (mode =="4"){
       if (count < 250){
-
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -331,7 +334,7 @@ void Robot::AutonomousPeriodic() {
       }
     
       else if (count > 250 && count < count_max_int + 250){
-
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         double left_pos = MyPaths.ReturnTableVal(count,0);
@@ -353,7 +356,7 @@ void Robot::AutonomousPeriodic() {
     if (mode =="5"){
 
       if (count < 250){
-
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -374,7 +377,7 @@ void Robot::AutonomousPeriodic() {
       }
       
       else if (count > 250 && count < count_max_int + 250){
-
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         double left_pos = MyPaths.ReturnTableVal(count,0);
@@ -400,6 +403,7 @@ void Robot::AutonomousPeriodic() {
       
       }
       else {
+        MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
