@@ -306,7 +306,7 @@ bool Appendage::shooter_get_distance(int trim){
 
     //double setpoint = distance * 30; // don't actually use we have no idea what's going on 
 
-    setpoint = trim*250;
+    double setpoint = trim*250;
     
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
     
