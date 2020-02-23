@@ -61,6 +61,8 @@ class Drive : public frc::Subsystem {
      void dashboard();
      void climberlock();
      void climberunlock();
+     void gyro_reset();
+     void encoder_reset();
 
 };
 #endif

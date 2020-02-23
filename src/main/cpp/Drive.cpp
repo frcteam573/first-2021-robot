@@ -157,10 +157,10 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   double error_heading = heading - gyro_val;
 
   double max_speed = 15.5; //ft/s
-  double kp_speed = -1/max_speed;
-  double kp_pos = frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double kp_speed = 0;//-1/max_speed;
+  double kp_pos = -0.0001;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
-  double kph = -0.01;  //0.01;
+  double kph = 0;//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
@@ -317,4 +317,14 @@ void Drive::climberlock(){
     // Retract buddy climb claw
     p_climberlock->Set(frc::DoubleSolenoid::Value::kReverse);
 
+}
+
+
+void Drive::gyro_reset(){
+    s_gyro->Reset();
+}
+
+void Drive::encoder_reset(){
+    s_leftdrive_enc->Reset();
+    s_rightdrive_enc->Reset();
 }

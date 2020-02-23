@@ -60,7 +60,7 @@ double Paths::ReturnTableVal(int count, int select){
     auto a_right = path_1_right;
     auto a_length = path_1_length;
     
-    if (mode=="1"){
+    if (mode=="0"){
         a_left = path_1_left;
         a_right = path_1_right;
         a_length = path_1_length;

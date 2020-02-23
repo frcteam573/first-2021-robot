@@ -275,7 +275,7 @@ void Appendage::shooter_raw(double input){
 
 bool Appendage::shooter_pid(double distance, int trim){
 
-    double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+    double setpoint = 8000;// distance * 30; // don't actually use we have no idea what's going on 
 
     setpoint = setpoint + setpoint * trim/100.0;
     

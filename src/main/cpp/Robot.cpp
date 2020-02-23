@@ -82,6 +82,8 @@ void Robot::AutonomousInit() {
   int count = 0;
   int count_delay = 0;
 
+  MyDrive.gyro_reset();
+  MyDrive.encoder_reset();
 
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
@@ -127,7 +129,7 @@ void Robot::AutonomousPeriodic() {
   frc::SmartDashboard::PutString("Limelight-Distance", dstr);
 
  
-  auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
+  auto mode = frc::SmartDashboard::GetString("Autonomous","0");
   auto delay = frc::SmartDashboard::GetNumber("Auton Delay",0);
   int delay_int = (int)delay;
   delay_int = delay_int * 50; 
@@ -137,8 +139,9 @@ void Robot::AutonomousPeriodic() {
   bool aligned = false;
   bool wheel_speed = false;
 
-  if (count_delay > delay_int){
-    if (mode =="1"){
+
+ // if (count_delay > delay_int){
+    if (mode =="0"){
       // Custom Auto goes here
 
 
@@ -148,7 +151,7 @@ void Robot::AutonomousPeriodic() {
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
         wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
-        
+        if(count > 50){
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
@@ -161,23 +164,33 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.shooter_feed(0);
 
         }
+        }
       }
-    
+      else if (count == 250){
+        MyDrive.encoder_reset();
+        
+      }
       else if (count > 250 && count < count_max_int + 250){
-        MyDrive.shift_high();
+        MyDrive.shift_low();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
+        double count2 = count-250;
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
         
 
         //Call PID Loop to follow path
-        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count2) ;
       
         
+      }
+      else {
+        MyDrive.Joystick_Drive(0,0);
       }
     }
 
@@ -428,11 +441,16 @@ void Robot::AutonomousPeriodic() {
 
     }
     count ++;
-  }  
+  //}  
 
 
 
   count_delay ++;
+
+MyLog.Dashboard();
+MyLog.PDPTotal();
+MyDrive.dashboard();
+MyAppendage.dashboard();
 }
 
 void Robot::TeleopInit() {
