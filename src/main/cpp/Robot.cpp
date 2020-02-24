@@ -72,13 +72,18 @@ void Robot::RobotPeriodic() {
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
+
+
+    m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
   int count = 0;
+  int count_delay = 0;
 
+  MyDrive.gyro_reset();
+  MyDrive.encoder_reset();
 
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
@@ -88,41 +93,364 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
+
+
+
+  // Read in camera Stuff
   
-  auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  
+  table->PutNumber("ledMode", 0);
+  table->PutNumber("camMode", 0);
+
+  // -----------PIPELINE STUFF-----------//
+  table->PutNumber("pipeline", 0);
+
+  //--------CAMERA VALUES-----------------//
+  float camera_x = table->GetNumber("tx", 0);
+  float camera_exist = table->GetNumber("tv", 0);
+  float image_size = table->GetNumber("ta", 0);
+  float camera_y = table->GetNumber("ty", 0);
+  float camera_s = table->GetNumber("ts", 0);
+
+  // values to dashboard
+  auto leftinstr = std::to_string(camera_x);
+  frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
+
+  auto sstr = std::to_string(camera_s);
+  frc::SmartDashboard::PutString("Limelight-TS", sstr);
+
+  auto ystr = std::to_string(camera_y);
+  frc::SmartDashboard::PutString("Limelight-TY", ystr);
+  
+  double d = MyDrive.camera_getdistance(camera_y);
+
+  auto dstr = std::to_string(d);
+  frc::SmartDashboard::PutString("Limelight-Distance", dstr);
+
+ 
+  auto mode = frc::SmartDashboard::GetString("Autonomous","0");
+  auto delay = frc::SmartDashboard::GetNumber("Auton Delay",0);
+  int delay_int = (int)delay;
+  delay_int = delay_int * 50; 
 
   double count_max = MyPaths.ReturnTableVal(0,5);
   int count_max_int = (int)count_max;
+  bool aligned = false;
+  bool wheel_speed = false;
 
-  if (mode =="1"){
-    // Custom Auto goes here
+
+ // if (count_delay > delay_int){
+    if (mode =="0"){
+      // Custom Auto goes here
 
 
-  if (count < 250){
+      if (count < 250){
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        if(count > 50){
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+        }
+      }
+      else if (count == 250){
+        MyDrive.encoder_reset();
+        
+      }
+      else if (count > 250 && count < count_max_int + 250){
+        MyDrive.shift_low();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
+        double count2 = count-250;
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count2) ;
+      
+        
+      }
+      else {
+        MyDrive.Joystick_Drive(0,0);
+      }
+    }
+
+    if (mode =="2"){
+        // Custom Auto goes here
+      
+
+        if (count < count_max_int){
+        MyDrive.shift_high();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        if (count < 90){
+          MyAppendage.intake_out();
+          MyAppendage.intakemotor(0.8);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(-0.8);
+        }
+        else{
+          MyAppendage.intake_in();
+          MyAppendage.intakemotor(0);
+          MyAppendage.shooter_feed(0);
+        }
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+
+
+      
+        
+        }
+
     
-  }
-  else if (count > 250 && count < count_max_int + 250){
+      else {
+        MyDrive.shift_low();
+        bool aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        bool wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        if (aligned && wheel_speed ){
 
-    //Get setpoint values from tables
-    
-    double left_pos = MyPaths.ReturnTableVal(count,0);
-    double left_speed = MyPaths.ReturnTableVal(count,1);
-    double right_pos = MyPaths.ReturnTableVal(count,2);
-    double right_speed = MyPaths.ReturnTableVal(count,3);
-    double heading = MyPaths.ReturnTableVal(count,4);
-    
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
 
-    //Call PID Loop to follow path
-    MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
-   
-    
-  }
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+      }
 
 
-  }
+    }
   
+    if (mode =="3"){
+      if (count < 250){
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
 
-  count ++;
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+      }
+      
+      else if (count > 250 && count < count_max_int + 250){
+        MyDrive.shift_high();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        if (count < 108){
+          MyAppendage.intake_out();
+          MyAppendage.intakemotor(0.8);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(-0.8);
+        }
+        else{
+          MyAppendage.intake_in();
+          MyAppendage.intakemotor(0);
+          MyAppendage.shooter_feed(0);
+        }
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+      
+      }
+      else {
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+        
+      }
+
+    }
+    
+    if (mode =="4"){
+      if (count < 250){
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+      }
+    
+      else if (count > 250 && count < count_max_int + 250){
+        MyDrive.shift_high();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+      
+        
+      
+      }
+
+    }
+
+    if (mode =="5"){
+
+      if (count < 250){
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+      }
+      
+      else if (count > 250 && count < count_max_int + 250){
+        MyDrive.shift_high();
+        //Get setpoint values from tables
+        MyAppendage.shooter_speed(0);
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        if (count < 93){
+          MyAppendage.intake_out();
+          MyAppendage.intakemotor(0.8);
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(-0.8);
+        }
+        else{
+          MyAppendage.intake_in();
+          MyAppendage.intakemotor(0);
+          MyAppendage.shooter_feed(0);
+        }
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+      
+      }
+      else {
+        MyDrive.shift_low();
+        aligned = false;
+        aligned = MyDrive.camera_centering(camera_x, camera_s, d);
+        wheel_speed = false;
+        wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+        
+        if (aligned && wheel_speed ){
+
+          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.shooter_feed(0.8);
+        
+        }
+        else {
+
+          MyAppendage.conveyor_motor(0);
+          MyAppendage.shooter_feed(0);
+
+        }
+        
+      }
+
+    
+
+    }
+    count ++;
+  //}  
+
+
+
+  count_delay ++;
+
+MyLog.Dashboard();
+MyLog.PDPTotal();
+MyDrive.dashboard();
+MyAppendage.dashboard();
 }
 
 void Robot::TeleopInit() {
@@ -229,7 +557,8 @@ void Robot::TeleopPeriodic() {
     MyDrive.shift_high();
   }
   else {
-    MyDrive.shift_auto();
+    //MyDrive.shift_auto();
+    MyDrive.shift_low();
   }
   //--------------------------------------------------------------------
 //******************************************************************************
@@ -305,7 +634,7 @@ if (climb_enable){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(-0.7);
+    MyDrive.climb(-1);
   }
   else{
 
@@ -347,14 +676,14 @@ if (buddyclimb_enable){
 else{
   if(c2_rightbumper){ 
     MyAppendage.intake_out();
-    MyAppendage.intakemotor(0.8);
+    MyAppendage.intakemotor(1);
 
     MyAppendage.conveyor_motor(0.95);
     MyAppendage.shooter_feed(-0.8);
   }
 
   else if (c2_leftbumper){
-    MyAppendage.intakemotor(-0.8);
+    MyAppendage.intakemotor(-1);
     MyAppendage.conveyor_motor(-0.95);
     MyAppendage.shooter_feed(-0.8);
     
@@ -388,39 +717,39 @@ bool wheel_speed = false;
 auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
-  if (camera_exist==1){
-    wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+  if (camera_exist==0){
+    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
-    if (aligned && wheel_speed && c2_right_trigger > 0.5){
+      if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
-      MyAppendage.conveyor_motor(0.95);
-      MyAppendage.shooter_feed(0.8);
-    }
-    else {
+        MyAppendage.conveyor_motor(0.95);
+        MyAppendage.shooter_feed(0.8);
+      }
+      else {
 
-      MyAppendage.conveyor_motor(0);
-      MyAppendage.shooter_feed(0);
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
 
     }
     }
   else {
-    wheel_speed = MyAppendage.shooter_pid(120, shootercounter);
+    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
 
-    if (c2_right_trigger > 0.5){
+      if (c2_right_trigger > 0.5){
 
-      MyAppendage.conveyor_motor(0.8);
-      MyAppendage.shooter_feed(0.8);
+        MyAppendage.conveyor_motor(0.8);
+        MyAppendage.shooter_feed(0.8);
+      }
+      else {
+
+        MyAppendage.conveyor_motor(0);
+        MyAppendage.shooter_feed(0);
+
+      }
     }
-    else {
-
-      MyAppendage.conveyor_motor(0);
-      MyAppendage.shooter_feed(0);
-
-    }
-  }
 }
 else{
-  if(!c2_leftbumper && !c2_rightbumper){
+  if((!c2_leftbumper) && (!c2_rightbumper)){
     MyAppendage.conveyor_motor(0);
   }
   

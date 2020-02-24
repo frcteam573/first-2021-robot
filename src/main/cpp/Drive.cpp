@@ -27,16 +27,16 @@ Drive::Drive() : Subsystem("Drive") {
     int driveshiftIDa = 4;
     int driveshiftIDb = 5;
     int buddyclimbID = 12;
-    int buddyclimbpIDa = 6;
-    int buddyclimbpIDb = 7;
+    int buddyclimbpIDa = 4;
+    int buddyclimbpIDb = 5;
     int leftclimbID = 7;
     int rightclimbID = 8;
     int leftdriveencID_a = 4;
     int leftdriveencID_b = 5;
     int rightdriveencID_a = 0;
     int rightdriveencID_b = 1;    
-    int climberlockIDa = 4;
-    int climberlockIDb = 5;
+    int climberlockIDa = 6;
+    int climberlockIDb = 7;
 
 
     // Define motors, sensors, and pneumatics here
@@ -157,9 +157,10 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   double error_heading = heading - gyro_val;
 
   double max_speed = 15.5; //ft/s
-  double kp_speed = -1/max_speed;
-  double kp_pos = -0.025;
-  double kph = -0.01;  //0.01;
+  double kp_speed = 0;//-1/max_speed;
+  double kp_pos = -0.0001;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  
+  double kph = 0;//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
@@ -169,9 +170,9 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   //double output_right = (error_right_pos * kp_pos) + (error_right_speed * kp_speed) * .05;
 
   m_leftdrive->Set(output_left + turn_val);
- // m_leftdrive2->Set(output_left + turn_val);
+  m_leftdrive2->Set(output_left + turn_val);
   m_rightdrive->Set(output_right - turn_val);
-  //m_rightdrive2->Set(output_right - turn_val);
+  m_rightdrive2->Set(output_right - turn_val);
 
   /*auto Left_encoderstr = std::to_string(output_left);
   frc::SmartDashboard::PutString("DB/String 6",Left_encoderstr);
@@ -214,15 +215,15 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
     double error = setpoint - camera_x;
-    double kp_c = .025;
+    double kp_c = .01;
     double output = kp_c * error;
     
     m_leftdrive->Set(output);
-    //m_leftdrive2->Set(output);
+    m_leftdrive2->Set(output);
     m_rightdrive->Set(-output);
-    //m_rightdrive2->Set(-output);
+    m_rightdrive2->Set(-output);
     bool output1 = false;
-    if (abs(error) < 1){ // not sure if it's one so yeah
+    if (abs(error) < 2){ // not sure if it's one so yeah
       output1 = true;
     }
     return output1;
@@ -231,13 +232,13 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
 void Drive::shift_low(){
     // Set drive transmissions into low gear
-    p_driveshift->Set(frc::DoubleSolenoid::Value::kReverse);
+    p_driveshift->Set(frc::DoubleSolenoid::Value::kForward);
 
 }
 
 void Drive::shift_high(){
     // Set drive transmissions into high gear
-    p_driveshift->Set(frc::DoubleSolenoid::Value::kForward);
+    p_driveshift->Set(frc::DoubleSolenoid::Value::kReverse);
 
 }
 
@@ -268,9 +269,9 @@ void Drive::shift_auto(){
 
 double Drive::camera_getdistance(float camera_y){
 
-    double h2 = 92; // height to the center of the vision target on the goal
-    double h1 = 39.75; // height of camera on robot
-    double a1 = 0; // angle of the camera on the robot relative to the ground
+    double h2 = 91; // height to the center of the vision target on the goal
+    double h1 = 37.75; // height of camera on robot
+    double a1 = 26; // angle of the camera on the robot relative to the ground
     double a2 = camera_y;
 
     double d = (h2-h1)/tan((a1+a2)*3.14159/180);
@@ -316,4 +317,14 @@ void Drive::climberlock(){
     // Retract buddy climb claw
     p_climberlock->Set(frc::DoubleSolenoid::Value::kReverse);
 
+}
+
+
+void Drive::gyro_reset(){
+    s_gyro->Reset();
+}
+
+void Drive::encoder_reset(){
+    s_leftdrive_enc->Reset();
+    s_rightdrive_enc->Reset();
 }
