@@ -275,8 +275,11 @@ void Appendage::shooter_raw(double input){
 
 bool Appendage::shooter_pid(double distance, int trim){
 
-    double setpoint = 8000;// distance * 30; // don't actually use we have no idea what's going on 
-
+    double setpoint = 18.9*distance + 5925; //  
+    if (setpoint < 7000){
+      setpoint = 7000;
+    }
+    
     setpoint = setpoint + setpoint * trim/100.0;
     
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
@@ -308,7 +311,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     auto encoder_valstr3 = std::to_string(output_e+.25);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+    if (encoder_val > 0.97*setpoint || encoder_val < 1.03*setpoint){
       output = true;
     }
     return output;
