@@ -158,9 +158,9 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   
 
 
-  double max_speed = 2; //ft/s
-  double kp_speed = -1/max_speed;
-  double kp_pos = 0;//-0.005;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double max_speed = 11; //15.5 ft/s
+  double kp_speed = -1/(max_speed*(6628/5));
+  double kp_pos = -0.005;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
   double kph = 0;//-0.01;  //0.01;
 
