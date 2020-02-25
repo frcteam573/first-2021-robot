@@ -582,7 +582,7 @@ if (!buddyclimb_enable){
       MyAppendage.control_panel(0.6);
     }
     else if (c2_btn_y){
-      MyAppendage.controlpanel_rotation_auto();
+      MyAppendage.controlpanel_colorsense_periodicrotation();
     }
     else if (c2_btn_x){
       MyAppendage.controlpanel_colorsense_periodic();
