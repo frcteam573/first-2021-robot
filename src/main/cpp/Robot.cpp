@@ -194,7 +194,7 @@ void Robot::AutonomousPeriodic() {
       }
     }
 
-    if (mode =="2"){
+    if (mode =="1"){
         // Custom Auto goes here
       
 
@@ -260,7 +260,7 @@ void Robot::AutonomousPeriodic() {
         wheel_speed = false;
         wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
         
-        if (aligned && wheel_speed ){
+        if (aligned && wheel_speed && count > 50){
 
           MyAppendage.conveyor_motor(0.8);
           MyAppendage.shooter_feed(0.8);
@@ -273,17 +273,21 @@ void Robot::AutonomousPeriodic() {
 
         }
       }
-      
-      else if (count > 250 && count < count_max_int + 250){
+      else if (count == 250){
+        MyDrive.encoder_reset();
+      }
+
+      else if (count > 250 && count < (count_max_int + 250)){
+        int count2 = count -250;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
-        if (count < 108){
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
+        if (count2 < 108){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
@@ -440,6 +444,9 @@ void Robot::AutonomousPeriodic() {
     
 
     }
+
+    auto error_left_str = std::to_string(count);
+  frc::SmartDashboard::PutString("DB/String 7", error_left_str);
     count ++;
   //}  
 
@@ -686,6 +693,7 @@ else{
     MyAppendage.intakemotor(-1);
     MyAppendage.conveyor_motor(-0.95);
     MyAppendage.shooter_feed(-0.8);
+    MyAppendage.shooter_raw(-0.3);
     
   }
   else {
@@ -751,10 +759,11 @@ if (c2_left_trigger > 0.5){
 else{
   if((!c2_leftbumper) && (!c2_rightbumper)){
     MyAppendage.conveyor_motor(0);
+    MyAppendage.shooter_raw(0);
   }
   
   //MyAppendage.shooter_feed(0);
-  MyAppendage.shooter_raw(0);
+ 
 }
 //---------------------LED CODE----------------------------------
 bool ready_to_fire = false;

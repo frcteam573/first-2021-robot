@@ -65,7 +65,7 @@ double Paths::ReturnTableVal(int count, int select){
         a_right = path_1_right;
         a_length = path_1_length;
     }
-    else if (mode=="2"){
+    else if (mode=="1"){
         a_left = path_2_left;
         a_right = path_2_right;
         a_length = path_2_length;
