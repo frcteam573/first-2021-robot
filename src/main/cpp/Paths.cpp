@@ -55,7 +55,7 @@ double Paths::ReturnTableVal(int count, int select){
 
     // picking data from multiple paths 
 
-    auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
+    auto mode = frc::SmartDashboard::GetString("Autonomous","0");
     auto a_left = path_1_left;
     auto a_right = path_1_right;
     auto a_length = path_1_length;
