@@ -278,7 +278,7 @@ void Appendage::shooter_raw(double input){
 bool Appendage::shooter_pid(double distance, int trim){
 
     double setpoint = 18.9*distance + 5925; //  
-    if (setpoint < 8500){
+    if (setpoint < 8400){
       setpoint = 8000;
     }
     
