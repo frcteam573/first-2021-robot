@@ -205,7 +205,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     }
 
-    if (camera_s > -10 && camera_s < 10){
+    if (camera_s > -6 && camera_s < 6){
 
         numerator = d * (sin(camera_s*3.1415/180.0));
         denominator = (d* cos(camera_s*3.14159/180.0) + x);
