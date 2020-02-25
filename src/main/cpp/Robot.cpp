@@ -171,12 +171,12 @@ void Robot::AutonomousPeriodic() {
         
       }
       else if (count > 250 && count < count_max_int + 250){
-        MyDrive.shift_low();
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         MyAppendage.conveyor_motor(0);
         MyAppendage.shooter_feed(0);
-        double count2 = count-250;
+        double count2 = count-251;
         double left_pos = MyPaths.ReturnTableVal(count2,0);
         double left_speed = MyPaths.ReturnTableVal(count2,1);
         double right_pos = MyPaths.ReturnTableVal(count2,2);
@@ -275,10 +275,11 @@ void Robot::AutonomousPeriodic() {
       }
       else if (count == 250){
         MyDrive.encoder_reset();
+        MyDrive.shift_high();
       }
 
       else if (count > 250 && count < (count_max_int + 250)){
-        int count2 = count -250;
+        int count2 = count -251;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
@@ -301,11 +302,12 @@ void Robot::AutonomousPeriodic() {
         
 
         //Call PID Loop to follow path
-        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count2) ;
       
       }
       else {
         MyDrive.shift_low();
+        MyDrive.Joystick_Drive(0,0);
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
