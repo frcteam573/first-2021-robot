@@ -44,7 +44,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDc = 0;
     int conveyormID = 13;
 
-    int shooter_feedID = 15;
+   // int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
@@ -65,7 +65,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
 
-    m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
+   // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
 double Appendage::deadband(double input, double deadband_size){
@@ -386,11 +386,11 @@ void Appendage::conveyor_motor(double input){
 
 
 
-void Appendage::shooter_feed(double input){
+/*void Appendage::shooter_feed(double input){
 
   m_shooterfeed->Set(input);
 
-}
+}*/
 
 void Appendage::dashboard(){
 

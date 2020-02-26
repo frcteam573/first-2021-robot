@@ -155,13 +155,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+          //MyAppendage.shooter_feed(0);
 
         }
         }
@@ -175,7 +175,7 @@ void Robot::AutonomousPeriodic() {
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
+        //MyAppendage.shooter_feed(0);
         double count2 = count-251;
         double left_pos = MyPaths.ReturnTableVal(count2,0);
         double left_speed = MyPaths.ReturnTableVal(count2,1);
@@ -211,12 +211,12 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
@@ -238,13 +238,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
       }
@@ -263,13 +263,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed && count > 50){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
@@ -292,12 +292,12 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
@@ -316,13 +316,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
         
@@ -341,13 +341,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
@@ -384,13 +384,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
@@ -408,12 +408,12 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
@@ -431,13 +431,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
         
@@ -688,20 +688,20 @@ else{
     MyAppendage.intakemotor(1);
 
     MyAppendage.conveyor_motor(0.95);
-    MyAppendage.shooter_feed(-0.8);
+    //MyAppendage.shooter_feed(-0.8);
   }
 
   else if (c2_leftbumper){
     MyAppendage.intakemotor(-1);
     MyAppendage.conveyor_motor(-0.95);
-    MyAppendage.shooter_feed(-0.8);
+    //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
     
   }
   else {
     MyAppendage.intakemotor(0);
     MyAppendage.intake_in();
-    MyAppendage.shooter_feed(0);
+   // MyAppendage.shooter_feed(0);
     
   }
 }
@@ -733,12 +733,12 @@ if (c2_left_trigger > 0.5){
       if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.95);
-        MyAppendage.shooter_feed(0.8);
+        //MyAppendage.shooter_feed(0.8);
       }
       else {
 
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
+       // MyAppendage.shooter_feed(0);
 
     }
     }
@@ -748,12 +748,12 @@ if (c2_left_trigger > 0.5){
       if (c2_right_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.8);
-        MyAppendage.shooter_feed(0.8);
+       // MyAppendage.shooter_feed(0.8);
       }
       else {
 
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
+        //MyAppendage.shooter_feed(0);
 
       }
     }
