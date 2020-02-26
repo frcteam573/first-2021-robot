@@ -82,8 +82,8 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     RightStick = RightStick * RightStick * RightStick;
 
     // deadband
-    LeftStick = deadband (LeftStick, 0.05);
-    RightStick = deadband (RightStick, 0.05);
+    //LeftStick = deadband (LeftStick, 0.05);
+    //RightStick = deadband (RightStick, 0.05);
 
     if (LeftStick > (leftdriveold + 0.3)){
         LeftStick = leftdriveold + 0.3;
@@ -155,15 +155,22 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   //double error_left_speed = setpoint_left_speed - encoder_speed_left;
   //double error_right_speed = setpoint_right_speed - encoder_speed_right;
   double error_heading = heading - gyro_val;
+  
 
-  double max_speed = 15.5; //ft/s
-  double kp_speed = 0;//-1/max_speed;
-  double kp_pos = -0.0001;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+
+  double max_speed = 15.5; //15.5 ft/s
+  double kp_speed = -1/(max_speed);
+  double kp_pos = -0.0007;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
   double kph = 0;//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
+
+  auto error_right_str = std::to_string(output_left);
+  frc::SmartDashboard::PutString("DB/String 8", error_right_str);
+  auto error_left_str = std::to_string(output_right);
+  frc::SmartDashboard::PutString("DB/String 9", error_left_str);
 
   double turn_val = kph * error_heading;
   //double output_left = (error_left_pos * kp_pos) + (error_left_speed * kp_speed) * .05;
@@ -198,7 +205,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     }
 
-    if (camera_s > -10 && camera_s < 10){
+    if (camera_s > -6 && camera_s < 6){
 
         numerator = d * (sin(camera_s*3.1415/180.0));
         denominator = (d* cos(camera_s*3.14159/180.0) + x);

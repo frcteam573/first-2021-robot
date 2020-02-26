@@ -42,7 +42,7 @@ class Appendage : public frc::Subsystem {
     rev::SparkMax * m_intake;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
-    rev::CANSparkMax * m_shooterfeed;
+   // rev::CANSparkMax * m_shooterfeed;
 
     //Any updates here also have to be done in controlpanel_colorsense_init
     static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
@@ -72,7 +72,7 @@ class Appendage : public frc::Subsystem {
      void intake_out();
      void intake_in();
      void conveyor_motor(double input);
-     void shooter_feed(double input);
+     //void shooter_feed(double input);
      void dashboard();
      void shooter_raw(double input);
      void shooter_speed(double input);

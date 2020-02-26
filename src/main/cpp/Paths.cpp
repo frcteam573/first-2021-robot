@@ -55,7 +55,7 @@ double Paths::ReturnTableVal(int count, int select){
 
     // picking data from multiple paths 
 
-    auto mode = frc::SmartDashboard::GetString("Autonomous Mode","0");
+    auto mode = frc::SmartDashboard::GetString("Autonomous","0");
     auto a_left = path_1_left;
     auto a_right = path_1_right;
     auto a_length = path_1_length;
@@ -65,7 +65,7 @@ double Paths::ReturnTableVal(int count, int select){
         a_right = path_1_right;
         a_length = path_1_length;
     }
-    else if (mode=="2"){
+    else if (mode=="1"){
         a_left = path_2_left;
         a_right = path_2_right;
         a_length = path_2_length;
@@ -91,7 +91,7 @@ double Paths::ReturnTableVal(int count, int select){
     
 
     double dist_conv = 6628/5; //ticks to feet
-    double speed_conv = 1;
+    double speed_conv = 1; //feet/s
 
     double output;
 

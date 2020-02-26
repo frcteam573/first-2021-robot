@@ -44,7 +44,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDc = 0;
     int conveyormID = 13;
 
-    int shooter_feedID = 15;
+   // int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
     m_controlpanel = new rev::CANSparkMax{controlpanelID, rev::CANSparkMax::MotorType::kBrushless};
@@ -65,7 +65,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
 
-    m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
+   // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
 double Appendage::deadband(double input, double deadband_size){
@@ -231,6 +231,8 @@ void Appendage::controlpanel_colorsense_periodicrotation(){
       else {
           m_controlpanel->Set(0); // if color doesn't match desired color keep spinning
       }
+      auto encoder_valstr = std::to_string(colorcounter);
+      frc::SmartDashboard::PutString("DB/String 6",encoder_valstr);
     }
   
 
@@ -275,8 +277,11 @@ void Appendage::shooter_raw(double input){
 
 bool Appendage::shooter_pid(double distance, int trim){
 
-    double setpoint = 8000;// distance * 30; // don't actually use we have no idea what's going on 
-
+    double setpoint = 18.9*distance + 5925; //  
+    if (setpoint < 8400){
+      setpoint = 8000;
+    }
+    
     setpoint = setpoint + setpoint * trim/100.0;
     
     double encoder_val = s_shooter_encoder->GetVelocity(); // Get encoder value
@@ -308,7 +313,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     auto encoder_valstr3 = std::to_string(output_e+.25);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+    if (encoder_val > 0.985*setpoint || encoder_val < 1.015*setpoint){
       output = true;
     }
     return output;
@@ -381,11 +386,11 @@ void Appendage::conveyor_motor(double input){
 
 
 
-void Appendage::shooter_feed(double input){
+/*void Appendage::shooter_feed(double input){
 
   m_shooterfeed->Set(input);
 
-}
+}*/
 
 void Appendage::dashboard(){
 

@@ -155,13 +155,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+          //MyAppendage.shooter_feed(0);
 
         }
         }
@@ -171,12 +171,12 @@ void Robot::AutonomousPeriodic() {
         
       }
       else if (count > 250 && count < count_max_int + 250){
-        MyDrive.shift_low();
+        MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
-        double count2 = count-250;
+        //MyAppendage.shooter_feed(0);
+        double count2 = count-251;
         double left_pos = MyPaths.ReturnTableVal(count2,0);
         double left_speed = MyPaths.ReturnTableVal(count2,1);
         double right_pos = MyPaths.ReturnTableVal(count2,2);
@@ -194,7 +194,7 @@ void Robot::AutonomousPeriodic() {
       }
     }
 
-    if (mode =="2"){
+    if (mode =="1"){
         // Custom Auto goes here
       
 
@@ -211,12 +211,12 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
@@ -238,13 +238,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
       }
@@ -260,48 +260,54 @@ void Robot::AutonomousPeriodic() {
         wheel_speed = false;
         wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
         
-        if (aligned && wheel_speed ){
+        if (aligned && wheel_speed && count > 50){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
-      
-      else if (count > 250 && count < count_max_int + 250){
+      else if (count == 250){
+        MyDrive.encoder_reset();
+        MyDrive.shift_high();
+      }
+
+      else if (count > 250 && count < (count_max_int + 250)){
+        int count2 = count -251;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
-        if (count < 108){
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
+        if (count2 < 108){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
         //Call PID Loop to follow path
-        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count) ;
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count2) ;
       
       }
       else {
         MyDrive.shift_low();
+        MyDrive.Joystick_Drive(0,0);
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
         wheel_speed = false;
@@ -310,13 +316,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
         
@@ -335,13 +341,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
@@ -378,13 +384,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+         // MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+        //  MyAppendage.shooter_feed(0);
 
         }
       }
@@ -402,12 +408,12 @@ void Robot::AutonomousPeriodic() {
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(-0.8);
+         // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
         }
         
 
@@ -425,13 +431,13 @@ void Robot::AutonomousPeriodic() {
         if (aligned && wheel_speed ){
 
           MyAppendage.conveyor_motor(0.8);
-          MyAppendage.shooter_feed(0.8);
+          //MyAppendage.shooter_feed(0.8);
         
         }
         else {
 
           MyAppendage.conveyor_motor(0);
-          MyAppendage.shooter_feed(0);
+         // MyAppendage.shooter_feed(0);
 
         }
         
@@ -440,6 +446,9 @@ void Robot::AutonomousPeriodic() {
     
 
     }
+
+    auto error_left_str = std::to_string(count);
+  frc::SmartDashboard::PutString("DB/String 7", error_left_str);
     count ++;
   //}  
 
@@ -573,7 +582,7 @@ if (!buddyclimb_enable){
       MyAppendage.control_panel(0.6);
     }
     else if (c2_btn_y){
-      MyAppendage.controlpanel_rotation_auto();
+      MyAppendage.controlpanel_colorsense_periodicrotation();
     }
     else if (c2_btn_x){
       MyAppendage.controlpanel_colorsense_periodic();
@@ -679,19 +688,20 @@ else{
     MyAppendage.intakemotor(1);
 
     MyAppendage.conveyor_motor(0.95);
-    MyAppendage.shooter_feed(-0.8);
+    //MyAppendage.shooter_feed(-0.8);
   }
 
   else if (c2_leftbumper){
     MyAppendage.intakemotor(-1);
     MyAppendage.conveyor_motor(-0.95);
-    MyAppendage.shooter_feed(-0.8);
+    //MyAppendage.shooter_feed(-0.8);
+    MyAppendage.shooter_raw(-0.3);
     
   }
   else {
     MyAppendage.intakemotor(0);
     MyAppendage.intake_in();
-    MyAppendage.shooter_feed(0);
+   // MyAppendage.shooter_feed(0);
     
   }
 }
@@ -717,33 +727,33 @@ bool wheel_speed = false;
 auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
-  if (camera_exist==0){
-    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
+  if (camera_exist==1){
+    wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
 
       if (aligned && wheel_speed && c2_right_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.95);
-        MyAppendage.shooter_feed(0.8);
+        //MyAppendage.shooter_feed(0.8);
       }
       else {
 
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
+       // MyAppendage.shooter_feed(0);
 
     }
     }
   else {
-    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
+    wheel_speed = MyAppendage.shooter_pid(120, shootercounter);
 
       if (c2_right_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.8);
-        MyAppendage.shooter_feed(0.8);
+       // MyAppendage.shooter_feed(0.8);
       }
       else {
 
         MyAppendage.conveyor_motor(0);
-        MyAppendage.shooter_feed(0);
+        //MyAppendage.shooter_feed(0);
 
       }
     }
@@ -751,10 +761,11 @@ if (c2_left_trigger > 0.5){
 else{
   if((!c2_leftbumper) && (!c2_rightbumper)){
     MyAppendage.conveyor_motor(0);
+    MyAppendage.shooter_raw(0);
   }
   
   //MyAppendage.shooter_feed(0);
-  MyAppendage.shooter_raw(0);
+ 
 }
 //---------------------LED CODE----------------------------------
 bool ready_to_fire = false;
