@@ -60,7 +60,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new rev::SparkMax{intakeIDc};
-    m_intake -> SetInverted(true);
+    //m_intake -> SetInverted(true);
     p_intake = new frc::DoubleSolenoid(2, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
