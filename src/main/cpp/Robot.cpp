@@ -45,6 +45,7 @@ void Robot::RobotInit() {
   bool climb_enable = false;
   MyDrive.shift_low();
   MyDrive.climberlock();
+  MyAppendage.intake_in();
 }
 
 /**
@@ -689,12 +690,19 @@ if (buddyclimb_enable){
   }
 }
 else{
-  if(c2_rightbumper){ 
+  if (c2_dpad > 160 && c2_dpad < 200){
     MyAppendage.intake_out();
+  }
+  if ((c2_dpad > 0 && c2_dpad < 20) or (c2_dpad > 340 && c2_dpad < 360)){
+    MyAppendage.intake_in();
+  }
+  if(c2_rightbumper){ 
+    //MyAppendage.intake_out();
     MyAppendage.intakemotor(1);
 
     MyAppendage.conveyor_motor(0.95);
     //MyAppendage.shooter_feed(-0.8);
+    MyAppendage.shooter_raw(-0.3);
   }
 
   else if (c2_leftbumper){
@@ -706,7 +714,7 @@ else{
   }
   else {
     MyAppendage.intakemotor(0);
-    MyAppendage.intake_in();
+    //MyAppendage.intake_in();
    // MyAppendage.shooter_feed(0);
     
   }
