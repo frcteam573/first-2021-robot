@@ -351,16 +351,19 @@ void Robot::AutonomousPeriodic() {
 
         }
       }
-    
+      else if (count == 250){
+        MyDrive.encoder_reset();
+      }
       else if (count > 250 && count < count_max_int + 250){
+        int count2 = count -251;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
         
 
         //Call PID Loop to follow path
@@ -394,16 +397,19 @@ void Robot::AutonomousPeriodic() {
 
         }
       }
-      
+      else if (count == 250){
+        MyDrive.encoder_reset();
+      }
       else if (count > 250 && count < count_max_int + 250){
+        int count2 = count -251;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        double left_pos = MyPaths.ReturnTableVal(count2,0);
+        double left_speed = MyPaths.ReturnTableVal(count2,1);
+        double right_pos = MyPaths.ReturnTableVal(count2,2);
+        double right_speed = MyPaths.ReturnTableVal(count2,3);
+        double heading = MyPaths.ReturnTableVal(count2,4);
         if (count < 93){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
