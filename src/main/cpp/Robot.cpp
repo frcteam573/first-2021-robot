@@ -153,19 +153,20 @@ void Robot::AutonomousPeriodic() {
         wheel_speed = false;
         wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
         if(count > 50){
-        if (aligned && wheel_speed ){
+          if (aligned && wheel_speed ){
 
-          MyAppendage.conveyor_motor(0.8);
-          //MyAppendage.shooter_feed(0.8);
+            MyAppendage.conveyor_motor(0.8);
+            //MyAppendage.shooter_feed(0.8);
+          
+          }
+          else {
+
+            MyAppendage.conveyor_motor(0);
+            //MyAppendage.shooter_feed(0);
+
+          }
+        }
         
-        }
-        else {
-
-          MyAppendage.conveyor_motor(0);
-          //MyAppendage.shooter_feed(0);
-
-        }
-        }
       }
       else if (count == 250){
         MyDrive.encoder_reset();
@@ -697,7 +698,7 @@ else{
   if (c2_btn_y){
     MyAppendage.intake_in();
   }
-  if (c2_joy_left < -0.5){
+  if (c2_joy_left < -0.9){
     MyAppendage.conveyor_motor(0.95);
   }
   if(c2_rightbumper){ 
@@ -777,7 +778,7 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if((!c2_leftbumper) && (!c2_rightbumper) && (c2_joy_left > -0.5)){
+  if((!c2_leftbumper) && (c2_joy_left > -0.9)){
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }
