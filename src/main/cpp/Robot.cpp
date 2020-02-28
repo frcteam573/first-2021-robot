@@ -141,7 +141,7 @@ void Robot::AutonomousPeriodic() {
   bool wheel_speed = false;
 
 
- // if (count_delay > delay_int){
+  if (count_delay > delay_int){
     if (mode =="0"){
       // Custom Auto goes here
 
@@ -457,7 +457,7 @@ void Robot::AutonomousPeriodic() {
     auto error_left_str = std::to_string(count);
   frc::SmartDashboard::PutString("DB/String 7", error_left_str);
     count ++;
-  //}  
+  }  
 
 
 
