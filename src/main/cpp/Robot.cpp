@@ -701,6 +701,10 @@ else{
   if (c2_joy_left < -0.9){
     MyAppendage.conveyor_motor(0.95);
   }
+  else if (c2_joy_left > 0.9){
+    MyAppendage.conveyor_motor(-0.95);
+    MyAppendage.shooter_raw(-0.3);
+  }
   if(c2_rightbumper){ 
     //MyAppendage.intake_out();
     MyAppendage.intakemotor(0.9);
@@ -712,9 +716,9 @@ else{
   
   else if (c2_leftbumper){
     MyAppendage.intakemotor(-0.9);
-    MyAppendage.conveyor_motor(-0.95);
+    //MyAppendage.conveyor_motor(-0.95);
     //MyAppendage.shooter_feed(-0.8);
-    MyAppendage.shooter_raw(-0.3);
+    //MyAppendage.shooter_raw(-0.3);
     
   }
   else {
@@ -778,7 +782,7 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if((!c2_leftbumper) && (c2_joy_left > -0.9)){
+  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9)){
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }

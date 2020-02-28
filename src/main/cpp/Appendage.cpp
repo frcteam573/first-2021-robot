@@ -231,8 +231,8 @@ void Appendage::controlpanel_colorsense_periodicrotation(){
       else {
           m_controlpanel->Set(0); // if color doesn't match desired color keep spinning
       }
-      auto encoder_valstr = std::to_string(colorcounter);
-      frc::SmartDashboard::PutString("DB/String 6",encoder_valstr);
+      /*auto encoder_valstr = std::to_string(colorcounter);
+      frc::SmartDashboard::PutString("DB/String 6",encoder_valstr);*/
     }
   
 

@@ -59,6 +59,8 @@ Drive::Drive() : Subsystem("Drive") {
     m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_leftclimb->SetInverted(true);
+    s_leftclimb_enc = new  rev::CANEncoder(*m_leftclimb);
+    s_rightclimb_enc = new  rev::CANEncoder(*m_rightclimb);
 
     p_climberlock = new frc::DoubleSolenoid(1, climberlockIDa, climberlockIDb);
 }
@@ -128,10 +130,31 @@ void Drive::buddyclimb_in(){
     
 }
 
-void Drive::climb(double input){
-    // Run climber motors
+bool Drive::climb(double input){
     m_leftclimb->Set(input);
-    m_rightclimb->Set(input);
+    m_rightclimb->Set(input);    
+    /* Run climber motors
+    double lower_bound = 100;
+    double upper_bound = 5000000000;
+    double leftclimb_enc_val = s_leftclimb_enc->GetPosition();
+    auto leftclimb_enc_val_str = std::to_string(leftclimb_enc_val);
+    frc::SmartDashboard::PutString("DB/String 5",leftclimb_enc_val_str);
+    double rightclimb_enc_val = s_rightclimb_enc->GetPosition();
+    auto rightclimb_enc_val_str = std::to_string(rightclimb_enc_val);
+    frc::SmartDashboard::PutString("DB/String 6",rightclimb_enc_val_str);
+    if ((input < 0) && (leftclimb_enc_val > lower_bound) && (rightclimb_enc_val > lower_bound)){
+        m_leftclimb->Set(input);
+        m_rightclimb->Set(input);
+    }
+    else if ((input > 0) && (leftclimb_enc_val < upper_bound) && (rightclimb_enc_val < upper_bound)){
+        m_leftclimb->Set(input);
+        m_rightclimb->Set(input);
+    }
+    else {
+        m_leftclimb->Set(0);
+        m_rightclimb->Set(0);
+    }*/
+    
 
 }
 
@@ -218,8 +241,8 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         setpoint = 0;
     }
       
-     auto setpointstr = std::to_string(setpoint);
-    frc::SmartDashboard::PutString("DB/String 5", setpointstr);
+    //auto setpointstr = std::to_string(setpoint);
+    //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
     double error = setpoint - camera_x;
     double kp_c = .01;
@@ -335,3 +358,4 @@ void Drive::encoder_reset(){
     s_leftdrive_enc->Reset();
     s_rightdrive_enc->Reset();
 }
+
