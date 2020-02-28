@@ -532,6 +532,7 @@ void Robot::TeleopPeriodic() {
 
   //-----------------------------------------------------------------------------
   //------------ Operator Controller --------------------------------------------
+  double c2_joy_left = controller2.GetRawAxis(1);
   bool c2_btn_a = controller2.GetRawButton(1);
   bool c2_btn_b = controller2.GetRawButton(2);
   bool c2_btn_y = controller2.GetRawButton(4);
@@ -693,20 +694,23 @@ else{
   if (c2_dpad > 160 && c2_dpad < 200){
     MyAppendage.intake_out();
   }
-  if ((c2_dpad > 0 && c2_dpad < 20) or (c2_dpad > 340 && c2_dpad < 360)){
+  if (c2_btn_y){
     MyAppendage.intake_in();
+  }
+  if (c2_joy_left < -0.5){
+    MyAppendage.conveyor_motor(0.95);
   }
   if(c2_rightbumper){ 
     //MyAppendage.intake_out();
-    MyAppendage.intakemotor(1);
+    MyAppendage.intakemotor(0.9);
 
-    MyAppendage.conveyor_motor(0.95);
+    //MyAppendage.conveyor_motor(0.95);
     //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
   }
-
+  
   else if (c2_leftbumper){
-    MyAppendage.intakemotor(-1);
+    MyAppendage.intakemotor(-0.9);
     MyAppendage.conveyor_motor(-0.95);
     //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
@@ -773,7 +777,7 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if((!c2_leftbumper) && (!c2_rightbumper)){
+  if((!c2_leftbumper) && (!c2_rightbumper) && (c2_joy_left > -0.5)){
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }
