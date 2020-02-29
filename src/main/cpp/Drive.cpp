@@ -54,7 +54,7 @@ Drive::Drive() : Subsystem("Drive") {
     s_rightdrive_enc = new frc::Encoder( rightdriveencID_a, rightdriveencID_b, true, frc::Encoder::k4X);
     p_driveshift = new frc::DoubleSolenoid(2, driveshiftIDa, driveshiftIDb);
     m_buddyclimb = new rev::CANSparkMax{buddyclimbID, rev::CANSparkMax::MotorType::kBrushless};
-    m_buddyclimb -> SetInverted(true);
+    //m_buddyclimb -> SetInverted(true);
     p_buddyclimb = new frc::DoubleSolenoid(1, buddyclimbpIDa, buddyclimbpIDb);
     m_leftclimb = new rev::CANSparkMax{leftclimbID, rev::CANSparkMax::MotorType::kBrushless};
     m_rightclimb = new rev::CANSparkMax{rightclimbID, rev::CANSparkMax::MotorType::kBrushless};
