@@ -141,7 +141,7 @@ void Robot::AutonomousPeriodic() {
   bool wheel_speed = false;
 
 
- // if (count_delay > delay_int){
+  if (count_delay > delay_int){
     if (mode =="0"){
       // Custom Auto goes here
 
@@ -153,19 +153,20 @@ void Robot::AutonomousPeriodic() {
         wheel_speed = false;
         wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
         if(count > 50){
-        if (aligned && wheel_speed ){
+          if (aligned && wheel_speed ){
 
-          MyAppendage.conveyor_motor(0.8);
-          //MyAppendage.shooter_feed(0.8);
+            MyAppendage.conveyor_motor(0.8);
+            //MyAppendage.shooter_feed(0.8);
+          
+          }
+          else {
+
+            MyAppendage.conveyor_motor(0);
+            //MyAppendage.shooter_feed(0);
+
+          }
+        }
         
-        }
-        else {
-
-          MyAppendage.conveyor_motor(0);
-          //MyAppendage.shooter_feed(0);
-
-        }
-        }
       }
       else if (count == 250){
         MyDrive.encoder_reset();
@@ -457,7 +458,7 @@ void Robot::AutonomousPeriodic() {
     auto error_left_str = std::to_string(count);
   frc::SmartDashboard::PutString("DB/String 7", error_left_str);
     count ++;
-  //}  
+  }  
 
 
 
@@ -697,8 +698,12 @@ else{
   if (c2_btn_y){
     MyAppendage.intake_in();
   }
-  if (c2_joy_left < -0.5){
+  if (c2_joy_left < -0.9){
     MyAppendage.conveyor_motor(0.95);
+  }
+  else if (c2_joy_left > 0.9){
+    MyAppendage.conveyor_motor(-0.95);
+    MyAppendage.shooter_raw(-0.3);
   }
   if(c2_rightbumper){ 
     //MyAppendage.intake_out();
@@ -711,9 +716,9 @@ else{
   
   else if (c2_leftbumper){
     MyAppendage.intakemotor(-0.9);
-    MyAppendage.conveyor_motor(-0.95);
+    //MyAppendage.conveyor_motor(-0.95);
     //MyAppendage.shooter_feed(-0.8);
-    MyAppendage.shooter_raw(-0.3);
+    //MyAppendage.shooter_raw(-0.3);
     
   }
   else {
@@ -777,7 +782,7 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if((!c2_leftbumper) && (!c2_rightbumper) && (c2_joy_left > -0.5)){
+  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9)){
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }

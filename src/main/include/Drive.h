@@ -39,6 +39,8 @@ class Drive : public frc::Subsystem {
     frc::Encoder * s_rightdrive_enc;
     frc::ADXRS450_Gyro * s_gyro;
     frc::DoubleSolenoid * p_climberlock;
+    rev::CANEncoder * s_leftclimb_enc;
+    rev::CANEncoder * s_rightclimb_enc;
     
 
     public:
@@ -52,7 +54,7 @@ class Drive : public frc::Subsystem {
      void buddyclimb_motor(double input);
      void buddyclimb_out();
      void buddyclimb_in();
-     void climb(double input);
+     bool climb(double input);
      bool camera_centering(float camera_x, float camera_s, double d);
      double camera_getdistance(float camera_y);
      void shift_low();
@@ -63,6 +65,7 @@ class Drive : public frc::Subsystem {
      void climberunlock();
      void gyro_reset();
      void encoder_reset();
+  
 
 };
 #endif

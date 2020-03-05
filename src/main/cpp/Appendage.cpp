@@ -231,8 +231,8 @@ void Appendage::controlpanel_colorsense_periodicrotation(){
       else {
           m_controlpanel->Set(0); // if color doesn't match desired color keep spinning
       }
-      auto encoder_valstr = std::to_string(colorcounter);
-      frc::SmartDashboard::PutString("DB/String 6",encoder_valstr);
+      /*auto encoder_valstr = std::to_string(colorcounter);
+      frc::SmartDashboard::PutString("DB/String 6",encoder_valstr);*/
     }
   
 
@@ -278,8 +278,8 @@ void Appendage::shooter_raw(double input){
 bool Appendage::shooter_pid(double distance, int trim){
 
     double setpoint = 18.9*distance + 5925; //  
-    if (setpoint < 8400){
-      setpoint = 8000;
+    if (setpoint < 6500){
+      setpoint = 6500;
     }
     
     setpoint = setpoint + setpoint * trim/100.0;
@@ -292,7 +292,10 @@ bool Appendage::shooter_pid(double distance, int trim){
     double kpe = 0.00015; //
     //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double coach_marc = 0;
-    if (setpoint > 7500 && setpoint < 9000){
+    if (setpoint > 6000 && setpoint < 7500){
+        coach_marc = 0.67;
+    }
+    else if (setpoint > 7500 && setpoint < 9000){
         coach_marc = 0.75;
     }
     else if (setpoint >= 9000 && setpoint < 11000){
