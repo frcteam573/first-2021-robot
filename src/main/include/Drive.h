@@ -66,6 +66,8 @@ class Drive : public frc::Subsystem {
      void gyro_reset();
      void encoder_reset();
      void turn_to(double angle);
+     bool climb_left(double input);
+     bool climb_right(double input)
   
 
 };
