@@ -68,6 +68,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
    // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
+
+
 double Appendage::deadband(double input, double deadband_size){
   // Deadband function - Takes input and checks it againist a provided deadband
   // then returns the value or zero depending if it is within or outside of the deadband.
@@ -269,12 +271,13 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+// set shooter wheel to raw value
 void Appendage::shooter_raw(double input){
   m_shooter->Set(input); // Set motor to value
   m_shooter2->Set(input);
 }
 
-
+// use camera distance to figure out shooter speed
 bool Appendage::shooter_pid(double distance, int trim){
 
     double setpoint = 18.9*distance + 5925; //  
@@ -322,9 +325,11 @@ bool Appendage::shooter_pid(double distance, int trim){
     return output;
 }
 
+
+// gets distance from camera to give to shooter pid function
 bool Appendage::shooter_get_distance(int trim){
 
-    //double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+    //double setpoint = distance * 30; // don't actually use this part we have no idea what's going on 
 
     double setpoint = trim*250;
     
