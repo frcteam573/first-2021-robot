@@ -649,18 +649,30 @@ if (climb_enable){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(0.7);
+    MyDrive.climb_left(-1);
 
   }
   else if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(-1);
+    MyDrive.climb_right(-1);
+  }
+  else if (c1_leftbmp && !c1_rightbmp){
+    
+    MyDrive.climberunlock();
+
+    MyDrive.climb_left(0.7);
+  }
+  else if (c1_rightbmp && !c1_leftbmp){
+
+    MyDrive.climberunlock();
+
+    MyDrive.climb_right(0.7);
   }
   else{
 
-MyDrive.climberlock();
+    MyDrive.climberlock();
 
     MyDrive.climb(0);
   }

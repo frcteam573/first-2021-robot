@@ -67,7 +67,7 @@ class Drive : public frc::Subsystem {
      void encoder_reset();
      void turn_to(double angle);
      bool climb_left(double input);
-     bool climb_right(double input)
+     bool climb_right(double input);
   
 
 };

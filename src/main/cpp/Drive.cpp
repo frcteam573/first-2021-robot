@@ -198,6 +198,7 @@ bool Drive::climb_left(double input){
         
         m_leftclimb->Set(0);
     }
+    
 }
 /* FOLLOWING THE PATH CODE */
 
@@ -406,9 +407,9 @@ void Drive::turn_to(double angle){
     double kp = 0.01;
     double output = error * kp;
 
-    m_leftdrive(-output);
-    m_leftdrive2(-output);
-    m_rightdrive(output);
-    m_rightdrive2(output);
+    m_leftdrive->Set(-output);
+    m_leftdrive2->Set(-output);
+    m_rightdrive->Set(output);
+    m_rightdrive2->Set(output);
 
 }
