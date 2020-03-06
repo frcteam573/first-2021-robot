@@ -255,7 +255,7 @@ void Robot::AutonomousPeriodic() {
     }
   
     if (mode =="3"){
-      if (count < 250){
+      if (count < 125){
         MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
@@ -275,13 +275,16 @@ void Robot::AutonomousPeriodic() {
 
         }
       }
-      else if (count == 250){
+      else if (count > 125 && count < 150){
+        MyDrive.turn_to(0);
+      }
+      else if (count == 150){
         MyDrive.encoder_reset();
         MyDrive.shift_high();
       }
 
-      else if (count > 250 && count < (count_max_int + 250)){
-        int count2 = count -251;
+      else if (count > 150 && count < (count_max_int + 150)){
+        int count2 = count -151;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
@@ -559,6 +562,7 @@ void Robot::TeleopPeriodic() {
     aligned = MyDrive.camera_centering(camera_x, camera_s, d);
     
   }
+  
   else {
 
     MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive

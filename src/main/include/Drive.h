@@ -65,6 +65,7 @@ class Drive : public frc::Subsystem {
      void climberunlock();
      void gyro_reset();
      void encoder_reset();
+     void turn_to(double angle);
   
 
 };

@@ -359,3 +359,15 @@ void Drive::encoder_reset(){
     s_rightdrive_enc->Reset();
 }
 
+void Drive::turn_to(double angle){
+    double gyro_val = s_gyro->GetAngle();
+    double error = angle - gyro_val;
+    double kp = 0.01;
+    double output = error * kp;
+
+    m_leftdrive(-output);
+    m_leftdrive2(-output);
+    m_rightdrive(output);
+    m_rightdrive2(output);
+
+}
