@@ -411,7 +411,10 @@ void Appendage::dashboard(){
   double shooter_log = m_shooter->Get();
   MyLog.CurrentCompare(11, shooter_log);
   MyLog.CurrentCompare(10, shooter_log);
-  
+
+  bool faye = s_elevator->Get();
+  auto val_3_str = std::to_string(faye);
+  frc::SmartDashboard::PutString("Elevator Sensor", val_3_str);
   
 }
 
