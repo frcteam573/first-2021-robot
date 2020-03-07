@@ -728,6 +728,8 @@ else{
     //MyAppendage.conveyor_motor(0.95);
     //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
+
+    MyAppendage.elevatorauto();
   }
   
   else if (c2_leftbumper){
@@ -798,7 +800,7 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9)){
+  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9) && (!c2_rightbumper)) {
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }

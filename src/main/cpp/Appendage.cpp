@@ -17,7 +17,7 @@
 #include <frc/DoubleSolenoid.h>
 #include <rev/CANEncoder.h>
 #include "rev/SparkMax.h"
-
+#include <frc/DigitalInput.h>
 
 
 
@@ -43,7 +43,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDb = 7;
     int intakeIDc = 0;
     int conveyormID = 13;
-
+    int elevatorSID = 6;
    // int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
@@ -64,6 +64,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     p_intake = new frc::DoubleSolenoid(2, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
     
+    s_elevator = new frc::DigitalInput(elevatorSID);
 
    // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
@@ -422,4 +423,15 @@ void Appendage::dashboard(){
 void Appendage::shooter_speed(double input){
   m_shooter->Set(input);
   m_shooter2->Set(input);
+}
+
+void Appendage::elevatorauto(){
+    bool faye = s_elevator->Get();
+    if (!faye) {
+      m_conveyor->Set(0.95);
+      }
+
+      else {
+      m_conveyor->Set(0);
+      }
 }
