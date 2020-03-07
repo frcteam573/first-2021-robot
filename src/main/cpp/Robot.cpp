@@ -296,12 +296,13 @@ void Robot::AutonomousPeriodic() {
         if (count2 < 108){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
-          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.elevatorauto();
          // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
+          MyAppendage.conveyor_motor(0);
          // MyAppendage.shooter_feed(0);
         }
         
@@ -485,7 +486,7 @@ void Robot::TeleopPeriodic() {
 // Read in camera Stuff
   
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-  
+  bool ellie = frc::SmartDashboard::GetBoolean("Auto Elevator", false);
   table->PutNumber("ledMode", 0);
   table->PutNumber("camMode", 0);
 
@@ -645,26 +646,37 @@ if (c1_btn_back && c1_btn_start){
 if (climb_enable){
   
 
-  if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
+  if (c1_lefttrigger > 0.5 ){
 
     MyDrive.climberunlock();
 
     MyDrive.climb_left(-1);
 
   }
-  else if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
-
-    MyDrive.climberunlock();
-
-    MyDrive.climb_right(-1);
-  }
-  else if (c1_leftbmp && !c1_rightbmp){
+  
+  else if (c1_leftbmp){
     
     MyDrive.climberunlock();
 
     MyDrive.climb_left(0.7);
   }
-  else if (c1_rightbmp && !c1_leftbmp){
+
+  else{
+
+    MyDrive.climberlock();
+
+    MyDrive.climb_left(0);
+  }
+
+
+  if (c1_righttrigger > 0.5 ){
+
+    MyDrive.climberunlock();
+
+    MyDrive.climb_right(-1);
+  }
+  
+  else if (c1_rightbmp){
 
     MyDrive.climberunlock();
 
@@ -674,7 +686,7 @@ if (climb_enable){
 
     MyDrive.climberlock();
 
-    MyDrive.climb(0);
+    MyDrive.climb_right(0);
   }
 
 
@@ -729,7 +741,9 @@ else{
     //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
 
+    if (ellie){
     MyAppendage.elevatorauto();
+    }
   }
   
   else if (c2_leftbumper){
@@ -800,10 +814,18 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9) && (!c2_rightbumper)) {
+  bool bumper = false;
+  if (!c2_rightbumper && ellie){
+    bumper = true;
+  }
+  else if (!ellie){
+    bumper = true;
+  }
+  if((c2_joy_left > -0.9) && (c2_joy_left < 0.9) && (bumper)) {
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }
+ 
   
   //MyAppendage.shooter_feed(0);
  

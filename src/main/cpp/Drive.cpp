@@ -164,7 +164,7 @@ bool Drive::climb(double input){
 
 // right side climber control with soft stops
 bool Drive::climb_right(double input){
-    m_rightclimb->Set(input);    
+    //m_rightclimb->Set(input);    
     //Run climber motors
     double lower_bound = 100;
     double upper_bound = 5000000000;
@@ -186,14 +186,14 @@ bool Drive::climb_right(double input){
 
 // left side climber control with soft stops
 bool Drive::climb_left(double input){
-    m_leftclimb->Set(input);    
+    //m_leftclimb->Set(input);    
     //Run climber motors
     double lower_bound = 100;
     double upper_bound = 5000000000;
     
     double leftclimb_enc_val = s_leftclimb_enc->GetPosition();
     auto leftclimb_enc_val_str = std::to_string(leftclimb_enc_val);
-    frc::SmartDashboard::PutString("DB/String 6",leftclimb_enc_val_str);
+    frc::SmartDashboard::PutString("DB/String 7",leftclimb_enc_val_str);
     if ((input < 0) && (leftclimb_enc_val > lower_bound)){
            m_leftclimb->Set(input);
     }
