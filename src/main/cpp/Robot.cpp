@@ -477,6 +477,7 @@ MyAppendage.dashboard();
 void Robot::TeleopInit() {
 
   MyAppendage.controlpanel_colorsense_init(); //Initalize the color sensor
+  bool first = true;    
   
 }
 
@@ -534,6 +535,7 @@ void Robot::TeleopPeriodic() {
   bool c1_leftbmp = controller1.GetRawButton(5);
   bool c1_rightbmp = controller1.GetRawButton(6);
   bool c1_btn_b = controller1.GetRawButton(2);
+  bool c1_btn_x = controller1.GetRawButton(3);
 
   //-----------------------------------------------------------------------------
   //------------ Operator Controller --------------------------------------------
@@ -563,7 +565,10 @@ void Robot::TeleopPeriodic() {
     aligned = MyDrive.camera_centering(camera_x, camera_s, d);
     
   }
-  
+  else if (c1_btn_x){
+    MyDrive.drive_straight(c1_joy_leftdrive, first);
+    first = false;
+  }
   else {
 
     MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
