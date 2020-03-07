@@ -63,6 +63,8 @@ Drive::Drive() : Subsystem("Drive") {
     s_rightclimb_enc = new  rev::CANEncoder(*m_rightclimb);
 
     p_climberlock = new frc::DoubleSolenoid(1, climberlockIDa, climberlockIDb);
+
+    std::vector< double > arr;
 }
 
 /* DEADBAND FUNCTION */
@@ -288,8 +290,25 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
     double error = setpoint - camera_x;
+    
     double kp_c = .015;
     double output = kp_c * error;
+
+    
+
+    arr.push_back(error);
+    double error_i = 0;
+    for (int i = 0; i <= arr.size(); i++){
+        error_i = error_i + arr[i];
+    }
+    arr.resize(10);
+    double kp_i = 0.015;
+
+    double kp_c = .01;
+    double output = kp_c * error + kp_i * error_i;
+
+    auto integralstr = std::to_string(error_i);
+    frc::SmartDashboard::PutString("DB/String 9", integralstr);
     
     m_leftdrive->Set(output);
     m_leftdrive2->Set(output);
@@ -421,4 +440,21 @@ void Drive::turn_to(double angle){
     m_rightdrive->Set(output);
     m_rightdrive2->Set(output);
 
+}
+
+void Drive::drive_straight(double Leftstick, bool first){
+    if (first){
+        gyro_reset();
+
+    }
+    double gyro_val = s_gyro->GetAngle();
+    double error = 0 - gyro_val;
+    double kp = 0.01;
+    double output = kp * error;
+
+    m_leftdrive->Set(Leftstick - output);
+    m_leftdrive2->Set(Leftstick - output);
+    m_rightdrive->Set(Leftstick + output);
+    m_rightdrive2->Set(Leftstick + output);
+    
 }

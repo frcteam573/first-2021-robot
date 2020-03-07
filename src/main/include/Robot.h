@@ -64,4 +64,5 @@ class Robot : public frc::TimedRobot {
   float camera_exist;
   float image_size;
   frc::Compressor * Compressor;
+  bool first;
 };
