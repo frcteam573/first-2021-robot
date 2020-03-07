@@ -572,7 +572,7 @@ void Robot::TeleopPeriodic() {
   else {
 
     MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
-    
+    first = true;
 
   }
 

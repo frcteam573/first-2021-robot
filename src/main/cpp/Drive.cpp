@@ -299,10 +299,13 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         error_i = error_i + arr[i];
     }
     arr.resize(10);
-    double kp_i = 0.001;
+    double kp_i = 0.015;
 
     double kp_c = .01;
     double output = kp_c * error + kp_i * error_i;
+
+    auto integralstr = std::to_string(error_i);
+    frc::SmartDashboard::PutString("DB/String 9", integralstr);
     
     m_leftdrive->Set(output);
     m_leftdrive2->Set(output);
@@ -443,7 +446,7 @@ void Drive::drive_straight(double Leftstick, bool first){
     }
     double gyro_val = s_gyro->GetAngle();
     double error = 0 - gyro_val;
-    double kp = -0.01;
+    double kp = 0.01;
     double output = kp * error;
 
     m_leftdrive->Set(Leftstick - output);
