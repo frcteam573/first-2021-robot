@@ -23,6 +23,7 @@
 #include <frc/DoubleSolenoid.h>
 #include <rev/CANEncoder.h>
 #include "rev/SparkMax.h"
+#include <frc/DigitalInput.h>
 
 
 using namespace std;
@@ -42,6 +43,7 @@ class Appendage : public frc::Subsystem {
     rev::SparkMax * m_intake;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
+    frc::DigitalInput * s_elevator;
    // rev::CANSparkMax * m_shooterfeed;
 
     //Any updates here also have to be done in controlpanel_colorsense_init
@@ -76,6 +78,6 @@ class Appendage : public frc::Subsystem {
      void dashboard();
      void shooter_raw(double input);
      void shooter_speed(double input);
-
+    void elevatorauto();
 };
 #endif
