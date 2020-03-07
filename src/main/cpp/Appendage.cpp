@@ -297,7 +297,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double coach_marc = 0;
     if (setpoint > 6000 && setpoint < 7500){
-        coach_marc = 0.67;
+        coach_marc = 0.65;
     }
     else if (setpoint > 7500 && setpoint < 9000){
         coach_marc = 0.75;
@@ -317,10 +317,10 @@ bool Appendage::shooter_pid(double distance, int trim){
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
-    auto encoder_valstr3 = std::to_string(output_e+.25);
+    auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.985*setpoint || encoder_val < 1.015*setpoint){
+    if (encoder_val > 0.97*setpoint && encoder_val < 1.03*setpoint){
       output = true;
     }
     return output;
@@ -362,7 +362,7 @@ bool Appendage::shooter_get_distance(int trim){
     auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+    if ((encoder_val > (0.98*setpoint)) && (encoder_val < (1.02*setpoint))){
       output = true;
     }
     return output;
@@ -419,7 +419,7 @@ void Appendage::dashboard(){
 
   bool faye = s_elevator->Get();
   auto val_3_str = std::to_string(faye);
-  frc::SmartDashboard::PutString("Elevator Sensor", val_3_str);
+  frc::SmartDashboard::PutString("DB/String 9", val_3_str);
   
 }
 
@@ -431,7 +431,7 @@ void Appendage::shooter_speed(double input){
 void Appendage::elevatorauto(){
     bool faye = s_elevator->Get();
     if (!faye) {
-      m_conveyor->Set(0.95);
+      m_conveyor->Set(0.6);
       }
 
       else {
