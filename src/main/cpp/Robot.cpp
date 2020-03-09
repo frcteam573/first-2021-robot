@@ -255,7 +255,7 @@ void Robot::AutonomousPeriodic() {
     }
   
     if (mode =="3"){
-      if (count < 250){
+      if (count < 125){
         MyDrive.shift_low();
         aligned = false;
         aligned = MyDrive.camera_centering(camera_x, camera_s, d);
@@ -275,13 +275,16 @@ void Robot::AutonomousPeriodic() {
 
         }
       }
-      else if (count == 250){
+      else if (count > 125 && count < 150){
+        MyDrive.turn_to(0);
+      }
+      else if (count == 150){
         MyDrive.encoder_reset();
         MyDrive.shift_high();
       }
 
-      else if (count > 250 && count < (count_max_int + 250)){
-        int count2 = count -251;
+      else if (count > 150 && count < (count_max_int + 150)){
+        int count2 = count -151;
         MyDrive.shift_high();
         //Get setpoint values from tables
         MyAppendage.shooter_speed(0);
@@ -293,12 +296,13 @@ void Robot::AutonomousPeriodic() {
         if (count2 < 108){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
-          MyAppendage.conveyor_motor(0.8);
+          MyAppendage.elevatorauto();
          // MyAppendage.shooter_feed(-0.8);
         }
         else{
           MyAppendage.intake_in();
           MyAppendage.intakemotor(0);
+          MyAppendage.conveyor_motor(0);
          // MyAppendage.shooter_feed(0);
         }
         
@@ -473,6 +477,7 @@ MyAppendage.dashboard();
 void Robot::TeleopInit() {
 
   MyAppendage.controlpanel_colorsense_init(); //Initalize the color sensor
+  bool first = true;    
   
 }
 
@@ -482,7 +487,7 @@ void Robot::TeleopPeriodic() {
 // Read in camera Stuff
   
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-  
+  bool ellie = frc::SmartDashboard::GetBoolean("Auto Elevator", false);
   table->PutNumber("ledMode", 0);
   table->PutNumber("camMode", 0);
 
@@ -530,6 +535,7 @@ void Robot::TeleopPeriodic() {
   bool c1_leftbmp = controller1.GetRawButton(5);
   bool c1_rightbmp = controller1.GetRawButton(6);
   bool c1_btn_b = controller1.GetRawButton(2);
+  bool c1_btn_x = controller1.GetRawButton(3);
 
   //-----------------------------------------------------------------------------
   //------------ Operator Controller --------------------------------------------
@@ -559,10 +565,14 @@ void Robot::TeleopPeriodic() {
     aligned = MyDrive.camera_centering(camera_x, camera_s, d);
     
   }
+  else if (c1_btn_x){
+    MyDrive.drive_straight(c1_joy_leftdrive, first);
+    first = false;
+  }
   else {
 
     MyDrive.Joystick_Drive(c1_joy_leftdrive,c1_joy_rightdrive); // Basic joystick drive
-    
+    first = true;
 
   }
 
@@ -641,24 +651,47 @@ if (c1_btn_back && c1_btn_start){
 if (climb_enable){
   
 
-  if (c1_lefttrigger > 0.5 && c1_righttrigger < 0.5){
+  if (c1_lefttrigger > 0.5 ){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(0.7);
+    MyDrive.climb_left(-1);
 
   }
-  else if (c1_lefttrigger < 0.5 && c1_righttrigger > 0.5){
+  
+  else if (c1_leftbmp){
+    
+    MyDrive.climberunlock();
+
+    MyDrive.climb_left(0.7);
+  }
+
+  else{
+
+    MyDrive.climberlock();
+
+    MyDrive.climb_left(0);
+  }
+
+
+  if (c1_righttrigger > 0.5 ){
 
     MyDrive.climberunlock();
 
-    MyDrive.climb(-1);
+    MyDrive.climb_right(-1);
+  }
+  
+  else if (c1_rightbmp){
+
+    MyDrive.climberunlock();
+
+    MyDrive.climb_right(0.7);
   }
   else{
 
-MyDrive.climberlock();
+    MyDrive.climberlock();
 
-    MyDrive.climb(0);
+    MyDrive.climb_right(0);
   }
 
 
@@ -702,7 +735,7 @@ else{
     MyAppendage.conveyor_motor(0.95);
   }
   else if (c2_joy_left > 0.9){
-    MyAppendage.conveyor_motor(-0.95);
+    MyAppendage.conveyor_motor(-0.8);
     MyAppendage.shooter_raw(-0.3);
   }
   if(c2_rightbumper){ 
@@ -713,7 +746,9 @@ else{
     //MyAppendage.shooter_feed(-0.8);
     MyAppendage.shooter_raw(-0.3);
 
+    if (ellie){
     MyAppendage.elevatorauto();
+    }
   }
   
   else if (c2_leftbumper){
@@ -784,10 +819,18 @@ if (c2_left_trigger > 0.5){
     }
 }
 else{
-  if( (c2_joy_left > -0.9) && (c2_joy_left < 0.9) && (!c2_rightbumper)) {
+  bool bumper = false;
+  if (!c2_rightbumper && ellie){
+    bumper = true;
+  }
+  else if (!ellie){
+    bumper = true;
+  }
+  if((c2_joy_left > -0.9) && (c2_joy_left < 0.9) && (bumper)) {
     MyAppendage.conveyor_motor(0);
     MyAppendage.shooter_raw(0);
   }
+ 
   
   //MyAppendage.shooter_feed(0);
  

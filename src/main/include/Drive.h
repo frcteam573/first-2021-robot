@@ -65,6 +65,11 @@ class Drive : public frc::Subsystem {
      void climberunlock();
      void gyro_reset();
      void encoder_reset();
+     void turn_to(double angle);
+     bool climb_left(double input);
+     bool climb_right(double input);
+     void drive_straight(double Leftstick, bool first);
+     std::vector< double > arr;
   
 
 };

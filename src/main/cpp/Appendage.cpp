@@ -69,6 +69,8 @@ Appendage::Appendage() : Subsystem("Appendage") {
    // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
 
     }
+
+
 double Appendage::deadband(double input, double deadband_size){
   // Deadband function - Takes input and checks it againist a provided deadband
   // then returns the value or zero depending if it is within or outside of the deadband.
@@ -270,12 +272,13 @@ std::string Appendage::driverstation_color(){
     return output; 
 }
 
+// set shooter wheel to raw value
 void Appendage::shooter_raw(double input){
   m_shooter->Set(input); // Set motor to value
   m_shooter2->Set(input);
 }
 
-
+// use camera distance to figure out shooter speed
 bool Appendage::shooter_pid(double distance, int trim){
 
     double setpoint = 18.9*distance + 5925; //  
@@ -294,7 +297,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double coach_marc = 0;
     if (setpoint > 6000 && setpoint < 7500){
-        coach_marc = 0.67;
+        coach_marc = 0.65;
     }
     else if (setpoint > 7500 && setpoint < 9000){
         coach_marc = 0.75;
@@ -314,18 +317,20 @@ bool Appendage::shooter_pid(double distance, int trim){
     frc::SmartDashboard::PutString("DB/String 3",encoder_valstr);
     auto encoder_valstr2 = std::to_string(setpoint);
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
-    auto encoder_valstr3 = std::to_string(output_e+.25);
+    auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.985*setpoint || encoder_val < 1.015*setpoint){
+    if (encoder_val > 0.97*setpoint && encoder_val < 1.03*setpoint){
       output = true;
     }
     return output;
 }
 
+
+// gets distance from camera to give to shooter pid function
 bool Appendage::shooter_get_distance(int trim){
 
-    //double setpoint = distance * 30; // don't actually use we have no idea what's going on 
+    //double setpoint = distance * 30; // don't actually use this part we have no idea what's going on 
 
     double setpoint = trim*250;
     
@@ -357,7 +362,7 @@ bool Appendage::shooter_get_distance(int trim){
     auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.9*setpoint || encoder_val < 1.1*setpoint){
+    if ((encoder_val > (0.98*setpoint)) && (encoder_val < (1.02*setpoint))){
       output = true;
     }
     return output;
@@ -414,7 +419,7 @@ void Appendage::dashboard(){
 
   bool faye = s_elevator->Get();
   auto val_3_str = std::to_string(faye);
-  frc::SmartDashboard::PutString("Elevator Sensor", val_3_str);
+  frc::SmartDashboard::PutString("DB/String 9", val_3_str);
   
 }
 
@@ -426,7 +431,7 @@ void Appendage::shooter_speed(double input){
 void Appendage::elevatorauto(){
     bool faye = s_elevator->Get();
     if (!faye) {
-      m_conveyor->Set(0.95);
+      m_conveyor->Set(0.6);
       }
 
       else {

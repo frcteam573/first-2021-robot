@@ -63,6 +63,8 @@ Drive::Drive() : Subsystem("Drive") {
     s_rightclimb_enc = new  rev::CANEncoder(*m_rightclimb);
 
     p_climberlock = new frc::DoubleSolenoid(1, climberlockIDa, climberlockIDb);
+
+    std::vector< double > arr;
 }
 
 /* DEADBAND FUNCTION */
@@ -112,24 +114,28 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
 
 }
 
+// buddy climb intake roller 
 void Drive::buddyclimb_motor(double input){ 
-    //Runs buddy climb roller
+    
     m_buddyclimb->Set(input);
 
 }
 
+// buddy climb deploy
 void Drive::buddyclimb_out(){
-    // Deploy buddy climb claw
+    
     p_buddyclimb->Set(frc::DoubleSolenoid::Value::kForward);
 
 }
 
+// buddy climb retract
 void Drive::buddyclimb_in(){
-    // Retract buddy climb claw
+    
     p_buddyclimb->Set(frc::DoubleSolenoid::Value::kReverse);
     
 }
 
+// original climber control, NOT INDIVIDUAL
 bool Drive::climb(double input){
     m_leftclimb->Set(input);
     m_rightclimb->Set(input);    
@@ -158,8 +164,52 @@ bool Drive::climb(double input){
 
 }
 
-/* FOLLOWING THE PATH CODE */
+// right side climber control with soft stops
+bool Drive::climb_right(double input){
+    //m_rightclimb->Set(input);    
+    //Run climber motors
+    double lower_bound = 100;
+    double upper_bound = 5000000000;
+    
+    double rightclimb_enc_val = s_rightclimb_enc->GetPosition();
+    auto rightclimb_enc_val_str = std::to_string(rightclimb_enc_val);
+    frc::SmartDashboard::PutString("DB/String 6",rightclimb_enc_val_str);
+    if ((input < 0) && (rightclimb_enc_val > lower_bound)){
+           m_rightclimb->Set(input);
+    }
+    else if ((input > 0) && (rightclimb_enc_val < upper_bound)){
+        m_rightclimb->Set(input);
+    }
+    else {
+        
+        m_rightclimb->Set(0);
+    }
+}
 
+// left side climber control with soft stops
+bool Drive::climb_left(double input){
+    //m_leftclimb->Set(input);    
+    //Run climber motors
+    double lower_bound = 100;
+    double upper_bound = 5000000000;
+    
+    double leftclimb_enc_val = s_leftclimb_enc->GetPosition();
+    auto leftclimb_enc_val_str = std::to_string(leftclimb_enc_val);
+    frc::SmartDashboard::PutString("DB/String 7",leftclimb_enc_val_str);
+    if ((input < 0) && (leftclimb_enc_val > lower_bound)){
+           m_leftclimb->Set(input);
+    }
+    else if ((input > 0) && (leftclimb_enc_val < upper_bound)){
+        m_leftclimb->Set(input);
+    }
+    else {
+        
+        m_leftclimb->Set(0);
+    }
+    
+}
+
+// path following 
 void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, double setpoint_left_speed, double setpoint_right_speed, double heading, int count) {
   
   if(count ==0){
@@ -204,16 +254,11 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   m_rightdrive->Set(output_right - turn_val);
   m_rightdrive2->Set(output_right - turn_val);
 
-  /*auto Left_encoderstr = std::to_string(output_left);
-  frc::SmartDashboard::PutString("DB/String 6",Left_encoderstr);
-  auto Right_encoderstr = std::to_string(error_left_pos);
-  frc::SmartDashboard::PutString("DB/String 7",Right_encoderstr);
-  Right_encoderstr = std::to_string(setpoint_left_pos);
-  frc::SmartDashboard::PutString("DB/String 8",Right_encoderstr);
-  Right_encoderstr = std::to_string(setpoint_left_speed);
-  frc::SmartDashboard::PutString("DB/String 9",Right_encoderstr);*/
+  
 }
 
+
+// camera auto centering
 bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     double setpoint = 0.0;
@@ -245,8 +290,25 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
     double error = setpoint - camera_x;
-    double kp_c = .01;
+    
+    double kp_c = .015;
     double output = kp_c * error;
+
+    
+
+    arr.push_back(error);
+    double error_i = 0;
+    for (int i = 0; i <= arr.size(); i++){
+        error_i = error_i + arr[i];
+    }
+    arr.resize(10);
+    double kp_i = 0.015;
+
+    double kp_c = .01;
+    double output = kp_c * error + kp_i * error_i;
+
+    auto integralstr = std::to_string(error_i);
+    frc::SmartDashboard::PutString("DB/String 9", integralstr);
     
     m_leftdrive->Set(output);
     m_leftdrive2->Set(output);
@@ -260,18 +322,21 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
   
 }
 
+// manual shift into low gear
 void Drive::shift_low(){
     // Set drive transmissions into low gear
     p_driveshift->Set(frc::DoubleSolenoid::Value::kForward);
 
 }
 
+// manual shift into high gear
 void Drive::shift_high(){
     // Set drive transmissions into high gear
     p_driveshift->Set(frc::DoubleSolenoid::Value::kReverse);
 
 }
 
+// autoshifting function 
 void Drive::shift_auto(){
     // Auto shifting logic
 
@@ -297,6 +362,7 @@ void Drive::shift_auto(){
 
 }
 
+// distance conversions from camera
 double Drive::camera_getdistance(float camera_y){
 
     double h2 = 91; // height to the center of the vision target on the goal
@@ -312,7 +378,7 @@ double Drive::camera_getdistance(float camera_y){
     return d;
 }
 
-
+// dashboard sensor output 
 void Drive::dashboard(){
 
     // sensor outputs
@@ -338,24 +404,57 @@ void Drive::dashboard(){
 
 }
 
+// climber brakes off
 void Drive::climberunlock(){
     // Deploy buddy climb claw
     p_climberlock->Set(frc::DoubleSolenoid::Value::kForward);
 }
 
+// climber brakes on
 void Drive::climberlock(){
     // Retract buddy climb claw
     p_climberlock->Set(frc::DoubleSolenoid::Value::kReverse);
 
 }
 
-
+// reset gyro
 void Drive::gyro_reset(){
     s_gyro->Reset();
 }
 
+// reset encoder
 void Drive::encoder_reset(){
     s_leftdrive_enc->Reset();
     s_rightdrive_enc->Reset();
 }
 
+// turn to angle
+void Drive::turn_to(double angle){
+    double gyro_val = s_gyro->GetAngle();
+    double error = angle - gyro_val;
+    double kp = 0.01;
+    double output = error * kp;
+
+    m_leftdrive->Set(-output);
+    m_leftdrive2->Set(-output);
+    m_rightdrive->Set(output);
+    m_rightdrive2->Set(output);
+
+}
+
+void Drive::drive_straight(double Leftstick, bool first){
+    if (first){
+        gyro_reset();
+
+    }
+    double gyro_val = s_gyro->GetAngle();
+    double error = 0 - gyro_val;
+    double kp = 0.01;
+    double output = kp * error;
+
+    m_leftdrive->Set(Leftstick - output);
+    m_leftdrive2->Set(Leftstick - output);
+    m_rightdrive->Set(Leftstick + output);
+    m_rightdrive2->Set(Leftstick + output);
+    
+}
