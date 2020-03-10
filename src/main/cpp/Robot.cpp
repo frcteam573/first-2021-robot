@@ -43,6 +43,7 @@ void Robot::RobotInit() {
   bool buddyclimb_enable = false;
   MyDrive.buddyclimb_motor(0);
   bool climb_enable = false;
+  bool empty = false;
   MyDrive.shift_low();
   MyDrive.climberlock();
   MyAppendage.intake_in();
@@ -296,7 +297,7 @@ void Robot::AutonomousPeriodic() {
         if (count2 < 108){
           MyAppendage.intake_out();
           MyAppendage.intakemotor(0.8);
-          MyAppendage.elevatorauto();
+          MyAppendage.elevatorauto(empty);
          // MyAppendage.shooter_feed(-0.8);
         }
         else{
@@ -747,8 +748,9 @@ else{
     MyAppendage.shooter_raw(-0.3);
 
     if (ellie){
-    MyAppendage.elevatorauto();
+    MyAppendage.elevatorauto(empty);
     }
+    empty = false;
   }
   
   else if (c2_leftbumper){
@@ -794,6 +796,7 @@ if (c2_left_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.95);
         //MyAppendage.shooter_feed(0.8);
+        empty = true;
       }
       else {
 
@@ -809,6 +812,7 @@ if (c2_left_trigger > 0.5){
 
         MyAppendage.conveyor_motor(0.8);
        // MyAppendage.shooter_feed(0.8);
+       empty = true;
       }
       else {
 
