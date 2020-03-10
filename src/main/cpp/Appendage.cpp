@@ -26,6 +26,9 @@ using namespace std;
 
     std::string colorStringold;
     int colorcounter=0;
+    int timer = 0;
+    int ballcounter = 0;
+    bool fayeold = true;
 
 Appendage::Appendage() : Subsystem("Appendage") {
     // Define CAN and PWM Ids used in Drive here
@@ -428,13 +431,33 @@ void Appendage::shooter_speed(double input){
   m_shooter2->Set(input);
 }
 
-void Appendage::elevatorauto(){
+void Appendage::elevatorauto(bool empty){
     bool faye = s_elevator->Get();
-    if (!faye) {
-      m_conveyor->Set(0.6);
+    
+if (empty){
+  ballcounter = 0;
+
+}
+if (fayeold != faye && faye ){
+
+  ballcounter ++;
+
+  fayeold = faye;
+
+}
+
+    if (!faye && ballcounter < 4) {
+      if (timer > 12){
+        m_conveyor->Set(0.6);
+      }
+      timer++;
+
       }
 
       else {
+      timer = 0;
       m_conveyor->Set(0);
       }
+
+
 }

@@ -289,12 +289,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     //auto setpointstr = std::to_string(setpoint);
     //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
     
-    double error = setpoint - camera_x;
-    
-    double kp_c = .015;
-    double output = kp_c * error;
-
-    
+    double error = setpoint - camera_x; 
 
     arr.push_back(error);
     double error_i = 0;
