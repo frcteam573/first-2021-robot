@@ -70,7 +70,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     s_elevator = new frc::DigitalInput(elevatorSID);
 
    // m_shooterfeed = new rev::CANSparkMax{shooter_feedID, rev::CANSparkMax::MotorType::kBrushless};
-
+    std::vector< double > arr2;
     }
 
 
@@ -296,14 +296,25 @@ bool Appendage::shooter_pid(double distance, int trim){
     
     double error = setpoint - encoder_val; // Calculate current error
     //error = deadband(error, 10); // Apply a deadband to help overshoot.
-    double kpe = 0.00015; //
+    
+    arr2.push_back(error);
+    double error_i = 0;
+    for (int i = 0; i <= arr2.size(); i++){
+        error_i = error_i + arr2[i];
+    }
+    arr2.resize(10);
+    double kp_i = 0.00001;
+     double kpe = 0.00015; 
+    
+    
+   //
     //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double coach_marc = 0;
-    if (setpoint > 6000 && setpoint < 7500){
-        coach_marc = 0.65;
-    }
-    else if (setpoint > 7500 && setpoint < 9000){
+    if (setpoint > 6000 && setpoint < 9000){
         coach_marc = 0.75;
+    }
+    else if (setpoint > 9000 && setpoint < 11000){
+        coach_marc = 0.85;
     }
     else if (setpoint >= 9000 && setpoint < 11000){
       coach_marc = 0.85;
@@ -311,7 +322,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     else if (setpoint >= 11000){
       coach_marc = 0.9;
     }
-    double output_e = error * kpe + coach_marc; // Calculate motor value
+    double output_e = kpe * error + kp_i * error_i + coach_marc; // Calculate motor value
 
 
     m_shooter->Set(output_e); // Set motor to value
@@ -322,6 +333,9 @@ bool Appendage::shooter_pid(double distance, int trim){
     frc::SmartDashboard::PutString("DB/String 2",encoder_valstr2);
     auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
+
+    auto encoder_valstr4 = std::to_string(error_i);
+    frc::SmartDashboard::PutString("DB/String 5",encoder_valstr4);
     bool output = false;
     if (encoder_val > 0.97*setpoint && encoder_val < 1.03*setpoint){
       output = true;
@@ -433,16 +447,20 @@ void Appendage::shooter_speed(double input){
 
 void Appendage::elevatorauto(bool empty){
     bool faye = s_elevator->Get();
-    
+
+ auto val_3_str = std::to_string(ballcounter);
+  frc::SmartDashboard::PutString("DB/String 8", val_3_str);
+
 if (empty){
   ballcounter = 0;
+  frc::SmartDashboard::PutString("DB/String 7", "BallCOunt0000");
 
 }
-if (fayeold != faye && faye ){
+if ((fayeold != faye) && faye ){
 
   ballcounter ++;
-
-  fayeold = faye;
+  frc::SmartDashboard::PutString("DB/String 7", "BallCOunt++");
+  
 
 }
 
@@ -458,6 +476,6 @@ if (fayeold != faye && faye ){
       timer = 0;
       m_conveyor->Set(0);
       }
-
+fayeold = faye;
 
 }

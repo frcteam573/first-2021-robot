@@ -310,7 +310,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     m_rightdrive->Set(-output);
     m_rightdrive2->Set(-output);
     bool output1 = false;
-    if (abs(error) < 2){ // not sure if it's one so yeah
+    if (abs(error) < 5){ // not sure if it's one so yeah
       output1 = true;
     }
     return output1;
