@@ -741,7 +741,7 @@ else{
   }
   if(c2_rightbumper){ 
     //MyAppendage.intake_out();
-    MyAppendage.intakemotor(0.9);
+    MyAppendage.intakemotor(0.8);
 
     //MyAppendage.conveyor_motor(0.95);
     //MyAppendage.shooter_feed(-0.8);

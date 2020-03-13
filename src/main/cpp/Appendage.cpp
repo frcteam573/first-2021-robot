@@ -303,25 +303,40 @@ bool Appendage::shooter_pid(double distance, int trim){
         error_i = error_i + arr2[i];
     }
     arr2.resize(10);
-    double kp_i = 0.00001;
-     double kpe = 0.00015; 
+    double kp_i;
+     double kpe; 
     
     
    //
     //double val = frc::SmartDashboard::GetNumber("p input", 0);//.0005; // P gain
     double coach_marc = 0;
-    if (setpoint > 6000 && setpoint < 9000){
+    if (setpoint > 6000 && setpoint < 7500){
         coach_marc = 0.75;
+
+         kp_i = -0.000015; //frc::SmartDashboard::GetNumber("p input", 0); // P gain 0.000075; 
+        kpe = 0.0001;
+
     }
-    else if (setpoint > 9000 && setpoint < 11000){
+    else if (setpoint > 9500 && setpoint < 11000){
         coach_marc = 0.85;
+
+         kp_i = 0.0000;
+         kpe = 0.0001; 
     }
-    else if (setpoint >= 9000 && setpoint < 11000){
+else if (setpoint > 7500 && setpoint < 9500){
+        coach_marc = 0.8;
+
+         kp_i = frc::SmartDashboard::GetNumber("p input", 0); // P gain 0.000075;;
+         kpe = 0.0001; 
+
+         }
+
+   /* else if (setpoint >= 9000 && setpoint < 11000){
       coach_marc = 0.85;
     }
     else if (setpoint >= 11000){
       coach_marc = 0.9;
-    }
+    }*/
     double output_e = kpe * error + kp_i * error_i + coach_marc; // Calculate motor value
 
 
@@ -453,20 +468,19 @@ void Appendage::elevatorauto(bool empty){
 
 if (empty){
   ballcounter = 0;
-  frc::SmartDashboard::PutString("DB/String 7", "BallCOunt0000");
+  frc::SmartDashboard::PutString("DB/String 7", "thomasismean");
 
 }
 if ((fayeold != faye) && faye ){
 
   ballcounter ++;
-  frc::SmartDashboard::PutString("DB/String 7", "BallCOunt++");
+  frc::SmartDashboard::PutString("DB/String 7", "thomasismean");
   
-
 }
 
     if (!faye && ballcounter < 4) {
-      if (timer > 12){
-        m_conveyor->Set(0.6);
+      if (timer > 1){
+        m_conveyor->Set(0.65);
       }
       timer++;
 
