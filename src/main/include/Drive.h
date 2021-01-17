@@ -54,7 +54,7 @@ class Drive : public frc::Subsystem {
      void buddyclimb_motor(double input);
      void buddyclimb_out();
      void buddyclimb_in();
-     bool climb(double input);
+     void climb(double input);
      bool camera_centering(float camera_x, float camera_s, double d);
      double camera_getdistance(float camera_y);
      void shift_low();
@@ -66,8 +66,8 @@ class Drive : public frc::Subsystem {
      void gyro_reset();
      void encoder_reset();
      void turn_to(double angle);
-     bool climb_left(double input);
-     bool climb_right(double input);
+     void climb_left(double input);
+     void climb_right(double input);
      void drive_straight(double Leftstick, bool first);
      std::vector< double > arr;
   

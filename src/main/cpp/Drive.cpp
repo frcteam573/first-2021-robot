@@ -136,7 +136,7 @@ void Drive::buddyclimb_in(){
 }
 
 // original climber control, NOT INDIVIDUAL
-bool Drive::climb(double input){
+void Drive::climb(double input){
     m_leftclimb->Set(input);
     m_rightclimb->Set(input);    
     /* Run climber motors
@@ -165,7 +165,7 @@ bool Drive::climb(double input){
 }
 
 // right side climber control with soft stops
-bool Drive::climb_right(double input){
+void Drive::climb_right(double input){
     //m_rightclimb->Set(input);    
     //Run climber motors
     double lower_bound = 100;
@@ -187,7 +187,7 @@ bool Drive::climb_right(double input){
 }
 
 // left side climber control with soft stops
-bool Drive::climb_left(double input){
+void Drive::climb_left(double input){
     //m_leftclimb->Set(input);    
     //Run climber motors
     double lower_bound = 100;
@@ -291,8 +291,8 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
     
     double error = setpoint - camera_x;
     
-    double kp_c = .015;
-    double output = kp_c * error;
+    //double kp_c = .015;
+    //double output = kp_c * error;
 
     
 
