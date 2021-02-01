@@ -716,7 +716,9 @@ if (c2_dpad > 225 && c2_dpad < 315){
 else {rightbuttonstate=false;}
 frc::SmartDashboard::PutNumber("Current Trim",shootercounter);
 
-
+if(c2_btn_a){
+  MyAppendage.RPM(shootercounter);
+}
 
 //intake code
 if (buddyclimb_enable){

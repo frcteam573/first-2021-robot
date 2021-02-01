@@ -438,3 +438,17 @@ void Appendage::elevatorauto(){
       m_conveyor->Set(0);
       }
 }
+
+//Brian's RPM Function changes RPM when hitting A or B
+
+void Appendage::RPM(int increment){
+  double convert;
+  convert = increment / 10.0;
+  if(convert > 1){
+    convert = 1;
+  }
+  if(convert < -1){
+    convert = -1;
+  }
+  shooter_raw(convert);
+}

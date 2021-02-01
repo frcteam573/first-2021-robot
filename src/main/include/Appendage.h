@@ -79,5 +79,7 @@ class Appendage : public frc::Subsystem {
      void shooter_raw(double input);
      void shooter_speed(double input);
     void elevatorauto();
+    void RPM(int increment);
+
 };
 #endif
