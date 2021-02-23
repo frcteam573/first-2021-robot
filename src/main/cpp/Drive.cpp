@@ -233,12 +233,12 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
 
   double max_speed = 15.5; //15.5 ft/s
   double kp_speed = -1/(max_speed);
-  double kp_pos = -0.0007;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double kp_pos = -0.00075; //frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
   double kph = 0;//-0.01;  //0.01;
 
-  double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
-  double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
+  double output_left = (error_left_pos * kp_pos); //+ kp_speed*setpoint_left_speed;
+  double output_right = (error_right_pos * kp_pos); // + kp_speed*setpoint_right_speed;
 
   auto error_right_str = std::to_string(output_left);
   frc::SmartDashboard::PutString("DB/String 8", error_right_str);
