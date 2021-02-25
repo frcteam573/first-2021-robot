@@ -141,12 +141,12 @@ void Robot::AutonomousPeriodic() {
   bool wheel_speed = false;
 
 
-  if (count_delay > delay_int){
+  
     if (mode =="0"){
       // Custom Auto goes here
 
-      MyDrive.shift_high();
-      if (count < 164){
+      MyDrive.shift_low();
+      if (count < 188){
         double left_pos = MyPaths.ReturnTableVal(count,0);
         double left_speed = MyPaths.ReturnTableVal(count,1);
         double right_pos = MyPaths.ReturnTableVal(count,2);
@@ -168,7 +168,7 @@ void Robot::AutonomousPeriodic() {
     auto error_left_str = std::to_string(count);
   frc::SmartDashboard::PutString("DB/String 7", error_left_str);
     count ++;
-  }  
+  
 
 
 
