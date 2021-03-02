@@ -233,21 +233,45 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
 
   double max_speed = 15.5; //15.5 ft/s
   double kp_speed = -1/(max_speed);
-  double kp_pos = -0.0002; //frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double kp_pos = -0.002;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
   double kph = frc::SmartDashboard::GetNumber("p input", -0.025);//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos); //+ kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos); // + kp_speed*setpoint_right_speed;
 
-  auto error_right_str = std::to_string(output_left);
-  frc::SmartDashboard::PutString("DB/String 8", error_right_str);
-  auto error_left_str = std::to_string(error_heading);
-  frc::SmartDashboard::PutString("DB/String 5", error_left_str);
+
 
   double turn_val = kph * error_heading;
   //double output_left = (error_left_pos * kp_pos) + (error_left_speed * kp_speed) * .05;
   //double output_right = (error_right_pos * kp_pos) + (error_right_speed * kp_speed) * .05;
+/*
+  if(abs(output_left)<1){
+      output_left = output_left;
+  }
+  else if(output_left > 1){
+      output_left = 1;
+  }
+  else{
+      output_left = -1;
+  }
+
+if(abs(output_right)<1){
+      output_right = output_right;
+  }
+  else if(output_right > 1){
+      output_right= 1;
+  }
+  else{
+      output_right = -1;
+  }
+*/
+  auto error_right_str = std::to_string(output_left);
+  frc::SmartDashboard::PutString("DB/String 8", error_right_str);
+  auto error_left_str = std::to_string(output_right);
+  frc::SmartDashboard::PutString("DB/String 6", error_left_str);
+    error_left_str = std::to_string(turn_val);
+  frc::SmartDashboard::PutString("DB/String 5", error_left_str);
 
   m_leftdrive->Set(output_left + turn_val);
   m_leftdrive2->Set(output_left + turn_val);
@@ -385,10 +409,12 @@ void Drive::dashboard(){
     double val_1 = s_leftdrive_enc->Get();
     auto val_1_str = std::to_string(val_1);
     frc::SmartDashboard::PutString("Left Drive Encoder",val_1_str);
+    frc::SmartDashboard::PutString("DB/String 0",val_1_str);
 
     double val_2 = s_rightdrive_enc->Get();
     auto val_2_str = std::to_string(val_2);
     frc::SmartDashboard::PutString("Right Drive Encoder",val_2_str);
+    frc::SmartDashboard::PutString("DB/String 1",val_2_str);
 
     double val_3 = s_gyro->GetAngle();
     auto val_3_str = std::to_string(val_3);

@@ -2,7 +2,7 @@
 import csv
 import os
 
-inputfile = "Straight"
+inputfile = "Sla"
 with open(inputfile+'_left.csv', 'rU') as csvfile:
 
     csvstr = str(csvfile.name)
