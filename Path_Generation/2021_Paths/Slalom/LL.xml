@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><Path GeneratorType="PATHFINDER_V1" acceleration="2.0" driveBase="TANK" dt="0.02" fitMethod="HERMITE_CUBIC" jerk="1.0" reversed="false" unit="FEET" velocity="8.1" wheelBaseD="2.0" wheelBaseW="2.04">
+<?xml version="1.0" encoding="UTF-8"?><Path GeneratorType="PATHFINDER_V1" acceleration="2.0" driveBase="TANK" dt="0.02" fitMethod="HERMITE_CUBIC" jerk="1.0" reversed="false" unit="FEET" velocity="6.0" wheelBaseD="2.0" wheelBaseW="2.04">
     <Waypoint>
         <X>19.0</X>
         <Y>7.5</Y>
@@ -6,21 +6,21 @@
     </Waypoint>
     <Waypoint>
         <X>25.0</X>
-        <Y>3.0</Y>
+        <Y>2.0</Y>
         <Angle>0.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>27.0</X>
+        <X>27.5</X>
         <Y>5.0</Y>
         <Angle>90.0</Angle>
     </Waypoint>
     <Waypoint>
         <X>25.0</X>
-        <Y>7.0</Y>
+        <Y>8.5</Y>
         <Angle>180.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>19.0</X>
+        <X>17.5</X>
         <Y>2.5</Y>
         <Angle>180.0</Angle>
     </Waypoint>

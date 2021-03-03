@@ -146,7 +146,7 @@ void Robot::AutonomousPeriodic() {
       // Custom Auto goes here
 
       MyDrive.shift_low();
-      if (count < 450){
+      if (count < 748){
         double left_pos = MyPaths.ReturnTableVal(count,0);
         double left_speed = MyPaths.ReturnTableVal(count,1);
         double right_pos = MyPaths.ReturnTableVal(count,2);

@@ -231,41 +231,17 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   
 
 
-  double max_speed = 15.5; //15.5 ft/s
+  double max_speed = 6.0*7000/5; //6 ft/s
   double kp_speed = -1/(max_speed);
-  double kp_pos = -0.002;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double kp_pos = 0; //-0.002;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
   
-  double kph = frc::SmartDashboard::GetNumber("p input", -0.025);//-0.01;  //0.01;
+  double kph = -.007; //frc::SmartDashboard::GetNumber("p input", -0.025);//-0.01;  //0.01;
 
-  double output_left = (error_left_pos * kp_pos); //+ kp_speed*setpoint_left_speed;
-  double output_right = (error_right_pos * kp_pos); // + kp_speed*setpoint_right_speed;
-
-
+  double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
+  double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
 
   double turn_val = kph * error_heading;
-  //double output_left = (error_left_pos * kp_pos) + (error_left_speed * kp_speed) * .05;
-  //double output_right = (error_right_pos * kp_pos) + (error_right_speed * kp_speed) * .05;
-/*
-  if(abs(output_left)<1){
-      output_left = output_left;
-  }
-  else if(output_left > 1){
-      output_left = 1;
-  }
-  else{
-      output_left = -1;
-  }
 
-if(abs(output_right)<1){
-      output_right = output_right;
-  }
-  else if(output_right > 1){
-      output_right= 1;
-  }
-  else{
-      output_right = -1;
-  }
-*/
   auto error_right_str = std::to_string(output_left);
   frc::SmartDashboard::PutString("DB/String 8", error_right_str);
   auto error_left_str = std::to_string(output_right);
