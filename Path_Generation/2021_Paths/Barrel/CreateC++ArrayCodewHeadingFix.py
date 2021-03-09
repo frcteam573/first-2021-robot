@@ -2,7 +2,7 @@
 import csv
 import os
 
-inputfile = "Straight"
+inputfile = "Barrel"
 with open(inputfile+'_left.csv', 'rU') as csvfile:
 
     csvstr = str(csvfile.name)
@@ -37,8 +37,8 @@ with open(inputfile+'_left.csv', 'rU') as csvfile:
         
         ######
 
-        pos = float(row[1])*7000/5
-        velo = float(row[2])*7000/5
+        pos = float(row[1])*6767/5
+        velo = float(row[2])*6767/5
         if row_count-2 == ct:
             f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"}};")
         else:
@@ -81,8 +81,8 @@ with open(inputfile+'_right.csv', 'rU') as csvfile:
         
         ######
 
-        pos = float(row[1])*7000/5
-        velo = float(row[2])*7000/5
+        pos = float(row[1])*6767/5
+        velo = float(row[2])*6767/5
         if row_count-2 == ct:
             f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"}};")
         else:

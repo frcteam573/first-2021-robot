@@ -164,6 +164,28 @@ void Robot::AutonomousPeriodic() {
     
 
     }
+    if (mode =="1"){
+      // Custom Auto goes here
+
+      MyDrive.shift_low();
+      if (count < 954){
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count);
+      }
+
+      else {
+        MyDrive.Joystick_Drive(0,0);
+      } 
+    
+
+    }
 
     auto error_left_str = std::to_string(count);
   frc::SmartDashboard::PutString("DB/String 7", error_left_str);
