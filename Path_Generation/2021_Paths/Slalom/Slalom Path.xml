@@ -21,17 +21,17 @@
     </Waypoint>
     <Waypoint>
         <X>25.0</X>
-        <Y>2.5</Y>
+        <Y>1.5</Y>
         <Angle>0.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>27.5</X>
+        <X>28.0</X>
         <Y>5.0</Y>
         <Angle>90.0</Angle>
     </Waypoint>
     <Waypoint>
         <X>25.0</X>
-        <Y>8.0</Y>
+        <Y>8.5</Y>
         <Angle>180.0</Angle>
     </Waypoint>
     <Waypoint>
