@@ -17,23 +17,23 @@ with open(inputfile+'_left.csv', 'rU') as csvfile:
 
     f.write("double "+ csvstr[:-4]+" ["+str(row_count-1)+"] [4] = {")
     h_old = 0
+    rawh_old = 0
+    loop_ct = 0
     for ct, row in enumerate(readCSV):
         #Heading Conversion#
         raw_heading = float(row[3])
-        H = raw_heading*180/3.145359
 
+        if raw_heading - rawh_old > 5.5:
+            loop_ct = loop_ct - 1
+        if raw_heading - rawh_old < -5.5:
+            loop_ct = loop_ct + 1
 
-        if abs(H-h_old) > 10:
-            if h_old > 360:
-                H = H+360
-            elif h_old < -360:
-                H = H-720
-            else:
-                H = H -360
+        rawh_old = raw_heading
+        
+        H = raw_heading*180/3.145359 + (360*loop_ct)
 
         h_old = H
     
-        
         
         ######
 
@@ -61,19 +61,20 @@ with open(inputfile+'_right.csv', 'rU') as csvfile:
     f.write("double "+ csvstr[:-4]+" ["+str(row_count)+"] [4] = {")
     
     h_old = 0
+    rawh_old = 0
+    loop_ct = 0
     for ct, row in enumerate(readCSV):
         #Heading Conversion#
         raw_heading = float(row[3])
-        H = raw_heading*180/3.145359
 
+        if raw_heading - rawh_old > 5.5:
+            loop_ct = loop_ct - 1
+        if raw_heading - rawh_old < -5.5:
+            loop_ct = loop_ct + 1
 
-        if abs(H-h_old) > 10:
-            if h_old > 360:
-                H = H+360
-            elif h_old < -360:
-                H = H-720
-            else:
-                H = H -360
+        rawh_old = raw_heading
+        
+        H = raw_heading*180/3.145359 + (360*loop_ct)
 
         h_old = H
     
