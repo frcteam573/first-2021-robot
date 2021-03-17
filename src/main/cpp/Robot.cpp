@@ -82,6 +82,7 @@ void Robot::AutonomousInit() {
 
   int count = 0;
   int count_delay = 0;
+  bool path_a = false;
 
   MyDrive.gyro_reset();
   MyDrive.encoder_reset();
@@ -91,6 +92,39 @@ void Robot::AutonomousInit() {
   } else {
     // Default Auto goes here
   }
+   // Read in camera Stuff
+  
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  
+  table->PutNumber("ledMode", 1);
+  table->PutNumber("camMode", 0);
+
+  // -----------PIPELINE STUFF-----------//
+  table->PutNumber("pipeline", 0);
+
+  //--------CAMERA VALUES-----------------//
+  float camera_x = table->GetNumber("tx", 0);
+    
+  float camera_exist = table->GetNumber("tv", 0);
+  float image_size = table->GetNumber("ta", 0);
+  float camera_y = table->GetNumber("ty", 0);
+  float camera_s = table->GetNumber("ts", 0);
+
+  // values to dashboard
+  auto leftinstr = std::to_string(camera_x);
+  frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
+
+  auto sstr = std::to_string(camera_s);
+  frc::SmartDashboard::PutString("Limelight-TS", sstr);
+
+  auto ystr = std::to_string(camera_y);
+  frc::SmartDashboard::PutString("Limelight-TY", ystr);
+  
+  double d = MyDrive.camera_getdistance(camera_y);
+
+  auto dstr = std::to_string(d);
+  frc::SmartDashboard::PutString("Limelight-Distance", dstr);
+
 }
 
 void Robot::AutonomousPeriodic() {
@@ -114,11 +148,22 @@ void Robot::AutonomousPeriodic() {
   float camera_y = table->GetNumber("ty", 0);
   float camera_s = table->GetNumber("ts", 0);
 
+  if (count<2){
+
+  
+    if (abs(camera_x)<10){
+        path_a = true;
+      }
+      
+      else{path_a = false;}
+
+  }
+
   // values to dashboard
   auto leftinstr = std::to_string(camera_x);
   frc::SmartDashboard::PutString("Limelight-TX", leftinstr);
 
-  auto sstr = std::to_string(camera_s);
+  auto sstr = std::to_string(path_a);
   frc::SmartDashboard::PutString("Limelight-TS", sstr);
 
   auto ystr = std::to_string(camera_y);
@@ -186,6 +231,35 @@ void Robot::AutonomousPeriodic() {
     
 
     }
+
+     if (mode == "2"){
+       if (path_a){
+             MyDrive.Joystick_Drive(0,0);
+       }
+      // Custom Auto goes here
+      else{
+      MyDrive.shift_low();
+      if (count < 557){
+        double left_pos = MyPaths.ReturnTableVal(count,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2);
+        double right_speed = MyPaths.ReturnTableVal(count,3);
+        double heading = MyPaths.ReturnTableVal(count,4);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(-1*right_pos, -1*left_pos, -1*right_speed, -1*left_speed,heading,count);
+      }
+
+      else {
+        MyDrive.Joystick_Drive(0,0);
+      } 
+      }
+    
+
+    }
+
+
 
     auto error_left_str = std::to_string(count);
   frc::SmartDashboard::PutString("DB/String 7", error_left_str);
