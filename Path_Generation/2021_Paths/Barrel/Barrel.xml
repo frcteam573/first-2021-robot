@@ -25,33 +25,33 @@
         <Angle>-270.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>23.0</X>
-        <Y>10.0</Y>
+        <X>24.0</X>
+        <Y>11.0</Y>
         <Angle>-270.0</Angle>
     </Waypoint>
     <Waypoint>
         <X>20.0</X>
-        <Y>13.0</Y>
+        <Y>13.5</Y>
         <Angle>-180.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>17.0</X>
+        <X>16.5</X>
         <Y>10.0</Y>
         <Angle>-90.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>24.0</X>
+        <X>23.5</X>
         <Y>2.5</Y>
         <Angle>-45.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>28.5</X>
-        <Y>4.5</Y>
+        <X>29.0</X>
+        <Y>2.5</Y>
         <Angle>45.0</Angle>
     </Waypoint>
     <Waypoint>
-        <X>27.0</X>
-        <Y>8.0</Y>
+        <X>27.5</X>
+        <Y>9.0</Y>
         <Angle>135.0</Angle>
     </Waypoint>
     <Waypoint>
