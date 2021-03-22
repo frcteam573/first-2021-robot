@@ -180,7 +180,7 @@ void Robot::AutonomousPeriodic() {
   int delay_int = (int)delay;
   delay_int = delay_int * 50; 
 
-  double count_max = MyPaths.ReturnTableVal(0,5);
+  double count_max = MyPaths.ReturnTableVal(0,5,0);
   int count_max_int = (int)count_max;
   bool aligned = false;
   bool wheel_speed = false;
@@ -192,11 +192,11 @@ void Robot::AutonomousPeriodic() {
 
       MyDrive.shift_low();
       if (count < 831){
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        double left_pos = MyPaths.ReturnTableVal(count,0,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1,0);
+        double right_pos = MyPaths.ReturnTableVal(count,2,0);
+        double right_speed = MyPaths.ReturnTableVal(count,3,0);
+        double heading = MyPaths.ReturnTableVal(count,4,0);
         
 
         //Call PID Loop to follow path
@@ -214,11 +214,11 @@ void Robot::AutonomousPeriodic() {
 
       MyDrive.shift_low();
       if (count < 1113){
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        double left_pos = MyPaths.ReturnTableVal(count,0,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1,0);
+        double right_pos = MyPaths.ReturnTableVal(count,2,0);
+        double right_speed = MyPaths.ReturnTableVal(count,3,0);
+        double heading = MyPaths.ReturnTableVal(count,4,0);
         
 
         //Call PID Loop to follow path
@@ -234,17 +234,32 @@ void Robot::AutonomousPeriodic() {
 
      if (mode == "2"){
        if (path_a){
-             MyDrive.Joystick_Drive(0,0);
+              MyDrive.shift_low();
+       if (count < 581){
+        double left_pos = MyPaths.ReturnTableVal(count,0,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1,0);
+        double right_pos = MyPaths.ReturnTableVal(count,2,0);
+        double right_speed = MyPaths.ReturnTableVal(count,3,0);
+        double heading = MyPaths.ReturnTableVal(count,4,0);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(-1*right_pos, -1*left_pos, -1*right_speed, -1*left_speed,heading,count);
+      }
+
+      else {
+        MyDrive.Joystick_Drive(0,0);
+      } 
        }
       // Custom Auto goes here
       else{
       MyDrive.shift_low();
       if (count < 557){
-        double left_pos = MyPaths.ReturnTableVal(count,0);
-        double left_speed = MyPaths.ReturnTableVal(count,1);
-        double right_pos = MyPaths.ReturnTableVal(count,2);
-        double right_speed = MyPaths.ReturnTableVal(count,3);
-        double heading = MyPaths.ReturnTableVal(count,4);
+        double left_pos = MyPaths.ReturnTableVal(count,0,1);
+        double left_speed = MyPaths.ReturnTableVal(count,1,1);
+        double right_pos = MyPaths.ReturnTableVal(count,2,1);
+        double right_speed = MyPaths.ReturnTableVal(count,3,1);
+        double heading = MyPaths.ReturnTableVal(count,4,1);
         
 
         //Call PID Loop to follow path
