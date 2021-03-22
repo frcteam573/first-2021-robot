@@ -273,6 +273,39 @@ void Robot::AutonomousPeriodic() {
     
 
     }
+    if (mode =="3"){
+      // Custom Auto goes here
+
+      MyDrive.shift_low();
+      if (count < 362){
+        double left_pos = MyPaths.ReturnTableVal(count,0,0);
+        double left_speed = MyPaths.ReturnTableVal(count,1,0);
+        double right_pos = MyPaths.ReturnTableVal(count,2,0);
+        double right_speed = MyPaths.ReturnTableVal(count,3,0);
+        double heading = MyPaths.ReturnTableVal(count,4,0);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count);
+      }
+      else if (count < (362+472)){
+        double left_pos = MyPaths.ReturnTableVal(count-362,0,1);
+        double left_speed = MyPaths.ReturnTableVal(count-362,1,1);
+        double right_pos = MyPaths.ReturnTableVal(count-362,2,1);
+        double right_speed = MyPaths.ReturnTableVal(count-362,3,1);
+        double heading = MyPaths.ReturnTableVal(count-362,4,1);
+        
+
+        //Call PID Loop to follow path
+        MyDrive.drive_PID(-1*right_pos, -1*left_pos, -1*right_speed, -1*left_speed,heading,count);
+      }
+
+      else {
+        MyDrive.Joystick_Drive(0,0);
+      } 
+    
+
+    }
 
 
 
