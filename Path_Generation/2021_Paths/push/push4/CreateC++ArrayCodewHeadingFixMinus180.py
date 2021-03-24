@@ -2,7 +2,7 @@
 import csv
 import os
 
-inputfile = "push2"
+inputfile = "push4"
 with open(inputfile+'_left.csv', 'rU') as csvfile:
 
     csvstr = str(csvfile.name)
@@ -40,11 +40,11 @@ with open(inputfile+'_left.csv', 'rU') as csvfile:
         pos = float(row[1])*6767/5
         velo = float(row[2])*6767/5
         if row_count-2 == ct:
-            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"}};")
+            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H-180)+"}};")
         else:
-            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"},")
+            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H-180)+"},")
         #print(row[0],row[1],row[2],)
-        print(str(-H))
+        print(str(-H-180))
 f.close() 
 with open(inputfile+'_right.csv', 'rU') as csvfile:
 
@@ -85,10 +85,10 @@ with open(inputfile+'_right.csv', 'rU') as csvfile:
         pos = float(row[1])*6767/5
         velo = float(row[2])*6767/5
         if row_count-2 == ct:
-            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"}};")
+            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H-180)+"}};")
         else:
-            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H)+"},")
+            f.write("{"+row[0]+","+str(pos)+","+str(velo)+","+str(-H-180)+"},")
         #print(row[0],row[1],row[2],)
-        print(str(-H))
+        print(str(-H-180))
 
 f.close() 
