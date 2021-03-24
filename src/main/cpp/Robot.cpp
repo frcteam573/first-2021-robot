@@ -288,7 +288,7 @@ void Robot::AutonomousPeriodic() {
         //Call PID Loop to follow path
         MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count);
       }
-      else if (count < (362+474)){
+      else if (count < (362+476)){
         double left_pos = MyPaths.ReturnTableVal(count-362,0,1);
         double left_speed = MyPaths.ReturnTableVal(count-362,1,1);
         double right_pos = MyPaths.ReturnTableVal(count-362,2,1);
@@ -300,24 +300,24 @@ void Robot::AutonomousPeriodic() {
         MyDrive.drive_PID(-1*right_pos, -1*left_pos, -1*right_speed, -1*left_speed,heading,count);
       }
 
-      else if (count < (362+474+478)){
-        double left_pos = MyPaths.ReturnTableVal(count-362-474,0,2);
-        double left_speed = MyPaths.ReturnTableVal(count-362-474,1,2);
-        double right_pos = MyPaths.ReturnTableVal(count-362-474,2,2);
-        double right_speed = MyPaths.ReturnTableVal(count-362-474,3,2);
-        double heading = MyPaths.ReturnTableVal(count-362-474,4,2);
+      else if (count < (362+476+500)){
+        double left_pos = MyPaths.ReturnTableVal(count-362-476,0,2);
+        double left_speed = MyPaths.ReturnTableVal(count-362-476,1,2);
+        double right_pos = MyPaths.ReturnTableVal(count-362-476,2,2);
+        double right_speed = MyPaths.ReturnTableVal(count-362-476,3,2);
+        double heading = MyPaths.ReturnTableVal(count-362-476,4,2);
         
 
         //Call PID Loop to follow path
         MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count);
       }
 
-      else if (count < (362+474+478+366)){
-        double left_pos = MyPaths.ReturnTableVal(count-362-474-478,0,3);
-        double left_speed = MyPaths.ReturnTableVal(count-362-474-478,1,3);
-        double right_pos = MyPaths.ReturnTableVal(count-362-474-478,2,3);
-        double right_speed = MyPaths.ReturnTableVal(count-362-474-478,3,3);
-        double heading = MyPaths.ReturnTableVal(count-362-474-478,4,3);
+      else if (count < (362+476+500+366)){
+        double left_pos = MyPaths.ReturnTableVal(count-362-476-500,0,3);
+        double left_speed = MyPaths.ReturnTableVal(count-362-476-500,1,3);
+        double right_pos = MyPaths.ReturnTableVal(count-362-476-500,2,3);
+        double right_speed = MyPaths.ReturnTableVal(count-362-476-500,3,3);
+        double heading = MyPaths.ReturnTableVal(count-362-476-500,4,3);
         
 
         //Call PID Loop to follow path
