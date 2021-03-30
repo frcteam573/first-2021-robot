@@ -41,6 +41,7 @@ class Appendage : public frc::Subsystem {
     rev::CANSparkMax * m_shooter2;
     rev::CANEncoder * s_shooter_encoder;
     rev::SparkMax * m_intake;
+    rev::SparkMax * m_vert;
     frc::DoubleSolenoid * p_intake;
     rev::CANSparkMax * m_conveyor;
     frc::DigitalInput * s_elevator;
