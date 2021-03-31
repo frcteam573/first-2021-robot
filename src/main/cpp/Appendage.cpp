@@ -44,6 +44,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDc = 0;
     int conveyormID = 13;
     int elevatorSID = 6;
+    int verticalinID = 2;
    // int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
@@ -60,6 +61,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new rev::SparkMax{intakeIDc};
+    m_vert = new rev::SparkMax{verticalinID};
     //m_intake -> SetInverted(true);
     p_intake = new frc::DoubleSolenoid(2, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
@@ -372,6 +374,7 @@ bool Appendage::shooter_get_distance(int trim){
 void Appendage::intakemotor(double input){
 
     m_intake->Set(input);
+    m_vert->Set(input);
 
 }
 
