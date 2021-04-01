@@ -89,7 +89,7 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     //LeftStick = deadband (LeftStick, 0.05);
     //RightStick = deadband (RightStick, 0.05);
 
-    if (LeftStick > (leftdriveold + 0.3)){
+    /*if (LeftStick > (leftdriveold + 0.3)){
         LeftStick = leftdriveold + 0.3;
     }
     else if (LeftStick < (leftdriveold - 0.3)){
@@ -101,7 +101,7 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     }
     else if (RightStick < (rightdriveold - 0.3)){
         RightStick = rightdriveold - 0.3;
-    }
+    }*/
 
     m_leftdrive->Set(LeftStick);
     m_leftdrive2->Set(LeftStick);
@@ -231,11 +231,11 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   
 
 
-  double max_speed = 8000;//frc::SmartDashboard::GetNumber("p input 2", 9750);//8250
+  double max_speed = 9000;//8000//frc::SmartDashboard::GetNumber("p input 2", 9750);//8250
   double kp_speed = -1/(max_speed);
   double kp_pos = 0; //-0.002;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.074;
   
-  double kph = -0.0075;//frc::SmartDashboard::GetNumber("p input", -0.0075);//-0.01;  //0.01;
+  double kph = -0.0072;//frc::SmartDashboard::GetNumber("p input", -0.0075);//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;

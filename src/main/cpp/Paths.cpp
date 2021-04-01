@@ -98,13 +98,13 @@ double push3_right [500] [4] = {{20,0.005413599999999999,0.0,-269.6766950926746}
         a_right = path_1_right;
         a_length = path_1_length;
     }
-    /*else if (mode=="1"){
+    else if (mode=="1"){
         a_left = Barrel_left;
         a_right = Barrel_right;
         a_length = path_2_length;
 
     
-    }
+    }/*
     else if (mode=="2"){
         if (brian==1){
             a_left = path_b_left;
@@ -117,7 +117,7 @@ double push3_right [500] [4] = {{20,0.005413599999999999,0.0,-269.6766950926746}
         }
         
 
-    }*/
+    }
     else if (mode=="3"){
         if (brian==1){
             a_left = push2_left;
@@ -140,7 +140,7 @@ double push3_right [500] [4] = {{20,0.005413599999999999,0.0,-269.6766950926746}
             a_right = push1_right;
             a_length = push1_length;
         }
-    }
+    }*/
     else if (mode=="5"){
         a_left = path_1_left;
         a_right = path_1_right;
