@@ -188,7 +188,7 @@ void Robot::AutonomousPeriodic() {
 
   
     if (mode =="0"){
-      // Custom Auto goes here
+      // Salom
 
       MyDrive.shift_low();
       if (count < 831){
@@ -210,7 +210,7 @@ void Robot::AutonomousPeriodic() {
 
     }
     if (mode =="1"){
-      // Custom Auto goes here
+      // Barrel
 
       MyDrive.shift_low();
       if (count < 1113){
@@ -232,7 +232,7 @@ void Robot::AutonomousPeriodic() {
 
     }
 
-     if (mode == "2"){
+     if (mode == "2"){ //Ball pickup
        if (path_a){
               MyDrive.shift_low();
        if (count < 581){
@@ -274,7 +274,7 @@ void Robot::AutonomousPeriodic() {
 
     }
     if (mode =="3"){
-      // Custom Auto goes here
+      // Push auto
 
       MyDrive.shift_low();
       if (count < 362){
