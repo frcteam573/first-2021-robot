@@ -300,7 +300,7 @@ void Robot::AutonomousPeriodic() {
         MyDrive.drive_PID(-1*right_pos, -1*left_pos, -1*right_speed, -1*left_speed,heading,count);
       }
 
-      else if (count < (362+476+500)){
+      else if (count < (362+476+476)){
         double left_pos = MyPaths.ReturnTableVal(count-362-476,0,2);
         double left_speed = MyPaths.ReturnTableVal(count-362-476,1,2);
         double right_pos = MyPaths.ReturnTableVal(count-362-476,2,2);
@@ -312,12 +312,12 @@ void Robot::AutonomousPeriodic() {
         MyDrive.drive_PID(left_pos, right_pos, left_speed, right_speed,heading,count);
       }
 
-      else if (count < (362+476+500+366)){
-        double left_pos = MyPaths.ReturnTableVal(count-362-476-500,0,3);
-        double left_speed = MyPaths.ReturnTableVal(count-362-476-500,1,3);
-        double right_pos = MyPaths.ReturnTableVal(count-362-476-500,2,3);
-        double right_speed = MyPaths.ReturnTableVal(count-362-476-500,3,3);
-        double heading = MyPaths.ReturnTableVal(count-362-476-500,4,3);
+      else if (count < (362+476+476+366)){
+        double left_pos = MyPaths.ReturnTableVal(count-362-476-476,0,3);
+        double left_speed = MyPaths.ReturnTableVal(count-362-476-476,1,3);
+        double right_pos = MyPaths.ReturnTableVal(count-362-476-476,2,3);
+        double right_speed = MyPaths.ReturnTableVal(count-362-476-476,3,3);
+        double heading = MyPaths.ReturnTableVal(count-362-476-476,4,3);
         
 
         //Call PID Loop to follow path
