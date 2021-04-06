@@ -242,6 +242,7 @@ void Robot::AutonomousPeriodic() {
      }
      else{
        MyAppendage.intakemotor(0.9);
+       MyAppendage.elevatorauto();
      }
        if (path_a){
               MyDrive.shift_low();
