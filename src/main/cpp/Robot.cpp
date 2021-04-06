@@ -233,6 +233,10 @@ void Robot::AutonomousPeriodic() {
     }
 
      if (mode == "2"){ //Ball pickup
+
+     if (count > 10){
+       MyAppendage.intakemotor(0.9);
+     }
        if (path_a){
               MyDrive.shift_low();
        if (count < 581){
