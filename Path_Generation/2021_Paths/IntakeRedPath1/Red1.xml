@@ -16,12 +16,17 @@
     </Waypoint>
     <Waypoint>
         <X>15.0</X>
-        <Y>12.5</Y>
+        <Y>14.0</Y>
         <Angle>0.0</Angle>
     </Waypoint>
     <Waypoint>
         <X>29.0</X>
         <Y>8.0</Y>
+        <Angle>0.0</Angle>
+    </Waypoint>
+    <Waypoint>
+        <X>15.0</X>
+        <Y>14.0</Y>
         <Angle>0.0</Angle>
     </Waypoint>
 </Path>

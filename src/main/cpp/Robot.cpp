@@ -234,12 +234,18 @@ void Robot::AutonomousPeriodic() {
 
      if (mode == "2"){ //Ball pickup
 
-     if (count > 10){
+     if (count < 25){
+       MyAppendage.intakemotor(0.9);
+     }
+     else if (count < 50){
+       MyAppendage.intakemotor(0.0);
+     }
+     else{
        MyAppendage.intakemotor(0.9);
      }
        if (path_a){
               MyDrive.shift_low();
-       if (count < 581){
+       if (count < 750){
         double left_pos = MyPaths.ReturnTableVal(count,0,0);
         double left_speed = MyPaths.ReturnTableVal(count,1,0);
         double right_pos = MyPaths.ReturnTableVal(count,2,0);
@@ -258,7 +264,7 @@ void Robot::AutonomousPeriodic() {
       // Custom Auto goes here
       else{
       MyDrive.shift_low();
-      if (count < 557){
+      if (count < 586){
         double left_pos = MyPaths.ReturnTableVal(count,0,1);
         double left_speed = MyPaths.ReturnTableVal(count,1,1);
         double right_pos = MyPaths.ReturnTableVal(count,2,1);
