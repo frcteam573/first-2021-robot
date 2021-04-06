@@ -213,7 +213,7 @@ void Robot::AutonomousPeriodic() {
       // Barrel
 
       MyDrive.shift_low();
-      if (count < 1164){
+      if (count < 1113){
         double left_pos = MyPaths.ReturnTableVal(count,0,0);
         double left_speed = MyPaths.ReturnTableVal(count,1,0);
         double right_pos = MyPaths.ReturnTableVal(count,2,0);
