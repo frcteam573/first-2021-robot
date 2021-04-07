@@ -108,7 +108,7 @@ double push3_right [482] [4] = {{20,0.0054136,0.0,-269.676695093},{20,0.0054136,
         a_length = path_2_length;
 
     
-    }*/
+    }
     if (mode=="2"){
         if (brian==1){ //red path b
             a_left = path_b_left;
@@ -133,7 +133,7 @@ double push3_right [482] [4] = {{20,0.0054136,0.0,-269.676695093},{20,0.0054136,
         
 
     }
-    /*else if (mode=="3"){
+    else if (mode=="3"){
         if (brian==1){
             a_left = push2_left;
             a_right = push2_right;
