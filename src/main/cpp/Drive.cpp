@@ -273,7 +273,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     }
 
-    if (camera_s > -6 && camera_s < 6){
+    /*if (camera_s > -6 && camera_s < 6){
 
         numerator = d * (sin(camera_s*3.1415/180.0));
         denominator = (d* cos(camera_s*3.14159/180.0) + x);
@@ -281,10 +281,10 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         setpoint = ((numerator/denominator)*180.0/3.14159);
 
     }
-    else {
+    else {*/
 
         setpoint = 0;
-    }
+   // }
       
     //auto setpointstr = std::to_string(setpoint);
     //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
