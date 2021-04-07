@@ -66,4 +66,5 @@ class Robot : public frc::TimedRobot {
   frc::Compressor * Compressor;
   bool first;
   bool path_a;
+  bool redblue;
 };
