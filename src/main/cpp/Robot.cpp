@@ -727,8 +727,8 @@ auto shootertrimstr = std::to_string(shootercounter);
 frc::SmartDashboard::PutString("Shooter Trim", shootertrimstr);
 if (c2_left_trigger > 0.5){
   if (camera_exist==1){
-    wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
-    //wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
+    //wheel_speed = MyAppendage.shooter_get_distance(shootercounter);
+    wheel_speed = MyAppendage.shooter_pid(d, shootercounter);
 
       if (aligned && wheel_speed && c2_right_trigger > 0.5){
 

@@ -283,7 +283,8 @@ void Appendage::shooter_raw(double input){
 // use camera distance to figure out shooter speed
 bool Appendage::shooter_pid(double distance, int trim){
 
-    double setpoint = 18.9*distance + 5925; //  
+    double setpoint = 0.3885*distance*distance - 94.713*distance + 13427; //  
+    
     if (setpoint < 6500){
       setpoint = 6500;
     }
