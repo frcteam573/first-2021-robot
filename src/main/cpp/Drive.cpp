@@ -302,9 +302,9 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         error_i = error_i + arr[i];
     }
     arr.resize(10);
-    double kp_i = 0.015;
+    double kp_i = 0; //frc::SmartDashboard::GetNumber("p input 2", -0.0072);//0.015;
 
-    double kp_c = .01;
+    double kp_c = 0.015; //frc::SmartDashboard::GetNumber("p input", -0.0072);//.01;
     double output = kp_c * error + kp_i * error_i;
 
     auto integralstr = std::to_string(error_i);
