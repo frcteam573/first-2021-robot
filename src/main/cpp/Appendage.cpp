@@ -323,7 +323,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.97*setpoint && encoder_val < 1.03*setpoint){
+    if (encoder_val > 0.93*setpoint && encoder_val < 1.07*setpoint){
       output = true;
     }
     return output;

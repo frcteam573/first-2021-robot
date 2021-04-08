@@ -454,6 +454,8 @@ void Drive::drive_straight(double Leftstick, bool first){
     double kp = 0.01;
     double output = kp * error;
 
+    Leftstick=(Leftstick*Leftstick*Leftstick);
+
     m_leftdrive->Set(Leftstick - output);
     m_leftdrive2->Set(Leftstick - output);
     m_rightdrive->Set(Leftstick + output);

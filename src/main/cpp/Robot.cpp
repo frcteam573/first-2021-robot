@@ -426,7 +426,7 @@ void Robot::TeleopPeriodic() {
 // Read in camera Stuff
   
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-  bool ellie = frc::SmartDashboard::GetBoolean("Auto Elevator", false);
+  bool ellie = frc::SmartDashboard::GetBoolean("Auto Elevator", true);
   table->PutNumber("ledMode", 0);
   table->PutNumber("camMode", 0);
 
@@ -677,6 +677,7 @@ else{
     MyAppendage.conveyor_motor(-0.8);
     MyAppendage.shooter_raw(-0.3);
   }
+  else{
   if(c2_rightbumper){ 
     //MyAppendage.intake_out();
     MyAppendage.intakemotor(0.9);
@@ -702,6 +703,7 @@ else{
     //MyAppendage.intake_in();
    // MyAppendage.shooter_feed(0);
     
+  }
   }
 }
 
