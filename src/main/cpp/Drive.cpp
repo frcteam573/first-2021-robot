@@ -89,7 +89,7 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     //LeftStick = deadband (LeftStick, 0.05);
     //RightStick = deadband (RightStick, 0.05);
 
-    if (LeftStick > (leftdriveold + 0.3)){
+    /*if (LeftStick > (leftdriveold + 0.3)){
         LeftStick = leftdriveold + 0.3;
     }
     else if (LeftStick < (leftdriveold - 0.3)){
@@ -101,7 +101,7 @@ void Drive::Joystick_Drive(double LeftStick, double RightStick){
     }
     else if (RightStick < (rightdriveold - 0.3)){
         RightStick = rightdriveold - 0.3;
-    }
+    }*/
 
     m_leftdrive->Set(LeftStick);
     m_leftdrive2->Set(LeftStick);
@@ -231,23 +231,23 @@ void Drive::drive_PID(double setpoint_left_pos, double setpoint_right_pos, doubl
   
 
 
-  double max_speed = 15.5; //15.5 ft/s
+  double max_speed = frc::SmartDashboard::GetNumber("p input 2", 8250);//9000,8000//frc::SmartDashboard::GetNumber("p input 2", 9750);//8250
   double kp_speed = -1/(max_speed);
-  double kp_pos = -0.0007;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.025;
+  double kp_pos = 0; //-0.002;//frc::SmartDashboard::GetNumber("p input", -0.025);//-0.074;
   
-  double kph = 0;//-0.01;  //0.01;
+  double kph = frc::SmartDashboard::GetNumber("p input", -0.0072);//-0.0072;//-0.01;  //0.01;
 
   double output_left = (error_left_pos * kp_pos) + kp_speed*setpoint_left_speed;
   double output_right = (error_right_pos * kp_pos) + kp_speed*setpoint_right_speed;
 
+  double turn_val = kph * error_heading;
+
   auto error_right_str = std::to_string(output_left);
   frc::SmartDashboard::PutString("DB/String 8", error_right_str);
   auto error_left_str = std::to_string(output_right);
-  frc::SmartDashboard::PutString("DB/String 9", error_left_str);
-
-  double turn_val = kph * error_heading;
-  //double output_left = (error_left_pos * kp_pos) + (error_left_speed * kp_speed) * .05;
-  //double output_right = (error_right_pos * kp_pos) + (error_right_speed * kp_speed) * .05;
+  frc::SmartDashboard::PutString("DB/String 6", error_left_str);
+    error_left_str = std::to_string(turn_val);
+  frc::SmartDashboard::PutString("DB/String 5", error_left_str);
 
   m_leftdrive->Set(output_left + turn_val);
   m_leftdrive2->Set(output_left + turn_val);
@@ -273,7 +273,7 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
 
     }
 
-    if (camera_s > -6 && camera_s < 6){
+    /*if (camera_s > -6 && camera_s < 6){
 
         numerator = d * (sin(camera_s*3.1415/180.0));
         denominator = (d* cos(camera_s*3.14159/180.0) + x);
@@ -281,10 +281,10 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         setpoint = ((numerator/denominator)*180.0/3.14159);
 
     }
-    else {
+    else {*/
 
         setpoint = 0;
-    }
+   // }
       
     //auto setpointstr = std::to_string(setpoint);
     //frc::SmartDashboard::PutString("DB/String 5", setpointstr);
@@ -302,9 +302,9 @@ bool Drive::camera_centering(float camera_x, float camera_s, double d){
         error_i = error_i + arr[i];
     }
     arr.resize(10);
-    double kp_i = 0.015;
+    double kp_i = 0; //frc::SmartDashboard::GetNumber("p input 2", -0.0072);//0.015;
 
-    double kp_c = .01;
+    double kp_c = 0.015; //frc::SmartDashboard::GetNumber("p input", -0.0072);//.01;
     double output = kp_c * error + kp_i * error_i;
 
     auto integralstr = std::to_string(error_i);
@@ -385,10 +385,12 @@ void Drive::dashboard(){
     double val_1 = s_leftdrive_enc->Get();
     auto val_1_str = std::to_string(val_1);
     frc::SmartDashboard::PutString("Left Drive Encoder",val_1_str);
+    frc::SmartDashboard::PutString("DB/String 0",val_1_str);
 
     double val_2 = s_rightdrive_enc->Get();
     auto val_2_str = std::to_string(val_2);
     frc::SmartDashboard::PutString("Right Drive Encoder",val_2_str);
+    frc::SmartDashboard::PutString("DB/String 1",val_2_str);
 
     double val_3 = s_gyro->GetAngle();
     auto val_3_str = std::to_string(val_3);
@@ -451,6 +453,8 @@ void Drive::drive_straight(double Leftstick, bool first){
     double error = 0 - gyro_val;
     double kp = 0.01;
     double output = kp * error;
+
+    Leftstick=(Leftstick*Leftstick*Leftstick);
 
     m_leftdrive->Set(Leftstick - output);
     m_leftdrive2->Set(Leftstick - output);

@@ -44,6 +44,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     int intakeIDc = 0;
     int conveyormID = 13;
     int elevatorSID = 6;
+    int verticalinID = 2;
    // int shooter_feedID = 15;
 
     // Define motors, sensors, and pneumatics here
@@ -60,6 +61,7 @@ Appendage::Appendage() : Subsystem("Appendage") {
     m_colorSensor = new rev::ColorSensorV3(frc::I2C::Port::kOnboard);
     m_colorMatcher = new rev::ColorMatch;
     m_intake = new rev::SparkMax{intakeIDc};
+    m_vert = new rev::SparkMax{verticalinID};
     //m_intake -> SetInverted(true);
     p_intake = new frc::DoubleSolenoid(2, intakeIDa, intakeIDb);
     m_conveyor = new rev::CANSparkMax{conveyormID, rev::CANSparkMax::MotorType::kBrushless};
@@ -281,7 +283,8 @@ void Appendage::shooter_raw(double input){
 // use camera distance to figure out shooter speed
 bool Appendage::shooter_pid(double distance, int trim){
 
-    double setpoint = 18.9*distance + 5925; //  
+    double setpoint = 0.3885*distance*distance - 94.713*distance + 13427; //  
+    
     if (setpoint < 6500){
       setpoint = 6500;
     }
@@ -320,7 +323,7 @@ bool Appendage::shooter_pid(double distance, int trim){
     auto encoder_valstr3 = std::to_string(output_e);
     frc::SmartDashboard::PutString("DB/String 1",encoder_valstr3);
     bool output = false;
-    if (encoder_val > 0.97*setpoint && encoder_val < 1.03*setpoint){
+    if (encoder_val > 0.93*setpoint && encoder_val < 1.07*setpoint){
       output = true;
     }
     return output;
@@ -372,6 +375,7 @@ bool Appendage::shooter_get_distance(int trim){
 void Appendage::intakemotor(double input){
 
     m_intake->Set(input);
+    m_vert->Set(input);
 
 }
 

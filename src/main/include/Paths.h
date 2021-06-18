@@ -25,7 +25,7 @@ class Paths : public frc::Subsystem {
 
  public:
   Paths();
-  double ReturnTableVal(int count, int select);
+  double ReturnTableVal(int count, int select, int brian);
  
 
 };
